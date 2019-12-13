@@ -5,6 +5,14 @@
 #include "ConnectCommand.h"
 
 
+// Defualt Constructer
+ConnectCommand::ConnectCommand() {}
+
+
+//constructer by parameters
+//  ConnectCommand::ConnectCommand(.......) {}
+
+
 
 
 
