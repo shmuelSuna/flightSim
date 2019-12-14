@@ -4,7 +4,11 @@
 
 #include "DefineVarCommand.h"
 
+//Defualt Constructer
+DefineVarCommand::DefineVarCommand(){}
 
+// Constructer with parameters
+// DefineVarCommand::DefineVarCommand(.....){}
 
 void DefineVarCommand::execute(vector<string>::iterator &it) {
 

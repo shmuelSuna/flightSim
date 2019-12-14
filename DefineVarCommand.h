@@ -11,10 +11,10 @@
 class DefineVarCommand : public Command{
 
   //Defualt Constructer
-  DefineVarCommand() {}
+  DefineVarCommand();
 
   // Constructer with parameters
- // DefineVarCommand(.....) {}
+ // DefineVarCommand(.....);
 
 
   //option 1

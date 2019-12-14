@@ -12,10 +12,10 @@ class ConnectCommand : public Command {
  public:
 
   // Defualt Constructer
-  ConnectCommand(){}
+  ConnectCommand();
 
   //constructer by parameters
- //  ConnectCommand(.......){}
+ //  ConnectCommand(.......);
 
 
   //option 1
