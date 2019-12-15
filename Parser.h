@@ -18,7 +18,7 @@ using namespace std;
 class Parser {
  private:
   vector<string> vectorOfStrings;
-  unordered_map<string, Command> mapOfCommands;
+  unordered_map<string, Command*> mapOfCommands;
 
  public:
   // Defualt Constructer
