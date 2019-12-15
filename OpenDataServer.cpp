@@ -11,12 +11,12 @@
 #include <thread>
 
 // defualt constructer
-OpenDataServer::OpenDataServer(){
-}
+OpenDataServer::OpenDataServer(){}
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x){}   //int x - is just to show that there is parameters. not sure which parameters yet
-
+OpenDataServer::OpenDataServer(int x){
+  port = x;
+}
 void OpenDataServer::execute(vector<string>::iterator &it) {
 
 

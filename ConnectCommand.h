@@ -2,29 +2,32 @@
 // Created by shmuelsuna on 13/12/2019.
 //
 
-#ifndef FLIGHTSIM__CONNECTCOMMAND_H_
-#define FLIGHTSIM__CONNECTCOMMAND_H_
+#ifndef FLIGHTSIM_CONNECTCOMMAND_H
+#define FLIGHTSIM_CONNECTCOMMAND_H
 
 #include "Command.h"
 
 
 class ConnectCommand : public Command {
+  string ip;
+  int port;
+
  public:
 
   // Defualt Constructer
   ConnectCommand();
 
   //constructer by parameters
- //  ConnectCommand(.......);
+  ConnectCommand(string ip1, int port1);
 
 
   //option 1
   void execute(vector<string>::iterator &it) override;
 
   //option 2
- // void execute()override ;
+  // void execute()override ;
 
 };
 
 
-#endif //FLIGHTSIM__CONNECTCOMMAND_H_
+#endif //FLIGHTSIM_CONNECTCOMMAND_H

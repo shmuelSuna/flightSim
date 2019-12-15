@@ -11,7 +11,6 @@
 class OpenDataServer : public Command{
 private:
     int port;
-private:
     std::map<std::string,float> flightDataServer;
 
 
