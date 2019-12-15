@@ -23,8 +23,9 @@ void Parser::action(vector<string> vectorOfStrings) {
   //iterate over all vector of strings
   for (auto it = vectorOfStrings.begin(); it < vectorOfStrings.end(); ++it) {
 
+
     //OpenDataServer command
-    if (*it == "OpenDataServer") {
+    if (*it == "openDataServer") {
       ++it;
       double digit = stod(*it);
       OpenDataServer open_data_server(digit);
@@ -34,7 +35,7 @@ void Parser::action(vector<string> vectorOfStrings) {
 
 
     //Connenct control client command
-    if (*it == "ConnectCommand") {
+    if (*it == "connectControlClient") {
       ++it;
       string ip3 = *it;
       ++it;
