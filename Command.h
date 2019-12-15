@@ -14,8 +14,8 @@ using namespace std;
 
 
 class Command {
- public:
 
+ public:
 
   // option one for execute
   virtual void execute(vector<string>:: iterator& it) = 0;

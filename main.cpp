@@ -2,15 +2,39 @@
 #include <vector>
 #include <cstring>
 #include <fstream>
+#include <thread>
+#include "OpenDataServer.h"
+
 using namespace std;
 std::vector<string> static lexer(const std::string&);
 
 
 int main() {
-    lexer("fly.txt");
+
+
+
+    std::vector<string> lexerStrings;
+    lexerStrings = lexer("fly.txt");
+
+
+
+
+    OpenDataServer openDataServer;
+    std::vector<string> vtest;
+    vtest.push_back("5400");
+    std::vector<string>::iterator it = vtest.begin();
+    openDataServer.execute(it);
+
+
+
+
+
+
+
 
 
     return 0;
+
 }
 
 
