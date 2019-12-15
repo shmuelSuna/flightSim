@@ -4,10 +4,10 @@
 
 #include "Parser.h"
 
-#include "Parser.h"
 #include "OpenDataServer.h"
+#include "ConnectCommand.h"
 #include <unordered_map>
-#include <map>
+#include "DefineVarCommand.h"
 
 
 
@@ -31,15 +31,44 @@ void Parser:: action(vector<string> vectorOfStrings){
       double digit = stod(*it);
       OpenDataServer open_data_server(digit);
       mapOfCommands["OpenDataServer"]=(open_data_server);
+      continue;
     }
 
 
     //Connenct control client command
     if(*it == "ConnectCommand") {
       ++it;
-
+      string ip3 = *it;
+      ++it;
       double digit = stod(*it);
-      OpenDataServer open_data_server(digit);
+      ConnectCommand connect_command(ip3,digit);
+      continue;
+    }
+
+
+    //DefineVarCommand
+    if(*it == "var") {
+      ++it;
+      string varName1 = *it;
+      ++it;
+
+      if (*it == "->"){
+        bool arrowFlagRight1 = true;
+      } else {
+        bool arrowFlagRight1 = false;
+      }
+
+
+
+
+
+
+
+
+
+
+//      ConnectCommand connect_command(ip3,digit);
+      continue;
     }
 
   }
