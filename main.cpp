@@ -4,6 +4,7 @@
 #include <fstream>
 #include <thread>
 #include "OpenDataServer.h"
+#include "CreateSymbolTable.h"
 
 using namespace std;
 std::vector<string> static lexer(const std::string&);
@@ -13,9 +14,21 @@ int main() {
 
 
 
+
+/*
+
+
+
+
+*/
+
+
+/*
     std::vector<string> lexerStrings;
     lexerStrings = lexer("fly.txt");
 
+
+*/
 
 
 
@@ -23,14 +36,12 @@ int main() {
     std::vector<string> vtest;
     vtest.push_back("5400");
     std::vector<string>::iterator it = vtest.begin();
+
     openDataServer.execute(it);
 
 
 
-
-
-
-
+    std::cout<<"cd"<<endl;
 
 
     return 0;
