@@ -153,5 +153,3 @@ std::vector<float> fromBufferToFloats(std::string buffer) {
     return floatsVector;
 
 }
-
-

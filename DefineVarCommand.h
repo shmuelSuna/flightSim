@@ -9,12 +9,23 @@
 
 
 class DefineVarCommand : public Command{
+ private:
+
+  string varName;
+  bool arrowFlagRight;
+  string sim;
+  double VarValue;
+ public:
+
+
 
   //Defualt Constructer
   DefineVarCommand();
 
   // Constructer with parameters
- // DefineVarCommand(.....);
+  DefineVarCommand(const string &var_name, bool arrow_flag_right, const string &sim, double var_value);
+
+
 
 
   //option 1

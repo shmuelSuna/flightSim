@@ -6,8 +6,6 @@
 #define FLIGHTSIM__OPENDATASERVER_H_
 
 #include <map>
-
-
 #include "OpenDataServer.h"
 #include <sys/socket.h>
 #include <string.h>
@@ -30,14 +28,14 @@ private:
     std::vector<string> variableNames;
 
 
- public:
-  // defualt constructer
-  OpenDataServer();
+public:
+    // defualt constructer
+    OpenDataServer();
 
-  //constructer by parameters
-  OpenDataServer(int x);   //int x - is just to show that there is parameters. not sure which parameters yet
+    //constructer by parameters
+    OpenDataServer(int x);   //int x - is just to show that there is parameters. not sure which parameters yet
 
-  void execute(vector<string>::iterator &it);
+    void execute(vector<string>::iterator &it);
 
 
 
