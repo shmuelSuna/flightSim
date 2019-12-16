@@ -114,7 +114,6 @@ void OpenDataServer::execute(vector<string>::iterator &it) {
     unsigned int PORT = atoi(portStr.c_str());
 
     std::thread thread1(openServer,PORT);
-    std::cout<<"Server has been opened"<<std::endl;
 
 
 

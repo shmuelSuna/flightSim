@@ -22,8 +22,7 @@ int main() {
     Parser parser(vectorOfStrings12);
     mapOfCommands = parser.action(vectorOfStrings12);
 
-    std::vector<string> lexerStrings;
-    lexerStrings = lexer("fly.txt");
+
 
 
 
