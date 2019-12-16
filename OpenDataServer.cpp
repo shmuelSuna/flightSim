@@ -68,8 +68,8 @@ int openServer(int PORT) {
 
     SymbolTable * symbolTable = createSymbolTable();
 
-    std::vector<std::string> names = symbolTable->getItemsNames();
-    std::vector<std::string>::iterator namesIter = names.begin();
+    vector<string> names = symbolTable->getItemsNames();
+    vector<string>::iterator namesIter = names.begin();
     SimulatorObject * tempObj;
 
 
@@ -80,9 +80,9 @@ int openServer(int PORT) {
 
     while (true) {
         int valread = read(client_socket, buffer, 1024);
-        std::vector<float> flightValues = fromBufferToFloats(buffer);
-        std::vector<float >::iterator valuesIter = flightValues.begin();
-        std::cout<<flightValues.size()<<std::endl;
+        vector<float> flightValues = fromBufferToFloats(buffer);
+        vector<float >::iterator valuesIter = flightValues.begin();
+        cout<<flightValues.size()<<std::endl;
         int i = 0;
         for (i = 0; i < 23; i++) {
             tempObj = symbolTable->getSimObj(*namesIter);
@@ -133,13 +133,13 @@ void OpenDataServer::execute(vector<string>::iterator &it) {
  * to set the value to the corresponding simulator object
  */
 std::vector<float> fromBufferToFloats(std::string buffer) {
-    std::string numStr;
-    std::string::size_type sz;
+    string numStr;
+    string::size_type sz;
     float tempNum;
     std::vector<float>floatsVector;
     for (char& c : buffer) {
         if (c == ',' || c == '\0') {
-            tempNum = std::stof(numStr,&sz);
+            tempNum = stof(numStr,&sz);
             floatsVector.push_back(tempNum);
             numStr = "";
             continue;
@@ -147,7 +147,7 @@ std::vector<float> fromBufferToFloats(std::string buffer) {
         numStr.push_back(c);
 
     }
-    tempNum = std::stof(numStr,&sz);
+    tempNum = stof(numStr,&sz);
     floatsVector.push_back(tempNum);
 
     return floatsVector;

@@ -15,6 +15,7 @@
 #include <map>
 
 using namespace std;
+
 class Parser {
  private:
   vector<string> vectorOfStrings;

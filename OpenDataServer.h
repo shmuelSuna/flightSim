@@ -18,7 +18,7 @@
 #include "CreateSymbolTable.h"
 #include "SymbolTable.h"
 #include <vector>
-
+using namespace std;
 
 
 

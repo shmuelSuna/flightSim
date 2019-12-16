@@ -9,21 +9,26 @@
 #include <vector>
 #include <iostream>
 #include "SimulatorObject.h"
+using namespace std;
+
+/*
+ * class that identifies the map between string and SimulatorObject
+ */
 
 class SymbolTable {
 private:
-    std::unordered_map<std::string, SimulatorObject *> table;
-    std::vector<std::string> itemsNames;
+    unordered_map<string, SimulatorObject *> table;
+    vector<string> itemsNames;
 public:
-    void addItem(std::string str, SimulatorObject * obj) {
+    void addItem(string str, SimulatorObject * obj) {
         table.insert(std::make_pair(str, obj));
         itemsNames.push_back(str);
     }
-    std::vector<std::string> getItemsNames() {
+    vector<string> getItemsNames() {
         return this->itemsNames;
     }
-    SimulatorObject * getSimObj(std::string objName) {
-        std::unordered_map<std::string, SimulatorObject *>::iterator it = table.find(objName);
+    SimulatorObject * getSimObj(string objName) {
+        unordered_map<string, SimulatorObject *>::iterator it = table.find(objName);
         if (it == table.end()) {
             std::cout<<"name of the object is not in the table"<<std::endl;
         }

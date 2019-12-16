@@ -1,15 +1,15 @@
 #include <iostream>
 #include <vector>
-#include <cstring>
 #include <fstream>
-#include <thread>
 #include "OpenDataServer.h"
 #include "Command.h"
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
+
 using namespace std;
-std::vector<string> static lexer(const std::string&);
+
+vector<string> static lexer(const string&);
 
 
 int main() {

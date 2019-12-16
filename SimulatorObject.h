@@ -4,34 +4,37 @@
 
 #ifndef FLIGHTSIM_SIMULATOROBJECT_H
 #define FLIGHTSIM_SIMULATOROBJECT_H
+
 #include <string>
 #include <iostream>
 
+using namespace std;
 
+/*
+ * class SimulatorObject that holds the details about a variable in the simulator
+ * we will want to set all the time its value.
+ */
 
 class SimulatorObject {
 private:
     float value;
-     std::string name;
-     std::string simPath;
+     string name;
+     string simPath;
 public:
-    SimulatorObject(std::string str) {
+    SimulatorObject(const string str) {
         this->name = str;
     }
     ~SimulatorObject() {
 
     }
     void setValue(float f) {
-        if (f != value) {
-        std::cout<<name<<" is changed to "<<value<<std::endl;
-        }
         this->value = f;
 
     }
-    void setSimPath(std::string pathStr) {
+    void setSimPath(string pathStr) {
         this->simPath = pathStr;
     }
-    std::string getName() {
+    string getName() {
         return this->name;
     }
     float getValue() {
