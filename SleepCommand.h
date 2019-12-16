@@ -10,9 +10,7 @@
 #include "Command.h"
 class SleepCommand : public Command {
  private:
-
   int timeToSleep;
-
  public:
 
 

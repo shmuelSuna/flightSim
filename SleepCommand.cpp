@@ -16,7 +16,7 @@ SleepCommand::SleepCommand(int timeToSleep_){
 
 
 //option 1
-void execute(vector<string>::iterator &it){
+void  SleepCommand::execute(vector<string>::iterator &it){
 
 }
 
