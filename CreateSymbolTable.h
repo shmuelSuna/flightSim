@@ -7,7 +7,11 @@
 
 #include <string>
 #include "SymbolTable.h"
-
+/*
+ * static method that creates a map of 23 items. those are the items that we should get from the Simulator,
+ * according to the given XML file. we map between the variable string to its simulator object.
+ * the function returns a pointer to the table
+ */
 static SymbolTable *  createSymbolTable() {
     SymbolTable * symbolTablePtr = new SymbolTable();
     std::vector<std::string>varSimNames;
