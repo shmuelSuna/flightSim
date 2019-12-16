@@ -8,6 +8,8 @@
 #include "ConnectCommand.h"
 #include <unordered_map>
 #include "DefineVarCommand.h"
+#include "PrintCommand.h"
+#include "SleepCommand.h"
 
 // Defualt Constructer
 Parser::Parser() {}
@@ -18,7 +20,7 @@ Parser::Parser(vector<string> vectorOfStrings1) {
 }
 
 //iterate over vector of strings, make map1
-void Parser::action(vector<string> vectorOfStrings) {
+unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
 
   //iterate over all vector of strings
   for (auto it = vectorOfStrings.begin(); it < vectorOfStrings.end(); ++it) {
@@ -70,7 +72,29 @@ void Parser::action(vector<string> vectorOfStrings) {
       mapOfCommands[varName_] = (&define_var_command);
       continue;
     }
+    // Print command
+    if (*it == "Print") {
+      ++it;
+      string message_ = *it;
+      PrintCommand print_command(message_);
+      mapOfCommands["Print"] = (&print_command);
+    }
+    //Sleep command
+    if (*it == "Sleep") {
+      ++it;
+      int timeToSleep_ = stod(*it);
+      SleepCommand sleep_command(timeToSleep_);
+      mapOfCommands["Sleep"] = (&sleep_command);
+    }
+
+
 
   }
+  return this->GetMapOfCommands();
+}
 
+
+
+ unordered_map<string, Command*> Parser::GetMapOfCommands()  {
+  return mapOfCommands;
 }

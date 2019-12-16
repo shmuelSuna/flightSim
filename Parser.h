@@ -28,9 +28,9 @@ class Parser {
   Parser(vector<string> vectorOfStrings);
 
  public:
-  void action(vector<string> vectorOfStrings);
+  unordered_map<string, Command*> action(vector<string> vectorOfStrings);
 
-
+  unordered_map<string,  Command*> GetMapOfCommands();
 };
 
 #endif //FLIGHTSIM_PARSER_H

@@ -15,13 +15,13 @@ std::vector<string> static lexer(const std::string&);
 
 int main() {
 
-  map<string, Command*> mapOfCommands;
+  unordered_map<string, Command *> mapOfCommands;
 
   vector<string>vectorOfStrings12;
   vectorOfStrings12 = lexer("fly.txt");
 
   Parser parser(vectorOfStrings12);
-parser.action(vectorOfStrings12);
+  mapOfCommands = parser.action(vectorOfStrings12);
 
   return 0;
 }
