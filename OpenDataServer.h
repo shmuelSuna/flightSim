@@ -6,7 +6,6 @@
 #define FLIGHTSIM__OPENDATASERVER_H_
 
 #include <map>
-#include "OpenDataServer.h"
 #include <sys/socket.h>
 #include <string.h>
 #include <iostream>

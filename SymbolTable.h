@@ -20,20 +20,9 @@ private:
     unordered_map<string, SimulatorObject *> table;
     vector<string> itemsNames;
 public:
-    void addItem(string str, SimulatorObject * obj) {
-        table.insert(std::make_pair(str, obj));
-        itemsNames.push_back(str);
-    }
-    vector<string> getItemsNames() {
-        return this->itemsNames;
-    }
-    SimulatorObject * getSimObj(string objName) {
-        unordered_map<string, SimulatorObject *>::iterator it = table.find(objName);
-        if (it == table.end()) {
-            std::cout<<"name of the object is not in the table"<<std::endl;
-        }
-        return it->second;
-    }
+    void addItem(string, SimulatorObject *);
+    vector<string> getItemsNames();
+    SimulatorObject * getSimObj(string);
 };
 
 

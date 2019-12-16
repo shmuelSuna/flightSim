@@ -12,12 +12,6 @@ OpenDataServer::OpenDataServer(int x){}   //int x - is just to show that there i
 
 
 
-
-
-
-
-
-
 int openServer(int PORT) {
 
     //create socket
@@ -84,7 +78,7 @@ int openServer(int PORT) {
         vector<float >::iterator valuesIter = flightValues.begin();
         cout<<flightValues.size()<<std::endl;
         int i = 0;
-        for (i = 0; i < 23; i++) {
+        for (i = 0; i < 24; i++) {
             tempObj = symbolTable->getSimObj(*namesIter);
             tempObj->setValue(*valuesIter);
 
@@ -138,7 +132,12 @@ std::vector<float> fromBufferToFloats(std::string buffer) {
     std::vector<float>floatsVector;
     for (char& c : buffer) {
         if (c == ',' || c == '\0') {
-            tempNum = stof(numStr,&sz);
+            try {
+                tempNum = stof(numStr, &sz);
+            } catch (const char* e) {
+                cout<<e<<endl;
+                continue;
+            }
             floatsVector.push_back(tempNum);
             numStr = "";
             continue;
@@ -146,7 +145,12 @@ std::vector<float> fromBufferToFloats(std::string buffer) {
         numStr.push_back(c);
 
     }
-    tempNum = stof(numStr,&sz);
+    try {
+        tempNum = stof(numStr,&sz);
+    } catch (const char* e) {
+        cout<<e<<endl;
+    }
+
     floatsVector.push_back(tempNum);
 
     return floatsVector;
