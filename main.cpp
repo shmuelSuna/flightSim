@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
+#include <thread>
 
 using namespace std;
 
@@ -26,14 +27,28 @@ int main() {
 
 
 
+    SymbolTable * st = createSymbolTable();
 
-    OpenDataServer openDataServer;
-    std::vector<string> vtest;
-    vtest.push_back("5400");
-    std::vector<string>::iterator it = vtest.begin();
-    openDataServer.execute(it);
+    OpenDataServer ods(5400);
+    ods.setSymbolTable(st);
+
+    //temo vector and iter just to run the functions execute
+    vector<string> vec;
+    vec.push_back("test");
+    vector<string>::iterator it = vec.begin();
+
+    thread t1([&]() {
+        return ods.execute(it);});
 
 
+    string s = "127.0.0.1";
+
+    ConnectCommand cc(s, 5402);
+    cc.setSymbolTable(st);
+    cc.execute(it);
+
+
+    t1.join();
 
 
 
@@ -71,13 +86,15 @@ std::vector<string> static lexer(const std::string& fileName) {
         bool isEquation = false;
         bool isPrint = false;
         bool isCondition = false;
+        bool isVarDec = false;
 
         for (char& c : line) {
             if (token == ("while") || token == ("if")) {
                 isCondition = true;
-            }
-            if (token ==("Print") || token == ("print")) {
+            }else if (token ==("Print") || token == ("print")) {
                 isPrint = true;
+            } else if (token == "var") {
+                isVarDec = true;
             }
             if (!isEquation && !isPrint && (c == ' ' || c == '\t' || c == '\n' || c == ',')) {
                 if (!token.empty()) {
@@ -86,11 +103,35 @@ std::vector<string> static lexer(const std::string& fileName) {
                 token = "";
                 continue;
             } else if (!isPrint && !isCondition && c == '=') {
+                if (!token.empty()) {
+                    lexerVector.push_back(token);
+                    token = "";
+                }
                 token.push_back(c);
                 lexerVector.push_back(token);
                 isEquation = true;
                 token = "";
                 continue;
+
+            } else if (isEquation) {
+                if (c == ' ') {
+                    continue;
+                }
+            } else if (isVarDec && (c == '-' || c == '>'|| c == '<' )) {
+                    if (!token.empty() && token != "-" && token != "<" && token != ">") {
+                        lexerVector.push_back(token);
+                        token = "";
+                    }
+                    token.push_back(c);
+
+                    if (token.size() == 2) {
+                        lexerVector.push_back(token);
+                        token = "";
+                        isVarDec = false;
+
+                    }
+                    continue;
+
 
             } else if (!isEquation && c == '(') {
                 lexerVector.push_back(token);

@@ -8,12 +8,15 @@ OpenDataServer::OpenDataServer(){
 }
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x){}   //int x - is just to show that there is parameters. not sure which parameters yet
+OpenDataServer::OpenDataServer(int x) {
+    this->port = x;
+}
 
+void OpenDataServer::setSymbolTable(SymbolTable * st) {
+    this->symbolTable = st;
+}
 
-
-int openServer(int PORT) {
-
+int openServer(int port, SymbolTable* symbolTable) {
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -28,7 +31,7 @@ int openServer(int PORT) {
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY; //give me any IP allocated for my machine
-    address.sin_port = htons(PORT);
+    address.sin_port = htons(port);
     //we need to convert our number
     // to a number that the network understands.
 
@@ -60,7 +63,6 @@ int openServer(int PORT) {
 
 
 
-    SymbolTable * symbolTable = createSymbolTable();
 
     vector<string> names = symbolTable->getItemsNames();
     vector<string>::iterator namesIter = names.begin();
@@ -72,11 +74,11 @@ int openServer(int PORT) {
     //reading from client
     char buffer[1024] = {0};
 
+    //server is always on
     while (true) {
         int valread = read(client_socket, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
-        cout<<flightValues.size()<<std::endl;
         int i = 0;
         for (i = 0; i < 24; i++) {
             tempObj = symbolTable->getSimObj(*namesIter);
@@ -91,11 +93,6 @@ int openServer(int PORT) {
     }
 
     return 0;
-
-
-
-
-
 }
 
 
@@ -104,10 +101,10 @@ int openServer(int PORT) {
 void OpenDataServer::execute(vector<string>::iterator &it) {
 
 
-    std::string portStr = *it;
-    unsigned int PORT = atoi(portStr.c_str());
+    thread thread1(openServer,port, symbolTable);
 
-    std::thread thread1(openServer,PORT);
+
+    cout<<"Another logic"<<endl;
 
 
 
