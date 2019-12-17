@@ -1,35 +1,19 @@
 //
 // Created by shmuelsuna on 13/12/2019.
 //
-
 #include "OpenDataServer.h"
-#include <sys/socket.h>
-#include <string.h>
-#include <iostream>
-#include <unistd.h>
-#include <netinet/in.h>
-#include <thread>
 
 // defualt constructer
-OpenDataServer::OpenDataServer(){}
+OpenDataServer::OpenDataServer(){
+}
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x){
-  port = x;
-}
-void OpenDataServer::execute(vector<string>::iterator &it) {
-
-
-    std::string portStr = *it;
-    unsigned int PORT = atoi(portStr.c_str());
-    openServer(this->port);
+OpenDataServer::OpenDataServer(int x){}   //int x - is just to show that there is parameters. not sure which parameters yet
 
 
 
+int openServer(int PORT) {
 
-}
-
-int OpenDataServer::openServer(int PORT) {
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -37,6 +21,7 @@ int OpenDataServer::openServer(int PORT) {
         std::cerr << "Could not create a socket" << std::endl;
         return -1;
     }
+
 
     //bind socket to IP address
     // we first need to create the sockaddr obj.
@@ -73,15 +58,35 @@ int OpenDataServer::openServer(int PORT) {
     close(socketfd); //closing the listening socket
     std::cout << "wating for a messegae" << std::endl;
 
+
+
+    SymbolTable * symbolTable = createSymbolTable();
+
+    vector<string> names = symbolTable->getItemsNames();
+    vector<string>::iterator namesIter = names.begin();
+    SimulatorObject * tempObj;
+
+
+
+    int k = 0;
     //reading from client
     char buffer[1024] = {0};
+
     while (true) {
         int valread = read(client_socket, buffer, 1024);
-        std::cout << buffer << std::endl;
+        vector<float> flightValues = fromBufferToFloats(buffer);
+        vector<float >::iterator valuesIter = flightValues.begin();
+        cout<<flightValues.size()<<std::endl;
+        int i = 0;
+        for (i = 0; i < 24; i++) {
+            tempObj = symbolTable->getSimObj(*namesIter);
+            tempObj->setValue(*valuesIter);
 
-
-
-
+            valuesIter++;
+            namesIter++;
+        }
+        namesIter = names.begin();
+        k++;
 
     }
 
@@ -94,4 +99,60 @@ int OpenDataServer::openServer(int PORT) {
 }
 
 
-// open/create a thread that runs a server that listents to port 5400 (5400 is prameter)
+
+
+void OpenDataServer::execute(vector<string>::iterator &it) {
+
+
+    std::string portStr = *it;
+    unsigned int PORT = atoi(portStr.c_str());
+
+    std::thread thread1(openServer,PORT);
+
+
+
+
+    thread1.join();
+    return;
+}
+
+
+
+
+
+
+/*
+ * function that converts the numbers that we get from the simulator to floats in order
+ * to set the value to the corresponding simulator object
+ */
+std::vector<float> fromBufferToFloats(std::string buffer) {
+    string numStr;
+    string::size_type sz;
+    float tempNum;
+    std::vector<float>floatsVector;
+    for (char& c : buffer) {
+        if (c == ',' || c == '\0') {
+            try {
+                tempNum = stof(numStr, &sz);
+            } catch (const char* e) {
+                cout<<e<<endl;
+                continue;
+            }
+            floatsVector.push_back(tempNum);
+            numStr = "";
+            continue;
+        }
+        numStr.push_back(c);
+
+    }
+    try {
+        tempNum = stof(numStr,&sz);
+    } catch (const char* e) {
+        cout<<e<<endl;
+    }
+
+    floatsVector.push_back(tempNum);
+
+    return floatsVector;
+
+}

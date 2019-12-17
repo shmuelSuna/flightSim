@@ -6,24 +6,44 @@
 #define FLIGHTSIM__OPENDATASERVER_H_
 
 #include <map>
+#include <sys/socket.h>
+#include <string.h>
+#include <iostream>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <thread>
+#include <unordered_map>
 #include "Command.h"
+#include "CreateSymbolTable.h"
+#include "SymbolTable.h"
+#include <vector>
+using namespace std;
 
-class OpenDataServer : public Command{
+
+
+class OpenDataServer : public Command {
+
 private:
-    int port;
-    std::map<std::string,float> flightDataServer;
+    std::vector<string> variableNames;
 
 
- public:
-  // defualt constructer
-  OpenDataServer();
+public:
+    // defualt constructer
+    OpenDataServer();
 
-  //constructer by parameters
-  OpenDataServer(int x);   //int x - is just to show that there is parameters. not sure which parameters yet
+    //constructer by parameters
+    OpenDataServer(int x);   //int x - is just to show that there is parameters. not sure which parameters yet
+
+    void execute(vector<string>::iterator &it);
 
 
-  void execute(vector<string>::iterator &it);
 
-  int openServer(int);
+
 };
+int openServer(int);
+
+std::vector<float>fromBufferToFloats(std::string str);
+
+
+
 #endif //FLIGHTSIM__OPENDATASERVER_H_

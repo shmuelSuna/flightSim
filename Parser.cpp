@@ -4,12 +4,6 @@
 
 #include "Parser.h"
 
-#include "OpenDataServer.h"
-#include "ConnectCommand.h"
-#include <unordered_map>
-#include "DefineVarCommand.h"
-#include "PrintCommand.h"
-#include "SleepCommand.h"
 
 // Defualt Constructer
 Parser::Parser() {}

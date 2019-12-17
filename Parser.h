@@ -11,10 +11,16 @@
 #include <cstring>
 #include <string>
 #include "Command.h"
-#include <unordered_map>
 #include <map>
+#include "OpenDataServer.h"
+#include "ConnectCommand.h"
+#include <unordered_map>
+#include "DefineVarCommand.h"
+#include "PrintCommand.h"
+#include "SleepCommand.h"
 
 using namespace std;
+
 class Parser {
  private:
   vector<string> vectorOfStrings;
