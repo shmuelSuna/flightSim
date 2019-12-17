@@ -24,25 +24,31 @@ using namespace std;
 class OpenDataServer : public Command {
 
 private:
+    int port;
     std::vector<string> variableNames;
-
+    SymbolTable* symbolTable;
 
 public:
     // defualt constructer
     OpenDataServer();
 
     //constructer by parameters
-    OpenDataServer(int x);   //int x - is just to show that there is parameters. not sure which parameters yet
+    OpenDataServer(int x);
 
     void execute(vector<string>::iterator &it);
 
+    //the open data server should have an accecc to the table to update the variables that come from the Simulator
+    void setSymbolTable(SymbolTable*);
 
-
+    void printHello() {
+        cout<<"hello"<<endl;
+        return;;
+    }
 
 };
-int openServer(int);
+int openServer(int, SymbolTable*);
 
-std::vector<float>fromBufferToFloats(std::string str);
+vector<float>fromBufferToFloats(string);
 
 
 

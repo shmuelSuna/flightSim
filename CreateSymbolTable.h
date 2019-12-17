@@ -12,21 +12,21 @@ using namespace std;
 /*
  * static method that creates a map of 23 items. those are the items that we should get from the Simulator,
  * according to the given XML file. we map between the variable string to its simulator object.
- * the function returns a pointer to the table
+ * the function returns a pointer to the table. some of the objects have names like thier name in the fly.txt file
  */
 static SymbolTable *  createSymbolTable() {
     SymbolTable * symbolTablePtr = new SymbolTable();
 
-    SimulatorObject * simObj1 = new SimulatorObject("airspeed-indicator_indicated-speed-kt");
-    symbolTablePtr->addItem("airspeed-indicator_indicated-speed-kt", simObj1);
+    SimulatorObject * simObj1 = new SimulatorObject("airspeed");
+    symbolTablePtr->addItem("airspeed", simObj1);
     simObj1->setSimPath("/instrumentation/airspeed-indicator/indicated-speed-kt");
 
-    SimulatorObject * simObj2 = new SimulatorObject("heading-indicator_offset-deg");
-    symbolTablePtr->addItem("heading-indicator_offset-deg", simObj2);
+    SimulatorObject * simObj2 = new SimulatorObject("heading");
+    symbolTablePtr->addItem("heading", simObj2);
     simObj2->setSimPath("/instrumentation/heading-indicator/offset-deg");
 
-    SimulatorObject * simObj3 = new SimulatorObject("altimeter_indicated-altitude-ft");
-    symbolTablePtr->addItem("altimeter_indicated-altitude-ft", simObj3);
+    SimulatorObject * simObj3 = new SimulatorObject("alt");
+    symbolTablePtr->addItem("alt", simObj3);
     simObj3->setSimPath("/instrumentation/altimeter/indicated-altitude-ft");
 
     SimulatorObject * simObj4 = new SimulatorObject("altimeter_pressure-alt-ft");
@@ -37,12 +37,12 @@ static SymbolTable *  createSymbolTable() {
     symbolTablePtr->addItem("attitude-indicator_indicated-pitch-deg", simObj5);
     simObj5->setSimPath("/instrumentation/attitude-indicator/indicated-pitch-deg");
 
-    SimulatorObject * simObj6 = new SimulatorObject("attitude-indicator_indicated-roll-deg");
-    symbolTablePtr->addItem("attitude-indicator_indicated-roll-deg", simObj6);
+    SimulatorObject * simObj6 = new SimulatorObject("roll");
+    symbolTablePtr->addItem("roll", simObj6);
     simObj6->setSimPath("/instrumentation/attitude-indicator/indicated-roll-deg");
 
-    SimulatorObject * simObj7 = new SimulatorObject("attitude-indicator_internal-pitch-deg");
-    symbolTablePtr->addItem("attitude-indicator_internal-pitch-deg", simObj7);
+    SimulatorObject * simObj7 = new SimulatorObject("pitch");
+    symbolTablePtr->addItem("pitch", simObj7);
     simObj7->setSimPath("/instrumentation/attitude-indicator/internal-pitch-deg");
 
     SimulatorObject * simObj8 = new SimulatorObject("attitude-indicator_internal-roll-deg");
@@ -109,8 +109,8 @@ static SymbolTable *  createSymbolTable() {
     symbolTablePtr->addItem("engine_throttle", simObj23);
     simObj23->setSimPath("/controls/engines/engine/throttle");
 
-    SimulatorObject * simObj24 = new SimulatorObject("engine_rpm");
-    symbolTablePtr->addItem("engine_rpm", simObj24);
+    SimulatorObject * simObj24 = new SimulatorObject("rpm");
+    symbolTablePtr->addItem("rpm", simObj24);
     simObj24->setSimPath("/engines/engine/rpm");
 
 
