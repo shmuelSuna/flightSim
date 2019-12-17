@@ -18,14 +18,14 @@
 #include "DefineVarCommand.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
-
+#include "SetVarCommand.h"
 using namespace std;
 
 class Parser {
  private:
   vector<string> vectorOfStrings;
   unordered_map<string, Command*> mapOfCommands;
-
+  unordered_map<string, DefineVarCommand*> mapOfDefineVarCommands;
  public:
   // Defualt Constructer
   Parser();

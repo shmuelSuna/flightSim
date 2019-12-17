@@ -25,8 +25,12 @@ class DefineVarCommand : public Command{
   // Constructer with parameters
   DefineVarCommand(const string &var_name, bool arrow_flag_right, const string &sim, double var_value);
 
-
-
+  bool IsArrowFlagRight() const;
+  void SetArrowFlagRight(bool arrow_flag_right);
+  string GetSim();
+  void SetSim( string sim);
+  double GetVarValue();
+  void SetVarValue(double var_value);
 
   //option 1
   void execute(vector<string>::iterator &it) override;
@@ -34,6 +38,8 @@ class DefineVarCommand : public Command{
   //option 2
   // void execute()override ;
 
+  const string &GetVarName() const;
+  void SetVarName(const string &var_name);
 
 };
 
