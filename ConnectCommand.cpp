@@ -49,12 +49,12 @@ int connectControlClient(int port, const char* ip, SymbolTable* symbolTable, vec
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr(ip);  //the localhost address
+    address.sin_addr.s_addr = inet_addr(ip);  //the localhost address meanwhile I see it's working only on this IP!!!!!
     address.sin_port = htons(port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.
 
-    // Requesting a connection with the server on local host with port 8081
+    // Requesting a connection with the server on local host with port 5402
     int is_connect = connect(client_socket, (struct sockaddr *)&address, sizeof(address));
     if (is_connect == -1) {
         std::cerr << "Could not connect to host server"<<std::endl;
@@ -64,16 +64,18 @@ int connectControlClient(int port, const char* ip, SymbolTable* symbolTable, vec
     }
 
     //if here we made a connection
-    char hello[] = "Hi from client";
-    int is_sent = send(client_socket , hello , strlen(hello) , 0 );
-    if (is_sent == -1) {
+    char hello2[] = "set /controls/engines/current-engine/mixture 0.2\r\n";
+
+    int is_sent2 = send(client_socket , hello2 , strlen(hello2) , 0 );
+    if (is_sent2 == -1) {
         std::cout<<"Error sending message"<<std::endl;
     } else {
-        std::cout<<"Hello message sent to server" <<std::endl;
+        std::cout<<hello2<<" message sent to server" <<std::endl;
     }
 
     char buffer[1024] = {0};
     int valread = read( client_socket , buffer, 1024);
+    cout<<valread<<endl;
     std::cout<<buffer<<std::endl;
 
     close(client_socket);

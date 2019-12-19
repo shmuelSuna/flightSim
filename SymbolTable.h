@@ -19,11 +19,15 @@ class SymbolTable {
 private:
     unordered_map<string, SimulatorObject *> table;
     vector<string> itemsNames;
+    vector<string> allSimPath;
 public:
+    SymbolTable();
+    ~SymbolTable();
     void addItem(string, SimulatorObject *);
     vector<string> getItemsNames();
     SimulatorObject * getSimObj(string);
+    int isPathExist(string);
 };
-
+vector<string> allSimPathCreator();
 
 #endif //FLIGHTSIM_SYMBOLTABLE_H

@@ -3,8 +3,9 @@
 //
 
 #include "SimulatorObject.h"
-SimulatorObject::SimulatorObject(const string str) {
-    this->name = str;
+SimulatorObject::SimulatorObject(string str1, string str2) {
+    this->name = str1;
+    this->simPath = str2;
 }
 SimulatorObject::~SimulatorObject() {
 
@@ -12,9 +13,6 @@ SimulatorObject::~SimulatorObject() {
 void SimulatorObject::setValue(float f) {
     this->value = f;
 
-}
-void SimulatorObject::setSimPath(string pathStr) {
-    this->simPath = pathStr;
 }
 string SimulatorObject::getName() {
     return this->name;

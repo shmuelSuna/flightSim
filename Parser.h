@@ -18,7 +18,7 @@
 #include "DefineVarCommand.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
-
+#include "SymbolTable.h"
 using namespace std;
 
 class Parser {

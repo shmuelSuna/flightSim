@@ -3,20 +3,20 @@
 //
 #include "OpenDataServer.h"
 
-// defualt constructer
-OpenDataServer::OpenDataServer(){
-}
+
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x) {
+OpenDataServer::OpenDataServer(int x, ServerValuesMap* valuesMap) {
     this->port = x;
+    this->serverValuesMap = valuesMap;
 }
 
-void OpenDataServer::setSymbolTable(SymbolTable * st) {
-    this->symbolTable = st;
+void OpenDataServer::dataServerUpdate(int i, SimulatorObject * ob) {
+    this->serverValuesMap->insert(i,ob);
 }
 
-int openServer(int port, SymbolTable* symbolTable) {
+
+int openServer(int port, ServerValuesMap* valuesMap) {
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -64,8 +64,7 @@ int openServer(int port, SymbolTable* symbolTable) {
 
 
 
-    vector<string> names = symbolTable->getItemsNames();
-    vector<string>::iterator namesIter = names.begin();
+
     SimulatorObject * tempObj;
 
 
@@ -79,16 +78,16 @@ int openServer(int port, SymbolTable* symbolTable) {
         int valread = read(client_socket, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
+
         int i = 0;
         for (i = 0; i < 24; i++) {
-            tempObj = symbolTable->getSimObj(*namesIter);
-            tempObj->setValue(*valuesIter);
-
+            try {
+                tempObj = valuesMap->getSimObj(i);
+            } catch (exception e) {
+            }
             valuesIter++;
-            namesIter++;
+
         }
-        namesIter = names.begin();
-        k++;
 
     }
 
@@ -98,18 +97,19 @@ int openServer(int port, SymbolTable* symbolTable) {
 
 
 
+
+
+
 void OpenDataServer::execute(vector<string>::iterator &it) {
 
 
-    thread thread1(openServer,port, symbolTable);
-
+    openServer(this->port, this->serverValuesMap);
 
     cout<<"Another logic"<<endl;
 
 
 
 
-    thread1.join();
     return;
 }
 

@@ -15,8 +15,12 @@ Parser::Parser(vector<string> vectorOfStrings1) {
 
 //iterate over vector of strings, make map1
 unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
+    SymbolTable * simTable = new SymbolTable();
 
-  //iterate over all vector of strings
+    //map of the server to know which values that we get from the text file to update
+    ServerValuesMap * valuesMap = new ServerValuesMap;
+
+    //iterate over all vector of strings
   for (auto it = vectorOfStrings.begin(); it < vectorOfStrings.end(); ++it) {
 
 
@@ -24,7 +28,7 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     if (*it == "openDataServer") {
       ++it;
       double digit = stod(*it);
-      OpenDataServer open_data_server(digit);
+      OpenDataServer open_data_server(digit, valuesMap);
       mapOfCommands["OpenDataServer"] = (&open_data_server);
       continue;
     }
@@ -60,6 +64,18 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
       if (*it == "sim") {
         ++it;
          sim_ = *it;
+      }
+        SimulatorObject * simObj = new SimulatorObject(varName_, sim_);
+
+        //in this if statement we check the index of the path in the XML file in order to call the dataServer to update values in the symbol table in those indexes.
+      if (!arrowFlagRight_) {
+          int index = simTable->isPathExist(sim_);
+          if (index == -1) {
+              cout << "the sim path is not in the XML file" << endl;
+          } else {
+              cout<< "the index of the var in the XML is " << index<< endl;
+              valuesMap->insert(index, simObj);
+          }
       }
 
       DefineVarCommand define_var_command(varName_, arrowFlagRight_, sim_, 0);

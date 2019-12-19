@@ -25,28 +25,24 @@ int main() {
 
 
 
-    SymbolTable * st = createSymbolTable();
 
-    OpenDataServer ods(5400);
-    ods.setSymbolTable(st);
 
-    //temo vector and iter just to run the functions execute
+    //temp vector and iter just to run the functions execute
     vector<string> vec;
     vec.push_back("test");
     vector<string>::iterator it = vec.begin();
-
+/*
     thread t1([&]() {
         return ods.execute(it);});
+*/
 
-
-    string s = "127.0.0.1";
+    string s = "10.0.2.2";
 
     ConnectCommand cc(s, 5402);
-    cc.setSymbolTable(st);
     cc.execute(it);
 
 
-    t1.join();
+ //   t1.join();
 
 
 
