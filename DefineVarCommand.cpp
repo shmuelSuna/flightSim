@@ -7,10 +7,10 @@
 //Defualt Constructer
 DefineVarCommand::DefineVarCommand(){}
 
-DefineVarCommand::DefineVarCommand(const string &var_name, bool arrow_flag_right, const string &sim, double var_value)
-    : varName(var_name), arrowFlagRight(arrow_flag_right), sim(sim), VarValue(var_value) {}
+DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value)
+    : varName(var_name), arrow(arrow), sim(sim), VarValue(var_value) {}
 
-void DefineVarCommand::execute(vector<string>::iterator &it) {
+void DefineVarCommand:: DefineVarCommand::execute(vector<string>::iterator &it) {
 
 }
 const string &DefineVarCommand::GetVarName() const {
@@ -19,11 +19,11 @@ const string &DefineVarCommand::GetVarName() const {
 void DefineVarCommand::SetVarName(const string &var_name) {
   varName = var_name;
 }
-bool DefineVarCommand::IsArrowFlagRight() const {
-  return arrowFlagRight;
+string DefineVarCommand::GetArrow() const {
+  return arrow;
 }
-void DefineVarCommand::SetArrowFlagRight(bool arrow_flag_right) {
-  arrowFlagRight = arrow_flag_right;
+void DefineVarCommand::SetArrowFlagRight(string arrow_) {
+  arrow = arrow_;
 }
  string DefineVarCommand::GetSim() {
   return sim;

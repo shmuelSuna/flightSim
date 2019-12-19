@@ -12,7 +12,7 @@ class DefineVarCommand : public Command{
  private:
 
   string varName;
-  bool arrowFlagRight;
+  string arrow;
   string sim;
   double VarValue;
  public:
@@ -23,10 +23,10 @@ class DefineVarCommand : public Command{
   DefineVarCommand();
 
   // Constructer with parameters
-  DefineVarCommand(const string &var_name, bool arrow_flag_right, const string &sim, double var_value);
+  DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value);
 
-  bool IsArrowFlagRight() const;
-  void SetArrowFlagRight(bool arrow_flag_right);
+  string GetArrow() const;
+  void SetArrowFlagRight(string arrow);
   string GetSim();
   void SetSim( string sim);
   double GetVarValue();
