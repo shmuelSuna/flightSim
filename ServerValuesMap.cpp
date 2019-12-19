@@ -9,7 +9,7 @@ void ServerValuesMap::insert(int i, SimulatorObject * obj) {
 }
 SimulatorObject* ServerValuesMap::getSimObj(int i) {
     unordered_map<int,SimulatorObject*>::iterator it = this->map.find(i);
-    if (it != this->map.end()) {
+    if (it == this->map.end()) {
         throw ("no match");
     }
     return it->second;

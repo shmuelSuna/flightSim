@@ -4,7 +4,6 @@
 
 #include "Parser.h"
 
-
 // Defualt Constructer
 Parser::Parser() {}
 
@@ -18,7 +17,12 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     SymbolTable * simTable = new SymbolTable();
 
     //map of the server to know which values that we get from the text file to update
-    ServerValuesMap * valuesMap = new ServerValuesMap;
+    ServerValuesMap * serverValuesMap = new ServerValuesMap;
+
+
+    OpenDataServer open_data_server(serverValuesMap);
+    isServerOn = false;
+
 
     //iterate over all vector of strings
   for (auto it = vectorOfStrings.begin(); it < vectorOfStrings.end(); ++it) {
@@ -28,11 +32,27 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     if (*it == "openDataServer") {
       ++it;
       double digit = stod(*it);
-      OpenDataServer open_data_server(digit, valuesMap);
-      mapOfCommands["OpenDataServer"] = (&open_data_server);
+      open_data_server.setPort(digit);
+      // mapOfCommands["OpenDataServer"] = (&open_data_server);
+
       continue;
+
     }
 
+      thread t1([&]() {
+          return open_data_server.execute(it);});
+    int i = 0;
+    while (!isServerOn) {
+        cout<<i<<endl;
+        cout<<"isServerOn is::"<<isServerOn<<endl;
+        this_thread::sleep_for(10s);
+        if (i == 2) {
+            isServerOn = true;
+        }
+        i++;
+    }
+    cout<<"xxxxxxxxxxxxx"<<endl;
+    t1.join();
 
     //Connenct control client command
     if (*it == "connectControlClient") {
@@ -74,7 +94,7 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
               cout << "the sim path is not in the XML file" << endl;
           } else {
               cout<< "the index of the var in the XML is " << index<< endl;
-              valuesMap->insert(index, simObj);
+              serverValuesMap->insert(index, simObj);
           }
       }
 
@@ -98,8 +118,9 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     }
 
 
-
   }
+
+
   return this->GetMapOfCommands();
 }
 

@@ -6,17 +6,19 @@
 
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x, ServerValuesMap* valuesMap) {
-    this->port = x;
+OpenDataServer::OpenDataServer(ServerValuesMap* valuesMap) {
     this->serverValuesMap = valuesMap;
 }
 
 void OpenDataServer::dataServerUpdate(int i, SimulatorObject * ob) {
     this->serverValuesMap->insert(i,ob);
 }
+void OpenDataServer::setPort(int i) {
+    this->port = i;
+}
 
-
-int openServer(int port, ServerValuesMap* valuesMap) {
+int OpenDataServer::openServer() {
+    int port = this->port;
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -61,40 +63,41 @@ int openServer(int port, ServerValuesMap* valuesMap) {
     close(socketfd); //closing the listening socket
     std::cout << "wating for a messegae" << std::endl;
 
-
-
-
+    isServerOn = true;
 
     SimulatorObject * tempObj;
 
-
-
-    int k = 0;
+    setClientSocket(client_socket);
+    int cs = this->clientSocket;
     //reading from client
     char buffer[1024] = {0};
 
     //server is always on
     while (true) {
-        int valread = read(client_socket, buffer, 1024);
+        int valread = read(cs, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
 
         int i = 0;
         for (i = 0; i < 24; i++) {
             try {
-                tempObj = valuesMap->getSimObj(i);
-            } catch (exception e) {
+                tempObj = this->serverValuesMap->getSimObj(i);
+                tempObj->setValue(*valuesIter);
+            } catch (const char * e) {
+                if (i == 0) {cout<<"from OpenData Server: "<<e<<" "<<i<<endl;}
             }
             valuesIter++;
 
         }
 
     }
-
-    return 0;
+    return 1;
 }
 
 
+void OpenDataServer::setClientSocket(int i) {
+    this->clientSocket = i;
+}
 
 
 
@@ -103,7 +106,7 @@ int openServer(int port, ServerValuesMap* valuesMap) {
 void OpenDataServer::execute(vector<string>::iterator &it) {
 
 
-    openServer(this->port, this->serverValuesMap);
+    openServer();
 
     cout<<"Another logic"<<endl;
 
