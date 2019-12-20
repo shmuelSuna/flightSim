@@ -18,10 +18,16 @@
 #include "SymbolTable.h"
 #include "ServerValuesMap.h"
 #include <vector>
+#include "Parser.h"
 
 using namespace std;
 
-static bool isServerOn;
+
+
+
+
+static bool isServerOn = false;
+static bool isPortSet = false;
 
 class OpenDataServer : public Command {
 

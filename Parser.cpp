@@ -4,6 +4,8 @@
 
 #include "Parser.h"
 
+
+
 // Defualt Constructer
 Parser::Parser() {}
 
@@ -21,7 +23,16 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
 
 
     OpenDataServer open_data_server(serverValuesMap);
-    isServerOn = false;
+
+
+    vector<string> vecDemo;
+    vecDemo.push_back("demo");
+    vector<string>::iterator it3 = vecDemo.begin();
+    thread t1([&] {
+        return open_data_server.execute(it3);});
+    cout<<"in Parser after server is on"<<endl;
+
+
 
 
     //iterate over all vector of strings
@@ -35,27 +46,20 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
       open_data_server.setPort(digit);
       // mapOfCommands["OpenDataServer"] = (&open_data_server);
 
+
+
+
       continue;
 
     }
 
-      thread t1([&]() {
-          return open_data_server.execute(it);});
-    int i = 0;
-    while (!isServerOn) {
-        cout<<i<<endl;
-        cout<<"isServerOn is::"<<isServerOn<<endl;
-        this_thread::sleep_for(10s);
-        if (i == 2) {
-            isServerOn = true;
-        }
-        i++;
-    }
-    cout<<"xxxxxxxxxxxxx"<<endl;
-    t1.join();
+
+
+
 
     //Connenct control client command
     if (*it == "connectControlClient") {
+        cout<<isPortSet<<endl;
       ++it;
       string ip3 = *it;
       ++it;
@@ -119,8 +123,9 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
 
 
   }
+  this_thread::sleep_for(60s);
 
-
+    t1.join();
   return this->GetMapOfCommands();
 }
 

@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
-#include <thread>
 
 using namespace std;
 
