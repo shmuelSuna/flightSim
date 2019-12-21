@@ -26,22 +26,26 @@ using namespace std;
 
 
 
-static bool isServerOn = false;
-static bool isPortSet = false;
-
 class OpenDataServer : public Command {
 
 private:
+
     int port;
-    int clientSocket;
     ServerValuesMap* serverValuesMap;
+
+
+
+
+
 public:
 
 
     //constructer by parameters
-    OpenDataServer(ServerValuesMap*);
+    OpenDataServer(ServerValuesMap*, int);
 
     void setPort(int);
+
+
 
     void execute(vector<string>::iterator &it);
 
@@ -49,7 +53,6 @@ public:
     void dataServerUpdate(int, SimulatorObject*);
 
 
-    void setClientSocket(int i);
 
     void printHello() {
         cout<<"hello"<<endl;

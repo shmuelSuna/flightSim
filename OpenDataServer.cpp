@@ -3,26 +3,27 @@
 //
 #include "OpenDataServer.h"
 
-condition_variable cv;
-mutex m;
+
+
+
 
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(ServerValuesMap* valuesMap) {
+OpenDataServer::OpenDataServer(ServerValuesMap* valuesMap, int i) {
     this->serverValuesMap = valuesMap;
+    this->port = i;
 }
+
+
+
 
 void OpenDataServer::dataServerUpdate(int i, SimulatorObject * ob) {
     this->serverValuesMap->insert(i,ob);
 }
-void OpenDataServer::setPort(int i) {
-    isPortSet = true;
-    this->port = i;
-}
+
 
 int OpenDataServer::openServer() {
-    unique_lock <mutex> ul(m);
-    cv.wait(ul, []{ return isPortSet; });
+
 
     int port = this->port;
     //create socket
@@ -69,18 +70,16 @@ int OpenDataServer::openServer() {
     close(socketfd); //closing the listening socket
     std::cout << "wating for a messegae" << std::endl;
 
-    isServerOn = true;
+
 
     SimulatorObject * tempObj;
 
-    setClientSocket(client_socket);
-    int cs = this->clientSocket;
     //reading from client
     char buffer[1024] = {0};
 
     //server is always on
     while (true) {
-        int valread = read(cs, buffer, 1024);
+        int valread = read(client_socket, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
 
@@ -102,9 +101,7 @@ int OpenDataServer::openServer() {
 }
 
 
-void OpenDataServer::setClientSocket(int i) {
-    this->clientSocket = i;
-}
+
 
 
 

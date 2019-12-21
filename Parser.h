@@ -20,8 +20,10 @@
 #include "SleepCommand.h"
 #include "SymbolTable.h"
 #include <mutex>
-#include <condition_variable>"
+#include <condition_variable>
+#include "ClientValuesMap.h"
 using namespace std;
+
 
 
 
@@ -32,7 +34,8 @@ class Parser {
   vector<string> vectorOfStrings;
   unordered_map<string, Command*> mapOfCommands;
 
- public:
+
+public:
   // Defualt Constructer
   Parser();
 
@@ -43,6 +46,8 @@ class Parser {
   unordered_map<string, Command*> action(vector<string> vectorOfStrings);
 
   unordered_map<string,  Command*> GetMapOfCommands();
+
+
 };
 
 #endif //FLIGHTSIM_PARSER_H

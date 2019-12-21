@@ -3,9 +3,8 @@
 //
 
 #include "Parser.h"
-
-
-
+mutex m;
+condition_variable cv;
 // Defualt Constructer
 Parser::Parser() {}
 
@@ -21,16 +20,16 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     //map of the server to know which values that we get from the text file to update
     ServerValuesMap * serverValuesMap = new ServerValuesMap;
 
+    ClientValuesMap * cvm = new ClientValuesMap();
 
-    OpenDataServer open_data_server(serverValuesMap);
 
 
-    vector<string> vecDemo;
-    vecDemo.push_back("demo");
-    vector<string>::iterator it3 = vecDemo.begin();
-    thread t1([&] {
-        return open_data_server.execute(it3);});
-    cout<<"in Parser after server is on"<<endl;
+
+
+
+
+
+
 
 
 
@@ -43,13 +42,15 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
     if (*it == "openDataServer") {
       ++it;
       double digit = stod(*it);
-      open_data_server.setPort(digit);
-      // mapOfCommands["OpenDataServer"] = (&open_data_server);
+        OpenDataServer open_data_server(serverValuesMap, digit);
+       mapOfCommands["OpenDataServer"] = (&open_data_server);
 
 
 
 
-      continue;
+
+
+        continue;
 
     }
 
@@ -59,12 +60,13 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
 
     //Connenct control client command
     if (*it == "connectControlClient") {
-        cout<<isPortSet<<endl;
+
       ++it;
       string ip3 = *it;
       ++it;
       double digit = stod(*it);
       ConnectCommand connect_command(ip3, digit);
+      cvm->setConnentor(&connect_command);
       mapOfCommands["ConnectCommand"] = (&connect_command);
       continue;
     }
@@ -100,6 +102,9 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
               cout<< "the index of the var in the XML is " << index<< endl;
               serverValuesMap->insert(index, simObj);
           }
+      } else if (arrowFlagRight_) {
+          cvm->addValue(varName_, simObj);
+
       }
 
       DefineVarCommand define_var_command(varName_, arrowFlagRight_, sim_, 0);
@@ -123,9 +128,7 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
 
 
   }
-  this_thread::sleep_for(60s);
 
-    t1.join();
   return this->GetMapOfCommands();
 }
 

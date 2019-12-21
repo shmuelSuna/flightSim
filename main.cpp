@@ -9,18 +9,24 @@
 
 using namespace std;
 
+
+
 vector<string> static lexer(const string&);
 
 
 int main() {
 
+
     unordered_map<string, Command *> mapOfCommands;
 
     vector<string>vectorOfStrings12;
     vectorOfStrings12 = lexer("fly.txt");
+    vector<string>::iterator it = vectorOfStrings12.begin();
 
     Parser parser(vectorOfStrings12);
     mapOfCommands = parser.action(vectorOfStrings12);
+
+
 
 
 

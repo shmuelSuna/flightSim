@@ -21,6 +21,7 @@ using namespace std;
 class ConnectCommand : public Command {
   string ip;
   int port;
+  int client_socket;
   SymbolTable* symbolTable;
   vector<string> variableName;
 
@@ -39,12 +40,14 @@ class ConnectCommand : public Command {
 
   void execute(vector<string>::iterator &it) override;
 
+  void setNewValSim(float,string);
+
   // void execute()override ;
 
 
 
 };
-int connectControlClient(int, const char*, SymbolTable*, vector<string>);
+int connectControlClient(int, const char*);
 
 
 #endif //FLIGHTSIM_CONNECTCOMMAND_H

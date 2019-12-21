@@ -28,7 +28,32 @@ void ConnectCommand::execute(vector<string>::iterator &it) {
     const char* ip2 = this->ip.c_str();
     vector<string> vec;
     vec.push_back("hello test");
-    connectControlClient(this->port, ip2, this->symbolTable, vec);
+    this->client_socket = connectControlClient(this->port, ip2);
+
+}
+
+
+
+
+void ConnectCommand::setNewValSim(float v, string path) {
+    //if here we made a connection
+    string c = "set " + path + to_string(v) +  "\r\n";
+    int n = c.size();
+    char hello2[n+1];
+    strcpy(hello2, c.c_str());
+
+    int is_sent2 = send(client_socket , hello2 , strlen(hello2) , 0 );
+    if (is_sent2 == -1) {
+        std::cout<<"Error sending message"<<std::endl;
+    } else {
+        std::cout<<hello2<<" message sent to server" <<std::endl;
+    }
+
+    char buffer[1024] = {0};
+    int valread = read( client_socket , buffer, 1024);
+    cout<<valread<<endl;
+    std::cout<<buffer<<std::endl;
+
 
 }
 
@@ -37,7 +62,7 @@ void ConnectCommand::execute(vector<string>::iterator &it) {
  * connectControlClient function to create the connection between our commands to get to the simulator
  * vector of strings is the name of the variables that we will want to update
  */
-int connectControlClient(int port, const char* ip, SymbolTable* symbolTable, vector<string> variableNames) {
+int connectControlClient(int port, const char* ip) {
     //create socket
     int client_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (client_socket == -1) {
@@ -62,7 +87,9 @@ int connectControlClient(int port, const char* ip, SymbolTable* symbolTable, vec
     } else {
         std::cout<<"Client is now connected to server" <<std::endl;
     }
+    return client_socket;
 
+    /*
     //if here we made a connection
     char hello2[] = "set /controls/engines/current-engine/mixture 0.2\r\n";
 
@@ -82,7 +109,7 @@ int connectControlClient(int port, const char* ip, SymbolTable* symbolTable, vec
 
     return 0;
 
-
+*/
 
 
 
