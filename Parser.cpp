@@ -17,7 +17,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
   //for iteraterating over commands in the right order, so we can iterate over them for execution
   vector<Command *> vectorOfCommands;
   string arrow_;
-  map<string, double> mapForInterpeter;
+
   string sim_;
 
 
@@ -67,18 +67,26 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         if (*it == "sim") {
           ++it;
           sim_ = *it;
+
+          DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
+          mapOfCommands[varName_] = (&define_var_command);
+          mapOfDefineVarCommands[varName_] = (&define_var_command);
+          vectorOfCommands.push_back(&define_var_command);
+          continue;
+
         }
 
       } else { // it== '='
-      //  arrowFlagRight_ = nullptr;
-      //  sim_ = nullptr;
+
+        //  arrowFlagRight_ = nullptr;
+        //  sim_ = nullptr;
 
 
 
         DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
         mapOfCommands[varName_] = (&define_var_command);
         mapOfDefineVarCommands[varName_] = (&define_var_command);
-       // vectorOfCommands.push_back(&define_var_command);
+        // vectorOfCommands.push_back(&define_var_command);
 
         //set var command
 
@@ -90,11 +98,11 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
             //   DefineVarCommand* define_var_command_ptr = itOverMap->second;
             string nameOfSetVarCommand = *it;
             it += 2;
-            //double digit = stod(*it);
+            map<string, double> mapForInterpeter2;
 
-            SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
+            SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
             Interpreter *i2 = new Interpreter();
-            i2->setVariables(mapForInterpeter);
+            i2->setVariables(mapForInterpeter2);
             Expression *e1 = i2->interpret(*it);
 
             set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
@@ -110,12 +118,9 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         continue;
       }
 
-      DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
-      mapOfCommands[varName_] = (&define_var_command);
-      mapOfDefineVarCommands[varName_] = (&define_var_command);
-      vectorOfCommands.push_back(&define_var_command);
-      continue;
     }
+
+
     // Print command
     if (*it == "Print") {
       ++it;
@@ -146,7 +151,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         string nameOfSetVarCommand = *it;
         it += 2;
         //double digit = stod(*it);
-
+        map<string, double> mapForInterpeter;
         SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
         Interpreter *i2 = new Interpreter();
         i2->setVariables(mapForInterpeter);
@@ -158,21 +163,198 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
         mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
         vectorOfCommands.push_back(&set_var_command);
-        break;
+        //break;
       }
       break;
     }
 
-//set var command
+
+    //While command
+    if (*it == "while") {
+      string leftStringToMakeIntoExpression;
+      string rightStringToMakeIntoExpression;
+      string operator_;
+      vector<Command *> vectorOfCommandsForWhileLoop;
+      unordered_map<string, DefineVarCommand *> mapOfDefineVarCommandsForWhileLoop;
 
 
-/*
-    unordered_map<string, Command *>::iterator itOverMap =  mapOfCommands.find(*it);
-    itOverMap->second->execute();
-*/
+
+      ++it;
+      while ((*it != "<") && (*it != "<=") && (*it != ">") && (*it != ">=") && (*it != "!=") && (*it != "==")) {
+        leftStringToMakeIntoExpression += (*it);
+        it++;
+      }
+      operator_ = *it;
+      ++it;
+      while (*it != "{") {
+        rightStringToMakeIntoExpression += (*it);
+        it++;
+      }
+      it++;
+
+      while (*it != "}") {
+        //vector<string> vectorOfStringsForWhileLoop;
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+        //DefineVarCommand for whileCommand
+        if (*it == "var") {
+          ++it;
+          string varName_ = *it;
+          ++it;
+
+          if (*it == "->" || (*it == "<-")) {
+
+            if (*it == "->") {
+              arrow_ = "->";
+            } else {
+              arrow_ = "<-";
+            }
+            ++it;
+
+            if (*it == "sim") {
+              ++it;
+              sim_ = *it;
+
+              DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
+              // mapOfCommands[varName_] = (&define_var_command);
+              mapOfDefineVarCommandsForWhileLoop[varName_] = (&define_var_command);
+              // vectorOfCommands.push_back(&define_var_command);
+
+
+              vectorOfCommandsForWhileLoop.push_back(&define_var_command);
+
+              continue;
+
+            }
+
+          } else { // it== '='
+
+
+
+            DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
+            //  mapOfCommands[varName_] = (&define_var_command);
+            mapOfDefineVarCommandsForWhileLoop[varName_] = (&define_var_command);
+
+            vectorOfCommandsForWhileLoop.push_back(&define_var_command);
+
+
+
+
+            // vectorOfCommands.push_back(&define_var_command);
+
+            //set var command for whileCommand
+
+            while (true) {
+              unordered_map<string, DefineVarCommand *>::iterator itOverMap =
+                  mapOfDefineVarCommandsForWhileLoop.find(*it);
+              //
+              if (itOverMap != mapOfDefineVarCommandsForWhileLoop.end()) {//found a var that needs to be set
+                //temporary untill we do expressions
+                //   DefineVarCommand* define_var_command_ptr = itOverMap->second;
+                string nameOfSetVarCommand = *it;
+                it += 2;
+                map<string, double> mapForInterpeter2;
+
+                SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
+                Interpreter *i2 = new Interpreter();
+                i2->setVariables(mapForInterpeter2);
+                Expression *e1 = i2->interpret(*it);
+
+                set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
+                double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
+                double test2 = itOverMap->second->GetVarValue();  //testtttt2
+
+                vectorOfCommandsForWhileLoop.push_back(&set_var_command);
+                break;
+              }
+              break;
+            }
+            continue;
+          }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Print command
+        if (*it == "Print") {
+          ++it;
+          string message_ = *it;
+          PrintCommand print_command(message_);
+
+          vectorOfCommandsForWhileLoop.push_back(&print_command);
+          ++it;
+          continue;
+        }
+        //Sleep command
+        if (*it == "Sleep") {
+          ++it;
+
+          int timeToSleep_ = stod(*it);
+          SleepCommand sleep_command(timeToSleep_);
+          vectorOfCommandsForWhileLoop.push_back(&sleep_command);
+          ++it;//
+          continue;
+        }
+        //set var command for while loop
+
+        while (true) {
+          unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+          //
+          if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
+
+            string nameOfSetVarCommand = *it;
+            it += 2;
+
+            map<string, double> mapForInterpeter;
+            SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
+            Interpreter *i2 = new Interpreter();
+            i2->setVariables(mapForInterpeter);
+            //  Expression *e1 = i2->interpret(*it); // rpm needs to get value from sim
+
+            //    set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());//  rpm needs to get value from sim
+
+            vectorOfCommandsForWhileLoop.push_back(&set_var_command);
+            //break;
+          }
+          break;
+        }
+
+      }
+      WhileCommand while_command( vectorOfCommandsForWhileLoop, leftStringToMakeIntoExpression,
+          operator_,rightStringToMakeIntoExpression, mapOfDefineVarCommandsForWhileLoop);
+
+      mapOfCommands["While"+while_command.GetLeftStringToMakeIntoExpression()
+      +while_command.GetAnOperator()+while_command.GetRightStringToMakeIntoExpression()] = (&while_command);
+      vectorOfCommands.push_back(&while_command);
+      continue;
+
+    }//end of whilecommand
 
 
 
@@ -189,6 +371,8 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
 
 
+
+
   }
   return this->GetMapOfCommands();
 }
@@ -196,3 +380,52 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 unordered_map<string, Command *> Parser::GetMapOfCommands() {
   return mapOfCommands;
 }
+
+bool Parser::checkIfNameOfADefineVarIsInString(string str) {
+
+  //check in map of defineVarcommands if there is a substring in the string to equals
+  for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
+       ++itOverMap) {
+    if (str.find(itOverMap->first) != string::npos) {
+      return true;
+    }
+  }
+  return false;
+}
+
+map<string, double> Parser::SetMapUpForInterpeter(string str) {
+  map<string, double> mapForInterpeter;
+
+  if (this->checkIfNameOfADefineVarIsInString(str)) {//there is a define var in the string
+    for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
+         ++itOverMap) {
+      if (str.find(itOverMap->first) != string::npos) {
+        mapForInterpeter[itOverMap->first] = itOverMap->second->GetVarValue();
+      }
+    }
+  }
+  return mapForInterpeter;
+
+}
+
+Expression *Parser::createExpression(map<string, double> MapForInterpeter, string str) {
+  Interpreter *i3 = new Interpreter();
+  i3->setVariables(MapForInterpeter);
+  Expression *e2 = i3->interpret(str);
+
+}
+
+unordered_map<string, DefineVarCommand *> Parser::GetMapOfDefineVarCommands() {
+  return this->mapOfDefineVarCommands;
+}
+
+Expression *Parser::GetExpressionFromString(string str) {
+  map<string, double> mapForInterpeter;
+
+  mapForInterpeter = this->SetMapUpForInterpeter(str);
+  Expression *expression_ = this->createExpression(mapForInterpeter, str);
+
+}
+
+
+

@@ -77,6 +77,30 @@ class Plus: public  BinaryOperator{
 
 };
 
+
+/*
+
+
+class Boolean: public  BinaryOperator{
+ public:
+  //constructer
+  Boolean(Expression *left,Expression *right);
+  double calculate() override ;
+  //destructer
+
+};
+
+
+
+*/
+
+
+
+
+
+
+
+
 class Minus: public  BinaryOperator{
  public:
   //constructer

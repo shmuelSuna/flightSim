@@ -19,6 +19,7 @@
 #include "PrintCommand.h"
 #include "SleepCommand.h"
 #include "SetVarCommand.h"
+#include "WhileCommand.h"
 using namespace std;
 
 class Parser {
@@ -37,6 +38,26 @@ class Parser {
   unordered_map<string, Command*> action(vector<string> vectorOfStrings);
 
   unordered_map<string,  Command*> GetMapOfCommands();
+
+
+
+
+
+
+
+
+  bool checkIfNameOfADefineVarIsInString(string);
+
+  map<string, double> SetMapUpForInterpeter(string );
+
+  unordered_map<string, DefineVarCommand *> GetMapOfDefineVarCommands();
+
+
+  Expression* createExpression( map<string, double>,string);
+
+  void SetUpExpression();
+
+  Expression* GetExpressionFromString(string);
 };
 
 #endif //FLIGHTSIM_PARSER_H

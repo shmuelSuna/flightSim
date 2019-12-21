@@ -5,8 +5,13 @@
 #ifndef FLIGHTSIM__CONDTIONPARSERCOMMAND_H_
 #define FLIGHTSIM__CONDTIONPARSERCOMMAND_H_
 
+#include <list>
 #include "Command.h"
 class CondtionParserCommand : public Command {
+ private:
+
+ protected:
+  list<Command> listOfCommands;
 
 };
 

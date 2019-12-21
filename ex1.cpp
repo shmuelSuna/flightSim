@@ -100,6 +100,24 @@ double Plus::calculate() {
 
 //////////
 
+/*
+Boolean::Boolean(Expression *left1, Expression *right1) {
+  this->left = left1;
+  this->right = right1;
+}
+double Boolean::calculate() {
+  return this->left->calculate() + this->right->calculate();
+}
+
+
+*/
+
+
+
+
+
+
+
 //constructer
 Minus::Minus(Expression *left1, Expression *right1) {
   this->left = left1;
