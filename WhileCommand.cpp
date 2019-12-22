@@ -25,9 +25,68 @@ void WhileCommand::execute(vector<string>::iterator &it){
 this->SetUpExpressions();
   if(operator_ == "<") {
     while (this->GetLeftExpression() < this->GetRightExpression()) {
+      this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
        Command * command = *it3;
        command->execute(it);
+      }
+    }
+  }
+
+
+  if(operator_ == "<=") {
+    while (this->GetLeftExpression() <= this->GetRightExpression()) {
+      this->SetUpExpressions();
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        Command * command = *it3;
+        command->execute(it);
+      }
+    }
+  }
+
+
+  if(operator_ == ">") {
+    while (this->GetLeftExpression() > this->GetRightExpression()) {
+      this->SetUpExpressions();
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        Command * command = *it3;
+        command->execute(it);
+      }
+    }
+  }
+
+
+
+  if(operator_ == ">=") {
+    while (this->GetLeftExpression() >= this->GetRightExpression()) {
+      this->SetUpExpressions();
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        Command * command = *it3;
+        command->execute(it);
+      }
+    }
+  }
+
+
+
+  if(operator_ == "!=") {
+    while (this->GetLeftExpression() != this->GetRightExpression()) {
+      this->SetUpExpressions();
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        Command * command = *it3;
+        command->execute(it);
+      }
+    }
+  }
+
+
+
+  if(operator_ == "==") {
+    while (this->GetLeftExpression() == this->GetRightExpression()) {
+      this->SetUpExpressions();
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        Command * command = *it3;
+        command->execute(it);
       }
     }
   }
@@ -100,7 +159,7 @@ void WhileCommand::SetUpExpressions(){
   Expression* expression_left = this->createLeftExpression(mapForInterpeter_LeftString);
 
   mapForInterpeter_RightString = this->SetMapUpForInterpeter(this->rightStringToMakeIntoExpression);
-  Expression* expression_right = this->createLeftExpression(mapForInterpeter_RightString);
+  Expression* expression_right = this->createRightExpression(mapForInterpeter_RightString);
 
   this->SetLeftExpression(expression_left);
   this->SetRightExpression(expression_right);
