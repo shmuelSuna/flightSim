@@ -17,13 +17,11 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
   //for iteraterating over commands in the right order, so we can iterate over them for execution
   vector<Command *> vectorOfCommands;
   string arrow_;
-
   string sim_;
 
 
   //iterate over all vector of strings
   for (auto it = vectorOfStrings.begin(); it < vectorOfStrings.end(); ++it) {
-
 
     //OpenDataServer command
     if (*it == "openDataServer") {
@@ -34,8 +32,6 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       vectorOfCommands.push_back(&open_data_server);
       continue;
     }
-
-
     //Connenct control client command
     if (*it == "connectControlClient") {
       ++it;
@@ -47,38 +43,28 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       vectorOfCommands.push_back(&connect_command);
       continue;
     }
-
-
     //DefineVarCommand
     if (*it == "var") {
       ++it;
       string varName_ = *it;
       ++it;
-
       if (*it == "->" || (*it == "<-")) {
-
         if (*it == "->") {
           arrow_ = "->";
         } else {
           arrow_ = "<-";
         }
         ++it;
-
         if (*it == "sim") {
           ++it;
           sim_ = *it;
-
           DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
           mapOfCommands[varName_] = (&define_var_command);
           mapOfDefineVarCommands[varName_] = (&define_var_command);
           vectorOfCommands.push_back(&define_var_command);
           continue;
-
         }
-
       } else { // it== '='
-
-
         DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
         mapOfCommands[varName_] = (&define_var_command);
         mapOfDefineVarCommands[varName_] = (&define_var_command);
@@ -86,24 +72,20 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         // vectorOfCommands.push_back(&define_var_command);
 
         //set var command
-
         while (true) {
+          //get iterator over map of defineVarcommands and look for define var that needs to be set
           unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
           //
           if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-
+            map<string, double> mapForInterpeter2;//for expressions
             string nameOfSetVarCommand = varName_;
             it += 2;
-            map<string, double> mapForInterpeter2;
-
             SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
             Interpreter *i2 = new Interpreter();
             i2->setVariables(mapForInterpeter2);
-           // Expression *e1 = i2->interpret(*it); //need to get from simulator value
-
-          //  set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
-
-          mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
+            Expression *e1 = i2->interpret(*it); //need to get from simulator value
+            set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
+            mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
             vectorOfCommands.push_back(&set_var_command);
             break;
           }
@@ -111,26 +93,22 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         }
         continue;
       }
-
     }
-
-
     // Print command
     if (*it == "Print") {
       ++it;
       string message_ = *it;
-
+     //check if print message is a defineVarVarible for example: Print(rpm)
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
-      //
-      if (itOverMap != mapOfDefineVarCommands.end()) {
+
+      if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
         string s = to_string(itOverMap->second->GetVarValue());
         PrintCommand print_command(s);
         mapOfCommands["Print" + *it] = (&print_command);
         vectorOfCommands.push_back(&print_command);
         continue;
       }
-
-
+      //did not find a deifneVarVariable in print message
       PrintCommand print_command(message_);
       mapOfCommands["Print" + *it] = (&print_command);
       vectorOfCommands.push_back(&print_command);
@@ -139,7 +117,6 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     //Sleep command
     if (*it == "Sleep") {
       ++it;
-
       int timeToSleep_ = stod(*it);
       SleepCommand sleep_command(timeToSleep_);
       mapOfCommands["Sleep" + *it] = (&sleep_command);
@@ -147,16 +124,14 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       continue;
     }
     //set var command
-
     while (true) {
+      //get iterator over map of defineVarcommands and look for define var that needs to be set
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
-      //
       if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
+        map<string, double> mapForInterpeter;
 
         string nameOfSetVarCommand = *it;
         it += 2;
-
-        map<string, double> mapForInterpeter;
         SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
         Interpreter *i2 = new Interpreter();
         i2->setVariables(mapForInterpeter);
@@ -182,8 +157,6 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       vector<Command *> vectorOfCommandsForWhileLoop;
       unordered_map<string, DefineVarCommand *> mapOfDefineVarCommandsForWhileLoop;
 
-
-
       ++it;
       while ((*it != "<") && (*it != "<=") && (*it != ">") && (*it != ">=") && (*it != "!=") && (*it != "==")) {
         leftStringToMakeIntoExpression += (*it);
@@ -198,19 +171,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       it++;
 
       while (*it != "}") {
-        //vector<string> vectorOfStringsForWhileLoop;
-
-
-
-
-
-
-
-
-
-
-
-
+        vector<string> vectorOfStringsForWhileLoop;
 
 
         //DefineVarCommand for whileCommand
@@ -218,26 +179,20 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
           ++it;
           string varName_ = *it;
           ++it;
-
           if (*it == "->" || (*it == "<-")) {
-
             if (*it == "->") {
               arrow_ = "->";
             } else {
               arrow_ = "<-";
             }
             ++it;
-
             if (*it == "sim") {
               ++it;
               sim_ = *it;
-
               DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
               // mapOfCommands[varName_] = (&define_var_command);
               mapOfDefineVarCommandsForWhileLoop[varName_] = (&define_var_command);
               // vectorOfCommands.push_back(&define_var_command);
-
-
               vectorOfCommandsForWhileLoop.push_back(&define_var_command);
 
               continue;
@@ -340,9 +295,9 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
             SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
             Interpreter *i2 = new Interpreter();
             i2->setVariables(mapForInterpeter);
-            //  Expression *e1 = i2->interpret(*it); // rpm needs to get value from sim
+              Expression *e1 = i2->interpret(*it); // rpm needs to get value from sim
 
-            //    set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());//  rpm needs to get value from sim
+               set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());//  rpm needs to get value from sim
 
             vectorOfCommandsForWhileLoop.push_back(&set_var_command);
             it++;
@@ -370,13 +325,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
 
 
-
-
-
     //condition command
-
-
-
 
 
   }

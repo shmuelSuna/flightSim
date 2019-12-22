@@ -44,19 +44,13 @@ class SetVarCommand : public Command {
 
   //void execute();
 
-
-
-
   bool checkIfNameOfADefineVarIsInString(string);
 
 void SetMapUpForInterpeter(string );
 
 DefineVarCommand* GetDefine_var_command_ptr();
 
-
 void SetExpression(Expression*) ;
-
-
 
   unordered_map<string, DefineVarCommand *> GetMapOfDefineVarCommands();
 };
