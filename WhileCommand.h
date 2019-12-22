@@ -11,7 +11,7 @@
 #include "CondtionParserCommand.h"
 #include "ex1.h"
 #include "Parser.h"
-class WhileCommand: Command {
+class WhileCommand: public Command {
   string operator_;
 
   Expression* Right_expression_;

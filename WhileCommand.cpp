@@ -26,7 +26,8 @@ this->SetUpExpressions();
   if(operator_ == "<") {
     while (this->GetLeftExpression() < this->GetRightExpression()) {
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-       it3->execute(it);
+       Command * command = *it3;
+       command->execute(it);
       }
     }
   }

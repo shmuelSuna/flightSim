@@ -86,6 +86,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
         mapOfCommands[varName_] = (&define_var_command);
         mapOfDefineVarCommands[varName_] = (&define_var_command);
+        it--;
         // vectorOfCommands.push_back(&define_var_command);
 
         //set var command
@@ -94,22 +95,19 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
           unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
           //
           if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-            //temporary untill we do expressions
-            //   DefineVarCommand* define_var_command_ptr = itOverMap->second;
-            string nameOfSetVarCommand = *it;
+
+            string nameOfSetVarCommand = varName_;
             it += 2;
             map<string, double> mapForInterpeter2;
 
             SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
             Interpreter *i2 = new Interpreter();
             i2->setVariables(mapForInterpeter2);
-            Expression *e1 = i2->interpret(*it);
+           // Expression *e1 = i2->interpret(*it); //need to get from simulator value
 
-            set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
-            double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
-            double test2 = itOverMap->second->GetVarValue();  //testtttt2
+          //  set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
 
-            mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
+          mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
             vectorOfCommands.push_back(&set_var_command);
             break;
           }
@@ -340,6 +338,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
             //    set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());//  rpm needs to get value from sim
 
             vectorOfCommandsForWhileLoop.push_back(&set_var_command);
+            it++;
             //break;
           }
           break;
