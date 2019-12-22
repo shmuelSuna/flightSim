@@ -24,7 +24,8 @@
 #include "ClientValuesMap.h"
 using namespace std;
 
-
+extern mutex m;
+extern condition_variable cv;
 
 
 

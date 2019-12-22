@@ -10,19 +10,13 @@ ConnectCommand::ConnectCommand() {}
 
 
 //constructer by parameters
-ConnectCommand::ConnectCommand(string ip1, int port1) {
+ConnectCommand::ConnectCommand(string ip1, int port1, MessageSim * m) {
   this->ip = ip1;
   this->port = port1;
-}
-
-void ConnectCommand::setVariableNames(vector<string> vec) {
-    this->variableName = vec;
+  this->message = m;
 }
 
 
-void ConnectCommand::setSymbolTable(SymbolTable * st) {
-    this->symbolTable = st;
-}
 void ConnectCommand::execute(vector<string>::iterator &it) {
 
     const char* ip2 = this->ip.c_str();
@@ -35,25 +29,29 @@ void ConnectCommand::execute(vector<string>::iterator &it) {
 
 
 
-void ConnectCommand::setNewValSim(float v, string path) {
-    //if here we made a connection
-    string c = "set " + path + to_string(v) +  "\r\n";
-    int n = c.size();
-    char hello2[n+1];
-    strcpy(hello2, c.c_str());
+void ConnectCommand::setNewValSim() {
+    while (true) {
+        unique_lock<mutex> ul(m);
+        cv.wait(ul, [] { return newMessage; });
+        //if here we made a connection
+        string c = this->message->getMessage();
+        int n = c.size();
+        char hello2[n + 1];
+        strcpy(hello2, c.c_str());
 
-    int is_sent2 = send(client_socket , hello2 , strlen(hello2) , 0 );
-    if (is_sent2 == -1) {
-        std::cout<<"Error sending message"<<std::endl;
-    } else {
-        std::cout<<hello2<<" message sent to server" <<std::endl;
+        int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
+        if (is_sent2 == -1) {
+            std::cout << "Error sending message" << std::endl;
+        } else {
+            std::cout << hello2 << " message sent to server" << std::endl;
+        }
+
+        char buffer[1024] = {0};
+        int valread = read(client_socket, buffer, 1024);
+        cout << valread << endl;
+        std::cout << buffer << std::endl;
+        newMessage = false;
     }
-
-    char buffer[1024] = {0};
-    int valread = read( client_socket , buffer, 1024);
-    cout<<valread<<endl;
-    std::cout<<buffer<<std::endl;
-
 
 }
 

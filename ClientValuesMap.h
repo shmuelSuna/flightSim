@@ -10,9 +10,7 @@
 class ClientValuesMap {
 private:
     unordered_map<string, SimulatorObject*> map;
-    ConnectCommand * cc;
-public:void setConnentor(ConnectCommand *);
-    void updateValue(string, float);
+public:
     void addValue(string, SimulatorObject*);
 
 };

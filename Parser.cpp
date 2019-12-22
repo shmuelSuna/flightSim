@@ -3,8 +3,7 @@
 //
 
 #include "Parser.h"
-mutex m;
-condition_variable cv;
+
 // Defualt Constructer
 Parser::Parser() {}
 
@@ -65,9 +64,9 @@ unordered_map<string, Command*> Parser::action(vector<string> vectorOfStrings) {
       string ip3 = *it;
       ++it;
       double digit = stod(*it);
-      ConnectCommand connect_command(ip3, digit);
-      cvm->setConnentor(&connect_command);
-      mapOfCommands["ConnectCommand"] = (&connect_command);
+      //ConnectCommand connect_command(ip3, digit);
+      //cvm->setConnentor(&connect_command);
+      //mapOfCommands["ConnectCommand"] = (&connect_command);
       continue;
     }
 
