@@ -78,10 +78,6 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
       } else { // it== '='
 
-        //  arrowFlagRight_ = nullptr;
-        //  sim_ = nullptr;
-
-
 
         DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
         mapOfCommands[varName_] = (&define_var_command);
@@ -123,6 +119,18 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     if (*it == "Print") {
       ++it;
       string message_ = *it;
+
+      unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+      //
+      if (itOverMap != mapOfDefineVarCommands.end()) {
+        string s = to_string(itOverMap->second->GetVarValue());
+        PrintCommand print_command(s);
+        mapOfCommands["Print" + *it] = (&print_command);
+        vectorOfCommands.push_back(&print_command);
+        continue;
+      }
+
+
       PrintCommand print_command(message_);
       mapOfCommands["Print" + *it] = (&print_command);
       vectorOfCommands.push_back(&print_command);
@@ -144,11 +152,10 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
       //
       if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-        //temporary untill we do expressions
-        //   DefineVarCommand* define_var_command_ptr = itOverMap->second;
+
         string nameOfSetVarCommand = *it;
         it += 2;
-        //double digit = stod(*it);
+
         map<string, double> mapForInterpeter;
         SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
         Interpreter *i2 = new Interpreter();
