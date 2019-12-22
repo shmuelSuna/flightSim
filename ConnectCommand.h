@@ -14,15 +14,20 @@
 #include <arpa/inet.h>
 #include "SymbolTable.h"
 #include <string.h>
+#include "MessageSim.h"
+#include <condition_variable>
+#include <mutex>
 
 using namespace std;
-
+extern bool newMessage;
+extern condition_variable cv;
+extern mutex m;
 
 class ConnectCommand : public Command {
   string ip;
   int port;
-  SymbolTable* symbolTable;
-  vector<string> variableName;
+  int client_socket;
+  MessageSim * message;
 
  public:
 
@@ -30,21 +35,20 @@ class ConnectCommand : public Command {
   ConnectCommand();
 
   //constructer by parameters
-  ConnectCommand(string, int);
+  ConnectCommand(string, int, MessageSim*);
 
 
-  void setSymbolTable(SymbolTable*);
-
-  void setVariableNames(vector<string>);
 
   void execute(vector<string>::iterator &it) override;
+
+  void setNewValSim();
 
   // void execute()override ;
 
 
 
 };
-int connectControlClient(int, const char*, SymbolTable*, vector<string>);
+int connectControlClient(int, const char*);
 
 
 #endif //FLIGHTSIM_CONNECTCOMMAND_H

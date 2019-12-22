@@ -3,20 +3,29 @@
 //
 #include "OpenDataServer.h"
 
-// defualt constructer
-OpenDataServer::OpenDataServer(){
-}
+
+
+
+
 
 //constructer by parameters
-OpenDataServer::OpenDataServer(int x) {
-    this->port = x;
+OpenDataServer::OpenDataServer(ServerValuesMap* valuesMap, int i) {
+    this->serverValuesMap = valuesMap;
+    this->port = i;
 }
 
-void OpenDataServer::setSymbolTable(SymbolTable * st) {
-    this->symbolTable = st;
+
+
+
+void OpenDataServer::dataServerUpdate(int i, SimulatorObject * ob) {
+    this->serverValuesMap->insert(i,ob);
 }
 
-int openServer(int port, SymbolTable* symbolTable) {
+
+int OpenDataServer::openServer() {
+
+
+    int port = this->port;
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd == -1) {
@@ -63,14 +72,8 @@ int openServer(int port, SymbolTable* symbolTable) {
 
 
 
-
-    vector<string> names = symbolTable->getItemsNames();
-    vector<string>::iterator namesIter = names.begin();
     SimulatorObject * tempObj;
 
-
-
-    int k = 0;
     //reading from client
     char buffer[1024] = {0};
 
@@ -79,21 +82,27 @@ int openServer(int port, SymbolTable* symbolTable) {
         int valread = read(client_socket, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
-        int i = 0;
-        for (i = 0; i < 24; i++) {
-            tempObj = symbolTable->getSimObj(*namesIter);
-            tempObj->setValue(*valuesIter);
 
+        int i = 0;
+        for (i = 0; i < 36; i++) {
+            try {
+                tempObj = this->serverValuesMap->getSimObj(i);
+                tempObj->setValue(*valuesIter);
+                if (*valuesIter != 0 ){
+                }
+            } catch (const char * e) {
+            }
             valuesIter++;
-            namesIter++;
+
         }
-        namesIter = names.begin();
-        k++;
 
     }
-
-    return 0;
+    return 1;
 }
+
+
+
+
 
 
 
@@ -101,15 +110,13 @@ int openServer(int port, SymbolTable* symbolTable) {
 void OpenDataServer::execute(vector<string>::iterator &it) {
 
 
-    thread thread1(openServer,port, symbolTable);
-
+    openServer();
 
     cout<<"Another logic"<<endl;
 
 
 
 
-    thread1.join();
     return;
 }
 

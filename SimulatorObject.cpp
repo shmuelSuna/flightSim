@@ -3,22 +3,26 @@
 //
 
 #include "SimulatorObject.h"
-SimulatorObject::SimulatorObject(const string str) {
-    this->name = str;
+SimulatorObject::SimulatorObject(string str1, string str2) {
+    this->name = str1;
+    this->simPath = str2;
 }
 SimulatorObject::~SimulatorObject() {
 
 }
 void SimulatorObject::setValue(float f) {
+    if (f != this->value) {
+        cout<<"in Simulator Object "<<this->name<<f<<endl;
+    }
     this->value = f;
 
-}
-void SimulatorObject::setSimPath(string pathStr) {
-    this->simPath = pathStr;
 }
 string SimulatorObject::getName() {
     return this->name;
 }
 float SimulatorObject::getValue() {
     return this->value;
+}
+string SimulatorObject::getSim() {
+    return this->simPath;
 }

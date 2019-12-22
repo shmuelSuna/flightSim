@@ -7,13 +7,14 @@
 
 #include <string>
 #include "SymbolTable.h"
-
+/*
 using namespace std;
 /*
  * static method that creates a map of 23 items. those are the items that we should get from the Simulator,
  * according to the given XML file. we map between the variable string to its simulator object.
  * the function returns a pointer to the table. some of the objects have names like thier name in the fly.txt file
  */
+/*
 static SymbolTable *  createSymbolTable() {
     SymbolTable * symbolTablePtr = new SymbolTable();
 
@@ -118,5 +119,5 @@ static SymbolTable *  createSymbolTable() {
     return symbolTablePtr;
 }
 
-
+*/
 #endif //FLIGHTSIM_CREATESYMBOLTABLE_H

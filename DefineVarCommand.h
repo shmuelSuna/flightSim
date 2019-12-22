@@ -6,7 +6,7 @@
 #define FLIGHTSIM__DEFINEVARCOMMAND_H_
 
 #include "Command.h"
-
+#include "ConnectCommand.h"
 
 class DefineVarCommand : public Command{
  private:

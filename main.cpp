@@ -6,47 +6,86 @@
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
-#include <thread>
-
+#include <condition_variable>
+#include <mutex>
+#include "MessageSim.h"
 using namespace std;
+
+bool newMessage = false;
+condition_variable cv;
+mutex m;
+
 
 vector<string> static lexer(const string&);
 
 
 int main() {
+/*
 
     unordered_map<string, Command *> mapOfCommands;
 
     vector<string>vectorOfStrings12;
     vectorOfStrings12 = lexer("fly.txt");
+    vector<string>::iterator it = vectorOfStrings12.begin();
 
     Parser parser(vectorOfStrings12);
     mapOfCommands = parser.action(vectorOfStrings12);
+*/
+
+    vector<string>vec;
+    vec.push_back("hello");
+    vector<string>::iterator it2 = vec.begin();
 
 
 
-    SymbolTable * st = createSymbolTable();
 
-    OpenDataServer ods(5400);
-    ods.setSymbolTable(st);
 
-    //temo vector and iter just to run the functions execute
-    vector<string> vec;
-    vec.push_back("test");
-    vector<string>::iterator it = vec.begin();
 
+
+
+
+
+
+/*
     thread t1([&]() {
         return ods.execute(it);});
+*/
+
+    string s = "10.0.2.2";
+    MessageSim * m = new MessageSim;
+
+    ConnectCommand cc(s, 5402, m);
+    cc.execute(it2);
+    thread t1(&ConnectCommand::setNewValSim,cc);
+    cout<<newMessage<<endl;
+    this_thread::sleep_for(3s);
+    m->setMessage(1.2, "controls/switches/starter");
+    cout<<newMessage<<endl;
+
+    this_thread::sleep_for(2s);
+
+    cout<<newMessage<<endl;
+
+    m->setMessage(0.1, "/controls/engines/current-engine/throttle");
+
+    this_thread::sleep_for(2s);
+
+    m->setMessage(0.1, "/controls/engines/current-engine/mixture");
 
 
-    string s = "127.0.0.1";
 
-    ConnectCommand cc(s, 5402);
-    cc.setSymbolTable(st);
-    cc.execute(it);
+
+
+
+
+
 
 
     t1.join();
+
+
+
+ //   t1.join();
 
 
 

@@ -21,12 +21,12 @@ private:
      string name;
      string simPath;
 public:
-    SimulatorObject(const string);
+    SimulatorObject(string, string);
     ~SimulatorObject();
     void setValue(float);
-    void setSimPath(string);
     string getName();
     float getValue();
+    string getSim();
 
 };
 
