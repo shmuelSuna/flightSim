@@ -16,9 +16,10 @@ class DefineVarCommand : public Command{
   string sim;
   double VarValue;
   SimulatorObject * simulator_object;
+  bool hasArrow;
  public:
-
-
+  bool IsHasArrow();
+  void SetHasArrow(bool has_arrow);
 
   //Defualt Constructer
   DefineVarCommand();

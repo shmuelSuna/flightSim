@@ -64,6 +64,12 @@ class Parser {
   void SetUpExpression();
 
   Expression* GetExpressionFromString(string);
+
+
+
+  DefineVarCommand* createDefineVarCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*);
+  DefineVarCommand* createDefineVarCommand_ptrThatHasArrowAndSim(vector<string>::iterator,SymbolTable*,ServerValuesMap*,string);
+  DefineVarCommand* createDefineVarCommand_ptrThatHas_NO_ArrowAndSim(vector<string>::iterator,string);
 };
 
 #endif //FLIGHTSIM_PARSER_H

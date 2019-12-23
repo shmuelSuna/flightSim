@@ -467,11 +467,6 @@ this->m = mapForSetVars;
 }
 
 
-
-
-
-
-
 Expression *Interpreter::interpret(const string &s) {
   vectorTokens = infixToReversePolish(s);
   Expression *expression3 = PostfixToExpression(vectorTokens);

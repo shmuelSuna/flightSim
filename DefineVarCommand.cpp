@@ -44,4 +44,10 @@ double DefineVarCommand::GetVarValue() {
 void DefineVarCommand::SetVarValue(double var_value) {
   VarValue = var_value;
 }
+bool DefineVarCommand::IsHasArrow()  {
+  return hasArrow;
+}
+void DefineVarCommand::SetHasArrow(bool has_arrow) {
+  hasArrow = has_arrow;
+}
 

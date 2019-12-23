@@ -42,6 +42,8 @@ class SetVarCommand : public Command {
   //constructer by parameters
  SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&, MessageSim*);
 
+  SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&);
+
   void execute() override;
 
   //void execute();

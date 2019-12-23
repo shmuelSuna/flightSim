@@ -21,6 +21,22 @@ SetVarCommand::SetVarCommand(){
   this->messageSim = ms;
 }
 
+//constructer without message sim
+SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str,
+                             unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands_, map<string,double>&m) {
+
+
+  this->define_var_command_ptr = ptrToDefineVarCommand;
+  this->rightSideOfEqualsOpertor = str;
+  this->mapOfDefineVarCommands = mapOfDefineVarCommands_;
+  this->mapForInterpeter = m;
+}
+
+
+
+
+
+
 void SetVarCommand::execute(){
     Interpreter *i2 = new Interpreter();
     i2->setVariables(mapForInterpeter);
