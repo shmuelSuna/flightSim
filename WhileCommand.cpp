@@ -28,7 +28,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
        Command * command = *it3;
-       command->execute(it);
+       command->execute();
       }
     }
   }
@@ -39,7 +39,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
-        command->execute(it);
+        command->execute();
       }
     }
   }
@@ -50,7 +50,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
-        command->execute(it);
+        command->execute();
       }
     }
   }
@@ -62,7 +62,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
-        command->execute(it);
+        command->execute();
       }
     }
   }
@@ -74,7 +74,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
-        command->execute(it);
+        command->execute();
       }
     }
   }
@@ -86,7 +86,7 @@ this->SetUpExpressions();
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
-        command->execute(it);
+        command->execute();
       }
     }
   }
@@ -178,4 +178,10 @@ Expression *WhileCommand::GetRightExpression() const {
 }
 Expression *WhileCommand::GetLeftExpression() const {
   return Left_expression_;
+}
+int WhileCommand::GetCounterForHowMuchIteratorShouldJump() {
+  return counterForHowMuchIteratorShouldJump;
+}
+void WhileCommand::SetCounterForHowMuchIteratorShouldJump(int counter_for_how_much_iterator_should_jump) {
+  counterForHowMuchIteratorShouldJump = counter_for_how_much_iterator_should_jump;
 }

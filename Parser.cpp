@@ -54,80 +54,33 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     }
     //DefineVarCommand
     if (*it == "var") {
-      DefineVarCommand* temp_define_var_command = createDefineVarCommand_ptr(it,symbolTable, serverValuesMap);
-     int a =3;
+      DefineVarCommand *temp_define_var_command = createDefineVarCommand_ptr(it, symbolTable, serverValuesMap);
       //check where to put the defineVarCommandPtr
-     // string arrow_test = (temp_define_var_command->GetArrow());
-     if(temp_define_var_command->IsHasArrow()) {
+      if (temp_define_var_command->IsHasArrow()) {
         mapOfCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
         mapOfDefineVarCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        vectorOfCommands.push_back(temp_define_var_command);
+        it += 4;
+      } else {
+        mapOfDefineVarCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        it += 3;
       }
+      continue;
+    }
 
-      /*
-      ++it;
-      string varName_ = *it;
-      ++it;
-      if (*it == "->" || (*it == "<-")) {
-        if (*it == "->") {
-          arrow_ = "->";
-        } else {
-          arrow_ = "<-";
-        }
-        ++it;
-        if (*it == "sim") {
-          ++it;
-          sim_ = *it;
-          SimulatorObject *simulatorObject = new SimulatorObject(varName_, sim_);
-          if (arrow_ == "<-") {
-            int index = symbolTable->isPathExist(sim_);
-            serverValuesMap->insert(index, simulatorObject);
-          }
-
-          DefineVarCommand *define_var_command = new DefineVarCommand(varName_, arrow_, sim_, 0, simulatorObject);
-          mapOfCommands[varName_] = (define_var_command);
-          mapOfDefineVarCommands[varName_] = (define_var_command);
-          //vectorOfCommands.push_back(&define_var_command);
-          continue;
-        }
-
-      } else { // it== '='
-        DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
-        mapOfCommands[varName_] = (&define_var_command);
-        mapOfDefineVarCommands[varName_] = (&define_var_command);
-        it--;
-        // vectorOfCommands.push_back(&define_var_command);
-*/
-        //set var command
-        while (true) {
-string varName_;
-          //get iterator over map of defineVarcommands and look for define var that needs to be set
-          unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
-          //
-          if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-            map<string, double> mapForInterpeter2;//for expressions
-            string nameOfSetVarCommand = varName_;
-            it += 2;
-            SetVarCommand
-                *set_var_command = new SetVarCommand(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
-            //Interpreter *i2 = new Interpreter();
-            //i2->setVariables(mapForInterpeter2);
-            //Expression *e1 = i2->interpret(*it); //need to get from simulator value
-            //set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
-            mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (set_var_command);
-            vectorOfCommands.push_back(set_var_command);
-            break;
-          }
-          break;
-        }
-        continue;
-      }
-
-    /*
+    //set var command
+    if (checkIfIteratorIsUpTooSetVarCommand(it)) {
+      SetVarCommand *set_var_command = createSetVarCommand(it);
+      mapOfCommands["SetVarCommand" + set_var_command->GetDefine_var_command_ptr()->GetVarName()] = (set_var_command);
+      vectorOfCommands.push_back(set_var_command);
+      it+=2;
+      continue;
+    }
     // Print command
     if (*it == "Print") {
       ++it;
       string message_ = *it;
-     //check if print message is a defineVarVarible for example: Print(rpm)
+      //check if print message is a defineVarVarible for example: Print(rpm)
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
 
       if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
@@ -143,7 +96,7 @@ string varName_;
       vectorOfCommands.push_back(&print_command);
       continue;
     }
-     */
+
     //Sleep command
     if (*it == "Sleep") {
       ++it;
@@ -154,213 +107,15 @@ string varName_;
       continue;
     }
 
-    //set var command
-    while (true) {
-      //get iterator over map of defineVarcommands and look for define var that needs to be set
-      unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
-      if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-        map<string, double> mapForInterpeter;
-
-        string nameOfSetVarCommand = *it;
-        it += 2;
-        SetVarCommand *set_var_command =
-            new SetVarCommand(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter, messanger);
-        /*
-        Interpreter *i2 = new Interpreter();
-        i2->setVariables(mapForInterpeter);
-        Expression *e1 = i2->interpret(*it);
-
-        set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
-        double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
-        double test2 = itOverMap->second->GetVarValue();  //testtttt2
-         */
-
-        //mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
-        vectorOfCommands.push_back(set_var_command);
-        //break;
-      }
-      break;
-    }
-
-/*
     //While command
     if (*it == "while") {
-      string leftStringToMakeIntoExpression;
-      string rightStringToMakeIntoExpression;
-      string operator_;
-      vector<Command *> vectorOfCommandsForWhileLoop;
-      unordered_map<string, DefineVarCommand *> mapOfDefineVarCommandsForWhileLoop;
+      WhileCommand *while_command = createWhileCommand_ptr(it, symbolTable, serverValuesMap);
 
-      ++it;
-      while ((*it != "<") && (*it != "<=") && (*it != ">") && (*it != ">=") && (*it != "!=") && (*it != "==")) {
-        leftStringToMakeIntoExpression += (*it);
-        it++;
-      }
-      operator_ = *it;
-      ++it;
-      while (*it != "{") {
-        rightStringToMakeIntoExpression += (*it);
-        it++;
-      }
-      it++;
-
-      while (*it != "}") {
-        vector<string> vectorOfStringsForWhileLoop;
-
-
-        //DefineVarCommand for whileCommand
-        if (*it == "var") {
-          ++it;
-          string varName_ = *it;
-          ++it;
-          if (*it == "->" || (*it == "<-")) {
-            if (*it == "->") {
-              arrow_ = "->";
-            } else {
-              arrow_ = "<-";
-            }
-            ++it;
-            if (*it == "sim") {
-              ++it;
-              sim_ = *it;
-              DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
-              // mapOfCommands[varName_] = (&define_var_command);
-              mapOfDefineVarCommandsForWhileLoop[varName_] = (&define_var_command);
-              // vectorOfCommands.push_back(&define_var_command);
-              vectorOfCommandsForWhileLoop.push_back(&define_var_command);
-
-              continue;
-
-            }
-
-          } else { // it== '='
-
-
-
-            DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
-            //  mapOfCommands[varName_] = (&define_var_command);
-            mapOfDefineVarCommandsForWhileLoop[varName_] = (&define_var_command);
-
-            vectorOfCommandsForWhileLoop.push_back(&define_var_command);
-
-
-
-
-            // vectorOfCommands.push_back(&define_var_command);
-
-            //set var command for whileCommand
-
-            while (true) {
-              unordered_map<string, DefineVarCommand *>::iterator itOverMap =
-                  mapOfDefineVarCommandsForWhileLoop.find(*it);
-              //
-              if (itOverMap != mapOfDefineVarCommandsForWhileLoop.end()) {//found a var that needs to be set
-                //temporary untill we do expressions
-                //   DefineVarCommand* define_var_command_ptr = itOverMap->second;
-                string nameOfSetVarCommand = *it;
-                it += 2;
-                map<string, double> mapForInterpeter2;
-
-                SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
-                Interpreter *i2 = new Interpreter();
-                i2->setVariables(mapForInterpeter2);
-                Expression *e1 = i2->interpret(*it);
-
-                set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
-                double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
-                double test2 = itOverMap->second->GetVarValue();  //testtttt2
-
-                vectorOfCommandsForWhileLoop.push_back(&set_var_command);
-                break;
-              }
-              break;
-            }
-            continue;
-          }
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // Print command
-        if (*it == "Print") {
-          ++it;
-          string message_ = *it;
-          PrintCommand print_command(message_);
-
-          vectorOfCommandsForWhileLoop.push_back(&print_command);
-          ++it;
-          continue;
-        }
-        //Sleep command
-        if (*it == "Sleep") {
-          ++it;
-
-          int timeToSleep_ = stod(*it);
-          SleepCommand sleep_command(timeToSleep_);
-          vectorOfCommandsForWhileLoop.push_back(&sleep_command);
-          ++it;//
-          continue;
-        }
-        //set var command for while loop
-
-        while (true) {
-          unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
-          //
-          if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
-
-            string nameOfSetVarCommand = *it;
-            it += 2;
-
-            map<string, double> mapForInterpeter;
-            SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
-            Interpreter *i2 = new Interpreter();
-            i2->setVariables(mapForInterpeter);
-              Expression *e1 = i2->interpret(*it); // rpm needs to get value from sim
-
-               set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());//  rpm needs to get value from sim
-
-            vectorOfCommandsForWhileLoop.push_back(&set_var_command);
-            it++;
-            //break;
-          }
-          break;
-        }
-
-      }
-      WhileCommand while_command( vectorOfCommandsForWhileLoop, leftStringToMakeIntoExpression,
-          operator_,rightStringToMakeIntoExpression, mapOfDefineVarCommandsForWhileLoop);
-
-      mapOfCommands["While"+while_command.GetLeftStringToMakeIntoExpression()
-      +while_command.GetAnOperator()+while_command.GetRightStringToMakeIntoExpression()] = (&while_command);
-      vectorOfCommands.push_back(&while_command);
+      mapOfCommands["While" + while_command->GetLeftStringToMakeIntoExpression()
+          + while_command->GetAnOperator() + while_command->GetRightStringToMakeIntoExpression()] = (while_command);
+      vectorOfCommands.push_back(while_command);
       continue;
-
-    }//end of whilecommand
-
-
-
-
-
-*/
-
-
-
-    //condition command
-
+    }
 
   }
   setCommandVec(vectorOfCommands);
@@ -452,25 +207,27 @@ DefineVarCommand *Parser::createDefineVarCommand_ptr(vector<string>::iterator it
                                                      ServerValuesMap *serverValuesMap) {
   string arrow_;
   string sim_;
+  DefineVarCommand *temp_define_var_command_ptr;
 
   ++it;
   string varName_ = *it;
   ++it;
   if (*it == "->" || (*it == "<-")) { // define var that has arrow and sim
-    DefineVarCommand* temp_define_var_command_ptr =
-        createDefineVarCommand_ptrThatHasArrowAndSim(it,symbolTable,serverValuesMap,varName_);
+    temp_define_var_command_ptr =
+        createDefineVarCommand_ptrThatHasArrowAndSim(it, symbolTable, serverValuesMap, varName_);
   } else {
-    createDefineVarCommand_ptrThatHas_NO_ArrowAndSim(it,varName_);
+    temp_define_var_command_ptr = createDefineVarCommand_ptrThatHas_NO_ArrowAndSim(it, varName_);
   }
+  return temp_define_var_command_ptr;
 }
 
-
-
-DefineVarCommand* Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<string>::iterator it,
-    SymbolTable* symbolTable,ServerValuesMap*serverValuesMap,string varName_){
+DefineVarCommand *Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<string>::iterator it,
+                                                                       SymbolTable *symbolTable,
+                                                                       ServerValuesMap *serverValuesMap,
+                                                                       string varName_) {
   string arrow_;
   string sim_;
-
+  DefineVarCommand *define_var_command;
 
   if (*it == "->") {
     arrow_ = "->";
@@ -488,20 +245,144 @@ DefineVarCommand* Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<st
       serverValuesMap->insert(index, simulatorObject);
     }
 
-    DefineVarCommand *define_var_command = new DefineVarCommand(varName_, arrow_, sim_, 0, simulatorObject);
+    define_var_command = new DefineVarCommand(varName_, arrow_, sim_, 0, simulatorObject);
     define_var_command->SetHasArrow(true);
-    return define_var_command;
+
   }
+  return define_var_command;
 }
 
-
-
-DefineVarCommand* Parser::createDefineVarCommand_ptrThatHas_NO_ArrowAndSim
-(vector<string>::iterator it,string varName_ ){
-  DefineVarCommand *define_var_command = new DefineVarCommand(varName_, "","", 0);
+DefineVarCommand *Parser::createDefineVarCommand_ptrThatHas_NO_ArrowAndSim
+    (vector<string>::iterator it, string varName_) {
+  DefineVarCommand *define_var_command = new DefineVarCommand(varName_, "", "", 0);
   define_var_command->SetHasArrow(false);
 
- // it--;//
+  // it--;//
   return define_var_command;
 
 }
+
+bool Parser::checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator it) {
+  //get iterator over map of defineVarcommands and look for define var that needs to be set
+  unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+  //
+  if (itOverMap != mapOfDefineVarCommands.end()) {//found a var that needs to be set
+    ++it;
+    if (*it == "=") {
+      return true;
+    }
+  }
+  return false;
+
+}
+SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it) {
+  string nameOfSetVarCommand = *it;
+  unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+  it += 2;
+  map<string, double> mapForInterpeter2;//for expressions
+
+  SetVarCommand*set_var_command =
+      new SetVarCommand(itOverMap->second, nameOfSetVarCommand, mapOfDefineVarCommands, mapForInterpeter2);
+  return set_var_command;
+
+}
+
+/*
+WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
+    SymbolTable* symbol_table,ServerValuesMap* server_values_map) {
+
+  string leftStringToMakeIntoExpression;
+  string rightStringToMakeIntoExpression;
+  string operator_;
+  vector<Command *> vectorOfCommandsForWhileLoop;
+  unordered_map<string, DefineVarCommand *> mapOfDefineVarCommandsForWhileLoop;
+  int counter = 0;
+
+  ++it;
+  counter++;
+  while ((*it != "<") && (*it != "<=") && (*it != ">") && (*it != ">=") && (*it != "!=") && (*it != "==")) {
+    leftStringToMakeIntoExpression += (*it);
+    it++;
+    counter++;
+  }
+  operator_ = *it;
+  ++it;
+  counter++;
+  while (*it != "{") {
+    rightStringToMakeIntoExpression += (*it);
+    it++;
+    counter++;
+  }
+  it++;
+  counter++;
+
+  while (*it != "}") {
+
+
+
+    //DefineVarCommand for whileCommand
+    if (*it == "var") {
+      DefineVarCommand *temp_define_var_command = createDefineVarCommand_ptr(it, symbol_table, server_values_map);
+      //check where to put the defineVarCommandPtr
+      if (temp_define_var_command->IsHasArrow()) {
+        mapOfDefineVarCommandsForWhileLoop[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        vectorOfCommandsForWhileLoop.push_back(temp_define_var_command);
+        it += 4;
+        counter+=4;
+      } else {
+        mapOfDefineVarCommandsForWhileLoop[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        it += 3;
+        counter+=3;
+      }
+      it++;
+      counter++;
+    }
+    //set var command for while loop
+    if (checkIfIteratorIsUpTooSetVarCommand(it)) {
+      SetVarCommand *set_var_command = createSetVarCommand(it);
+      // mapOfDefineVarCommandsForWhileLoop["SetVarCommand" + set_var_command->GetDefine_var_command_ptr()->GetVarName()] = (set_var_command);
+      vectorOfCommandsForWhileLoop.push_back(set_var_command);
+      it += 3;
+      counter+=3;
+    }
+
+    // Print command for while loop
+    if (*it == "Print") {
+      ++it;
+      counter++;
+      string message_ = *it;
+      //check if print message is a defineVarVarible for example: Print(rpm)
+      unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+
+      if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
+        string s = to_string(itOverMap->second->GetVarValue());
+        PrintCommand print_command(s);
+        // mapOfCommands["Print" + *it] = (&print_command);
+        vectorOfCommandsForWhileLoop.push_back(&print_command);
+        continue;
+      }
+      //did not find a deifneVarVariable in print message
+      PrintCommand print_command(message_);
+      // mapOfCommands["Print" + *it] = (&print_command);
+      vectorOfCommandsForWhileLoop.push_back(&print_command);
+      continue;
+    }
+
+    //Sleep command for while loop
+    if (*it == "Sleep") {
+      ++it;
+      int timeToSleep_ = stod(*it);
+      SleepCommand *sleep_command = new SleepCommand(timeToSleep_);
+      //  mapOfCommands["Sleep" + *it] = (sleep_command);
+      vectorOfCommandsForWhileLoop.push_back(sleep_command);
+      continue;
+    }
+  }
+    WhileCommand* while_command = new WhileCommand(vectorOfCommandsForWhileLoop, leftStringToMakeIntoExpression,operator_, rightStringToMakeIntoExpression, mapOfDefineVarCommandsForWhileLoop);
+
+while_command->SetCounterForHowMuchIteratorShouldJump(counter);
+ // return while_command;
+
+  }
+  */
+

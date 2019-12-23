@@ -70,6 +70,11 @@ class Parser {
   DefineVarCommand* createDefineVarCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*);
   DefineVarCommand* createDefineVarCommand_ptrThatHasArrowAndSim(vector<string>::iterator,SymbolTable*,ServerValuesMap*,string);
   DefineVarCommand* createDefineVarCommand_ptrThatHas_NO_ArrowAndSim(vector<string>::iterator,string);
+
+  bool checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator);
+  SetVarCommand* createSetVarCommand(vector<string>::iterator);
+
+  WhileCommand* createWhileCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*);
 };
 
 #endif //FLIGHTSIM_PARSER_H

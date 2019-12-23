@@ -11,6 +11,23 @@
 #include "CondtionParserCommand.h"
 #include "ex1.h"
 #include "Parser.h"
+
+
+#include <iostream>
+#include <vector>
+#include <cstring>
+#include <string>
+#include "Command.h"
+#include <map>
+#include "OpenDataServer.h"
+#include "ConnectCommand.h"
+#include <unordered_map>
+#include "DefineVarCommand.h"
+#include "PrintCommand.h"
+#include "SleepCommand.h"
+#include "SetVarCommand.h"
+#include "WhileCommand.h"
+#include "MessageSim.h"
 class WhileCommand: public Command {
   string operator_;
 
@@ -23,8 +40,7 @@ class WhileCommand: public Command {
   vector<Command*> vectorOfCommandsForWhileLoop;
   unordered_map<string, DefineVarCommand *> mapOfDefineVarCommands;
 
-//  Parser parser_for_while_loop;
-
+  int counterForHowMuchIteratorShouldJump=0;
 
  public:
 
@@ -38,12 +54,7 @@ class WhileCommand: public Command {
   // WhileCommand(list<Command>,bool,Expression*,string);
 //  WhileCommand(list<Command>,DefineVarCommand,double ,string);
 
-
-
   void execute() override ;
-
-
-
 
   bool checkIfNameOfADefineVarIsInString(string);
 
@@ -64,6 +75,8 @@ class WhileCommand: public Command {
   const string &GetAnOperator() const;
   const string &GetLeftStringToMakeIntoExpression() const;
   const string &GetRightStringToMakeIntoExpression() const;
+  int GetCounterForHowMuchIteratorShouldJump();
+  void SetCounterForHowMuchIteratorShouldJump(int counter_for_how_much_iterator_should_jump);
 
 };
 
