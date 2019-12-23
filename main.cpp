@@ -15,6 +15,7 @@ bool newMessage = false;
 bool isServerConnect = false;
 condition_variable cv;
 mutex m;
+unique_lock <mutex> ul(m);
 
 
 vector<string> static lexer(const string&);

@@ -33,7 +33,6 @@ void ConnectCommand::execute() {
 void ConnectCommand::setNewValSim() {
     cout<<"in connect command before while loop"<<endl;
     while (true) {
-        unique_lock<mutex> ul(m);
         cv.wait(ul, [] { return newMessage; });
         cout<<"in connect command AFTER while loop"<<endl;
 

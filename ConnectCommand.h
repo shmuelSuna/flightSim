@@ -22,6 +22,7 @@ using namespace std;
 extern bool newMessage;
 extern condition_variable cv;
 extern mutex m;
+extern unique_lock<mutex> ul;
 
 class ConnectCommand : public Command {
   string ip;

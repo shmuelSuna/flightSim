@@ -8,7 +8,6 @@
 
 void MessageSim::setMessage(float v, string path) {
     if (newMessage) {
-        unique_lock <mutex> ul(m);
         cv.wait(ul, []{ return !newMessage;});
     }
     ostringstream oss;

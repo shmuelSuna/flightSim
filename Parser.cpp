@@ -411,14 +411,14 @@ void Parser::operateCommands() {
 
 
     thread t1(&Command::execute, temp);
+/*
     cout<<"in parser befor sleep server"<<endl;
     this_thread::sleep_for(40s);
     cout<<"in parser after sleep server"<<endl;
+*/
 
-    /*
-    unique_lock <mutex> ul1(m);
-    cv.wait(ul1, []{ return isServerConnect;});
-     */
+    cv.wait(ul, []{ return isServerConnect;});
+
 
     it++;
 
