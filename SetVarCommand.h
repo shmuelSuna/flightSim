@@ -19,6 +19,7 @@
 #include "DefineVarCommand.h"
 #include "ex1.h"
 #include <vector>
+#include "MessageSim.h"
 using namespace std;
 
 
@@ -32,15 +33,16 @@ class SetVarCommand : public Command {
   string rightSideOfEqualsOpertor;
   unordered_map<string, DefineVarCommand *> mapOfDefineVarCommands;
   map<string,double>mapForInterpeter;
+  MessageSim* messageSim;
 
  public:
   // defualt constructer
   SetVarCommand();
 
   //constructer by parameters
- SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&);
+ SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&, MessageSim*);
 
-  void execute(vector<string>::iterator &it);
+  void execute() override;
 
   //void execute();
 

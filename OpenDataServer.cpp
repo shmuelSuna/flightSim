@@ -70,7 +70,8 @@ int OpenDataServer::openServer() {
     close(socketfd); //closing the listening socket
     std::cout << "wating for a messegae" << std::endl;
 
-
+    isServerConnect = true;
+    cv.notify_one();
 
     SimulatorObject * tempObj;
 
@@ -107,7 +108,7 @@ int OpenDataServer::openServer() {
 
 
 
-void OpenDataServer::execute(vector<string>::iterator &it) {
+void OpenDataServer::execute() {
 
 
     openServer();

@@ -12,6 +12,7 @@
 using namespace std;
 
 bool newMessage = false;
+bool isServerConnect = false;
 condition_variable cv;
 mutex m;
 
@@ -20,7 +21,7 @@ vector<string> static lexer(const string&);
 
 
 int main() {
-/*
+
 
     unordered_map<string, Command *> mapOfCommands;
 
@@ -30,7 +31,7 @@ int main() {
 
     Parser parser(vectorOfStrings12);
     mapOfCommands = parser.action(vectorOfStrings12);
-*/
+
 
     vector<string>vec;
     vec.push_back("hello");
@@ -39,7 +40,7 @@ int main() {
 
 
 
-
+    parser.operateCommands();
 
 
 
@@ -50,6 +51,7 @@ int main() {
     thread t1([&]() {
         return ods.execute(it);});
 */
+/*
 
     string s = "10.0.2.2";
     MessageSim * m = new MessageSim;
@@ -84,7 +86,7 @@ int main() {
     t1.join();
 
 
-
+*/
  //   t1.join();
 
 

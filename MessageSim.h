@@ -13,6 +13,7 @@ using namespace std;
 
 extern bool newMessage;
 extern condition_variable cv;
+extern mutex m;
 
 using namespace std;
 

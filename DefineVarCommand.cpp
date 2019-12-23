@@ -7,10 +7,16 @@
 //Defualt Constructer
 DefineVarCommand::DefineVarCommand(){}
 
-DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value)
-    : varName(var_name), arrow(arrow), sim(sim), VarValue(var_value) {}
+DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value, SimulatorObject * simObj)
+    : varName(var_name), arrow(arrow), sim(sim), VarValue(var_value), simulator_object(simObj) {}
 
-void DefineVarCommand:: DefineVarCommand::execute(vector<string>::iterator &it) {
+DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value)
+        : varName(var_name), arrow(arrow), sim(sim), VarValue(var_value) {}
+
+void DefineVarCommand:: DefineVarCommand::execute() {
+    if (arrow == "<-") {
+        VarValue = simulator_object->getValue();
+    }
 
 
 }

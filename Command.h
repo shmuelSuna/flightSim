@@ -17,7 +17,7 @@ class Command {
  public:
 
   // option one for execute
-  virtual void execute(vector<string>:: iterator& it) = 0;
+  virtual void execute() = 0;
 
   // option two for execute method
   // virtual void execute()=0;

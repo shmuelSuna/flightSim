@@ -11,9 +11,7 @@ SimulatorObject::~SimulatorObject() {
 
 }
 void SimulatorObject::setValue(float f) {
-    if (f != this->value) {
-        cout<<"in Simulator Object "<<this->name<<f<<endl;
-    }
+
     this->value = f;
 
 }

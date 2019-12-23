@@ -25,7 +25,7 @@ class PrintCommand: public Command {
 
 
   //option 1
-  void execute(vector<string>::iterator &it) override;
+  void execute() override;
 
   //option 2
   // void execute()override ;

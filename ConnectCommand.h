@@ -39,7 +39,7 @@ class ConnectCommand : public Command {
 
 
 
-  void execute(vector<string>::iterator &it) override;
+  void execute() override;
 
   void setNewValSim();
 

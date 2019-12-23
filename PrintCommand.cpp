@@ -14,7 +14,7 @@ PrintCommand::PrintCommand(const string &message_){
   this->message = message_;
 }
 
-void PrintCommand::execute(vector<string>::iterator &it) {
+void PrintCommand::execute() {
 
 }
 

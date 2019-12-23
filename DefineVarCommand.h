@@ -15,6 +15,7 @@ class DefineVarCommand : public Command{
   string arrow;
   string sim;
   double VarValue;
+  SimulatorObject * simulator_object;
  public:
 
 
@@ -23,7 +24,9 @@ class DefineVarCommand : public Command{
   DefineVarCommand();
 
   // Constructer with parameters
-  DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value);
+  DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value, SimulatorObject*);
+    DefineVarCommand(const string &var_name, string arrow, const string &sim, double var_value);
+
 
   string GetArrow() const;
   void SetArrowFlagRight(string arrow);
@@ -33,7 +36,7 @@ class DefineVarCommand : public Command{
   void SetVarValue(double var_value);
 
   //option 1
-  void execute(vector<string>::iterator &it) override;
+  void execute() override;
 
   //option 2
   // void execute()override ;

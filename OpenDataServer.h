@@ -19,11 +19,13 @@
 #include "ServerValuesMap.h"
 #include <vector>
 #include "Parser.h"
+#include <mutex>
 
 using namespace std;
 
 
-
+extern bool isServerConnect;
+extern mutex m;
 
 
 class OpenDataServer : public Command {
@@ -47,7 +49,7 @@ public:
 
 
 
-    void execute(vector<string>::iterator &it);
+    void execute() override;
 
     //the open data server should have an access to the table to update the variables that come from the Simulator
     void dataServerUpdate(int, SimulatorObject*);

@@ -7,11 +7,17 @@
 
 
 void MessageSim::setMessage(float v, string path) {
+    if (newMessage) {
+        unique_lock <mutex> ul(m);
+        cv.wait(ul, []{ return !newMessage;});
+    }
     ostringstream oss;
     oss << "set " << path << " " << to_string(v) << "\r\n";
+    cout<<"in message set new message"<<endl;
     this->message = oss.str();
     newMessage = true;
-    cv.notify_one();
+    cv.notify_all();
+
 }
 string MessageSim::getMessage() {
     return this->message;

@@ -21,7 +21,7 @@ WhileCommand::WhileCommand(vector<Command*> vectorOfCommands,string leftStringTo
 
 }
 
-void WhileCommand::execute(vector<string>::iterator &it){
+void WhileCommand::execute(){
 this->SetUpExpressions();
   if(operator_ == "<") {
     while (this->GetLeftExpression() < this->GetRightExpression()) {

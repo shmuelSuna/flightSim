@@ -12,12 +12,20 @@ Parser::Parser(vector<string> vectorOfStrings1) {
   this->vectorOfStrings = vectorOfStrings1;
 }
 
+void Parser::setCommandVec(vector<Command*> vec) {
+    this->command_vec = vec;
+}
+
 // create map1, and create vector of commands in the right order, so we can iterate over them for execution
 unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) {
   //for iteraterating over commands in the right order, so we can iterate over them for execution
   vector<Command *> vectorOfCommands;
   string arrow_;
   string sim_;
+
+  MessageSim * messanger = new MessageSim;
+  SymbolTable * symbolTable = new SymbolTable;// initialized with 36 values
+  ServerValuesMap * serverValuesMap = new ServerValuesMap;
 
 
   //iterate over all vector of strings
@@ -27,20 +35,21 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     if (*it == "openDataServer") {
       ++it;
       double digit = stod(*it);
-      OpenDataServer open_data_server(digit);
-      mapOfCommands["OpenDataServer"] = (&open_data_server);
-      vectorOfCommands.push_back(&open_data_server);
+      OpenDataServer* open_data_server = new OpenDataServer(serverValuesMap, digit);
+      mapOfCommands["OpenDataServer"] = (open_data_server);
+      vectorOfCommands.push_back(open_data_server);
       continue;
     }
+
     //Connenct control client command
     if (*it == "connectControlClient") {
       ++it;
       string ip3 = *it;
       ++it;
       double digit = stod(*it);
-      ConnectCommand connect_command(ip3, digit);
-      mapOfCommands["ConnectCommand"] = (&connect_command);
-      vectorOfCommands.push_back(&connect_command);
+      ConnectCommand* connect_command = new ConnectCommand(ip3, digit, messanger);
+      mapOfCommands["ConnectCommand"] = (connect_command);
+      vectorOfCommands.push_back(connect_command);
       continue;
     }
     //DefineVarCommand
@@ -58,12 +67,19 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         if (*it == "sim") {
           ++it;
           sim_ = *it;
-          DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
-          mapOfCommands[varName_] = (&define_var_command);
-          mapOfDefineVarCommands[varName_] = (&define_var_command);
-          vectorOfCommands.push_back(&define_var_command);
+          SimulatorObject * simulatorObject = new SimulatorObject(varName_, sim_);
+          if (arrow_ == "<-") {
+              int index = symbolTable->isPathExist(sim_);
+              serverValuesMap->insert(index, simulatorObject);
+          }
+
+          DefineVarCommand* define_var_command = new DefineVarCommand(varName_, arrow_, sim_, 0, simulatorObject);
+          mapOfCommands[varName_] = (define_var_command);
+          mapOfDefineVarCommands[varName_] = (define_var_command);
+          //vectorOfCommands.push_back(&define_var_command);
           continue;
         }
+
       } else { // it== '='
         DefineVarCommand define_var_command(varName_, arrow_, sim_, 0);
         mapOfCommands[varName_] = (&define_var_command);
@@ -73,6 +89,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
         //set var command
         while (true) {
+
           //get iterator over map of defineVarcommands and look for define var that needs to be set
           unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
           //
@@ -80,13 +97,13 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
             map<string, double> mapForInterpeter2;//for expressions
             string nameOfSetVarCommand = varName_;
             it += 2;
-            SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
-            Interpreter *i2 = new Interpreter();
-            i2->setVariables(mapForInterpeter2);
-            Expression *e1 = i2->interpret(*it); //need to get from simulator value
-            set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
-            mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
-            vectorOfCommands.push_back(&set_var_command);
+            //SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
+            //Interpreter *i2 = new Interpreter();
+            //i2->setVariables(mapForInterpeter2);
+            //Expression *e1 = i2->interpret(*it); //need to get from simulator value
+            //set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate()); //need to get from simulator value
+            //mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
+            //vectorOfCommands.push_back(set_var_command);
             break;
           }
           break;
@@ -94,6 +111,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         continue;
       }
     }
+    /*
     // Print command
     if (*it == "Print") {
       ++it;
@@ -114,15 +132,17 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       vectorOfCommands.push_back(&print_command);
       continue;
     }
+     */
     //Sleep command
     if (*it == "Sleep") {
       ++it;
       int timeToSleep_ = stod(*it);
-      SleepCommand sleep_command(timeToSleep_);
-      mapOfCommands["Sleep" + *it] = (&sleep_command);
-      vectorOfCommands.push_back(&sleep_command);
+      SleepCommand * sleep_command = new SleepCommand(timeToSleep_);
+      mapOfCommands["Sleep" + *it] = (sleep_command);
+      vectorOfCommands.push_back(sleep_command);
       continue;
     }
+
     //set var command
     while (true) {
       //get iterator over map of defineVarcommands and look for define var that needs to be set
@@ -132,7 +152,8 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
         string nameOfSetVarCommand = *it;
         it += 2;
-        SetVarCommand set_var_command(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter);
+        SetVarCommand* set_var_command = new SetVarCommand(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter, messanger);
+        /*
         Interpreter *i2 = new Interpreter();
         i2->setVariables(mapForInterpeter);
         Expression *e1 = i2->interpret(*it);
@@ -140,15 +161,16 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
         set_var_command.GetDefine_var_command_ptr()->SetVarValue(e1->calculate());
         double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
         double test2 = itOverMap->second->GetVarValue();  //testtttt2
+         */
 
-        mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
-        vectorOfCommands.push_back(&set_var_command);
+        //mapOfCommands["SetVarCommand" + nameOfSetVarCommand] = (&set_var_command);
+        vectorOfCommands.push_back(set_var_command);
         //break;
       }
       break;
     }
 
-
+/*
     //While command
     if (*it == "while") {
       string leftStringToMakeIntoExpression;
@@ -321,7 +343,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
 
 
-
+*/
 
 
 
@@ -329,6 +351,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
 
   }
+    setCommandVec(vectorOfCommands);
   return this->GetMapOfCommands();
 }
 
@@ -379,6 +402,41 @@ Expression *Parser::GetExpressionFromString(string str) {
 
   mapForInterpeter = this->SetMapUpForInterpeter(str);
   Expression *expression_ = this->createExpression(mapForInterpeter, str);
+
+}
+
+void Parser::operateCommands() {
+    vector<Command*>::iterator it = this->command_vec.begin();
+    Command* temp = *it;
+
+
+    thread t1(&Command::execute, temp);
+    cout<<"in parser befor sleep server"<<endl;
+    this_thread::sleep_for(40s);
+    cout<<"in parser after sleep server"<<endl;
+
+    /*
+    unique_lock <mutex> ul1(m);
+    cv.wait(ul1, []{ return isServerConnect;});
+     */
+
+    it++;
+
+    temp = *it;
+
+    thread t2(&Command::execute, temp);
+    it++;
+
+    for (; it < this->command_vec.end(); it++) {
+        Command* temp = *it;
+        temp->execute();
+    }
+
+
+
+
+    t2.join();
+    t1.join();
 
 }
 

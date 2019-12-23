@@ -40,7 +40,7 @@ class WhileCommand: public Command {
 
 
 
-  void execute(vector<string>::iterator &it);
+  void execute() override ;
 
 
 

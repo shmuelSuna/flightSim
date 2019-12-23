@@ -17,12 +17,13 @@ ConnectCommand::ConnectCommand(string ip1, int port1, MessageSim * m) {
 }
 
 
-void ConnectCommand::execute(vector<string>::iterator &it) {
+void ConnectCommand::execute() {
 
     const char* ip2 = this->ip.c_str();
     vector<string> vec;
     vec.push_back("hello test");
     this->client_socket = connectControlClient(this->port, ip2);
+    setNewValSim();
 
 }
 
@@ -30,9 +31,12 @@ void ConnectCommand::execute(vector<string>::iterator &it) {
 
 
 void ConnectCommand::setNewValSim() {
+    cout<<"in connect command before while loop"<<endl;
     while (true) {
         unique_lock<mutex> ul(m);
         cv.wait(ul, [] { return newMessage; });
+        cout<<"in connect command AFTER while loop"<<endl;
+
         //if here we made a connection
         string c = this->message->getMessage();
         int n = c.size();
@@ -51,6 +55,7 @@ void ConnectCommand::setNewValSim() {
         cout << valread << endl;
         std::cout << buffer << std::endl;
         newMessage = false;
+        cv.notify_all();
     }
 
 }
@@ -72,7 +77,7 @@ int connectControlClient(int port, const char* ip) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr(ip);  //the localhost address meanwhile I see it's working only on this IP!!!!!
+    address.sin_addr.s_addr = inet_addr("10.0.2.2");  //the localhost address meanwhile I see it's working only on this IP!!!!!
     address.sin_port = htons(port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.

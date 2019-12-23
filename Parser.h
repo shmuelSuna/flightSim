@@ -20,13 +20,16 @@
 #include "SleepCommand.h"
 #include "SetVarCommand.h"
 #include "WhileCommand.h"
+#include "MessageSim.h"
 using namespace std;
+
 
 class Parser {
  private:
   vector<string> vectorOfStrings;
   unordered_map<string, Command*> mapOfCommands;
   unordered_map<string, DefineVarCommand*> mapOfDefineVarCommands;
+  vector<Command*> command_vec;
  public:
   // Defualt Constructer
   Parser();
@@ -34,10 +37,11 @@ class Parser {
   //constructer by parameters
   Parser(vector<string> vectorOfStrings);
 
- public:
   unordered_map<string, Command*> action(vector<string> vectorOfStrings);
 
   unordered_map<string,  Command*> GetMapOfCommands();
+
+  void setCommandVec(vector<Command *>);
 
 
 
@@ -51,6 +55,8 @@ class Parser {
   map<string, double> SetMapUpForInterpeter(string );
 
   unordered_map<string, DefineVarCommand *> GetMapOfDefineVarCommands();
+
+  void operateCommands();
 
 
   Expression* createExpression( map<string, double>,string);
