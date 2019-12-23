@@ -114,6 +114,8 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       mapOfCommands["While" + while_command->GetLeftStringToMakeIntoExpression()
           + while_command->GetAnOperator() + while_command->GetRightStringToMakeIntoExpression()] = (while_command);
       vectorOfCommands.push_back(while_command);
+
+      it+= while_command->GetCounterForHowMuchIteratorShouldJump();
       continue;
     }
 
@@ -287,7 +289,7 @@ SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it) {
 
 }
 
-/*
+
 WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
     SymbolTable* symbol_table,ServerValuesMap* server_values_map) {
 
@@ -359,30 +361,37 @@ WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
         PrintCommand print_command(s);
         // mapOfCommands["Print" + *it] = (&print_command);
         vectorOfCommandsForWhileLoop.push_back(&print_command);
+        ++it;
+        counter++;
         continue;
       }
       //did not find a deifneVarVariable in print message
       PrintCommand print_command(message_);
       // mapOfCommands["Print" + *it] = (&print_command);
       vectorOfCommandsForWhileLoop.push_back(&print_command);
+      ++it;
+      counter++;
       continue;
     }
 
     //Sleep command for while loop
     if (*it == "Sleep") {
       ++it;
+      counter++;
       int timeToSleep_ = stod(*it);
       SleepCommand *sleep_command = new SleepCommand(timeToSleep_);
       //  mapOfCommands["Sleep" + *it] = (sleep_command);
       vectorOfCommandsForWhileLoop.push_back(sleep_command);
+     it++;
+      counter++;
       continue;
     }
   }
     WhileCommand* while_command = new WhileCommand(vectorOfCommandsForWhileLoop, leftStringToMakeIntoExpression,operator_, rightStringToMakeIntoExpression, mapOfDefineVarCommandsForWhileLoop);
 
 while_command->SetCounterForHowMuchIteratorShouldJump(counter);
- // return while_command;
+  return while_command;
 
   }
-  */
+
 

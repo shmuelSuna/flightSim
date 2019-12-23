@@ -8,9 +8,8 @@
 
 #include "DefineVarCommand.h"
 #include "Command.h"
-#include "CondtionParserCommand.h"
 #include "ex1.h"
-#include "Parser.h"
+//#include "Parser.h"
 
 
 #include <iostream>
@@ -19,14 +18,13 @@
 #include <string>
 #include "Command.h"
 #include <map>
-#include "OpenDataServer.h"
-#include "ConnectCommand.h"
+
 #include <unordered_map>
 #include "DefineVarCommand.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
 #include "SetVarCommand.h"
-#include "WhileCommand.h"
+
 #include "MessageSim.h"
 class WhileCommand: public Command {
   string operator_;

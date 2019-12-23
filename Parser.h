@@ -44,12 +44,6 @@ class Parser {
   void setCommandVec(vector<Command *>);
 
 
-
-
-
-
-
-
   bool checkIfNameOfADefineVarIsInString(string);
 
   map<string, double> SetMapUpForInterpeter(string );
