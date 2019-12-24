@@ -39,10 +39,12 @@ void DefineVarCommand::SetSim(string sim) {
   DefineVarCommand::sim = sim;
 }
 double DefineVarCommand::GetVarValue() {
-  return VarValue;
+    VarValue = this->simulator_object->getValue();
+    return VarValue;
 }
 void DefineVarCommand::SetVarValue(double var_value) {
   VarValue = var_value;
+
 }
 bool DefineVarCommand::IsHasArrow()  {
   return hasArrow;

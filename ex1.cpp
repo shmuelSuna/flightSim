@@ -295,8 +295,8 @@ vector<string> Interpreter::infixToReversePolish(const string &infix) const {
       continue;
     } else {
 
-      //check if its a variavle
-      while (isOperator(&changedInfix[i]) != true && changedInfix[i] != ')' && changedInfix[i] != '(') {
+      //check if its a variavle /// ADDED MORE CONDITION IF IT IS THE END OF THE STRING IN TOTTAL
+      while (isOperator(&changedInfix[i]) != true && changedInfix[i] != ')' && changedInfix[i] != '(' && changedInfix[i] != '\0')  {
 
         string s4 = changedInfix.substr(i, 1);
         s7 += s4;

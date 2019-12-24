@@ -22,6 +22,7 @@ WhileCommand::WhileCommand(vector<Command*> vectorOfCommands,string leftStringTo
 }
 
 void WhileCommand::execute(){
+
 this->SetUpExpressions();
   if(operator_ == "<") {
     while (this->GetLeftExpression() < this->GetRightExpression()) {
@@ -35,8 +36,11 @@ this->SetUpExpressions();
 
 
   if(operator_ == "<=") {
-    while (this->GetLeftExpression() <= this->GetRightExpression()) {
-      this->SetUpExpressions();
+      cout<<this->GetLeftExpression()<< " <= "<<this->GetRightExpression()<<endl;
+    while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
+        cout<<"IN while command execute operator <=\n";
+
+        this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;
         command->execute();
@@ -70,7 +74,7 @@ this->SetUpExpressions();
 
 
   if(operator_ == "!=") {
-    while (this->GetLeftExpression() != this->GetRightExpression()) {
+    while (this->GetLeftExpression()!= this->GetRightExpression()) {
       this->SetUpExpressions();
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         Command * command = *it3;

@@ -12,7 +12,6 @@ void MessageSim::setMessage(float v, string path) {
     }
     ostringstream oss;
     oss << "set " << path << " " << to_string(v) << "\r\n";
-    cout<<"in message set new message"<<endl;
     this->message = oss.str();
     newMessage = true;
     cv.notify_all();

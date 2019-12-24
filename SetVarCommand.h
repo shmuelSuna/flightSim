@@ -40,7 +40,6 @@ class SetVarCommand : public Command {
   SetVarCommand();
 
   //constructer by parameters
- SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&, MessageSim*);
 
   SetVarCommand(DefineVarCommand *, string, unordered_map<string, DefineVarCommand *>, map<string, double>&);
 
@@ -55,6 +54,8 @@ void SetMapUpForInterpeter(string );
 DefineVarCommand* GetDefine_var_command_ptr();
 
 void SetExpression(Expression*) ;
+
+void setMessanger(MessageSim*);
 
   unordered_map<string, DefineVarCommand *> GetMapOfDefineVarCommands();
 };

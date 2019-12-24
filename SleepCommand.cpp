@@ -17,7 +17,6 @@ SleepCommand::SleepCommand(int timeToSleep_){
 
 //option 1
 void SleepCommand:: execute(){
-    cout<<"In sleep command sleeping"<<endl;
     this_thread::sleep_for(chrono::milliseconds(timeToSleep));
 
 }

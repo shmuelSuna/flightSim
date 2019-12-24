@@ -30,11 +30,11 @@ void ConnectCommand::execute() {
 
 
 
+
 void ConnectCommand::setNewValSim() {
-    cout<<"in connect command before while loop"<<endl;
     while (true) {
+
         cv.wait(ul, [] { return newMessage; });
-        cout<<"in connect command AFTER while loop"<<endl;
 
         //if here we made a connection
         string c = this->message->getMessage();
@@ -46,15 +46,16 @@ void ConnectCommand::setNewValSim() {
         if (is_sent2 == -1) {
             std::cout << "Error sending message" << std::endl;
         } else {
-            std::cout << hello2 << " message sent to server" << std::endl;
+          //  std::cout << hello2 << " message sent to server" << std::endl;
         }
 
         char buffer[1024] = {0};
         int valread = read(client_socket, buffer, 1024);
         cout << valread << endl;
-        std::cout << buffer << std::endl;
+        std::cout <<"message returned from the simulator: " << buffer << std::endl;
         newMessage = false;
         cv.notify_all();
+
     }
 
 }

@@ -10,18 +10,6 @@ SetVarCommand::SetVarCommand(){
 
 //constructer by parameters
 
- SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str,
-    unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands_, map<string,double>&m, MessageSim* ms) {
-
-
-  this->define_var_command_ptr = ptrToDefineVarCommand;
-  this->rightSideOfEqualsOpertor = str;
-  this->mapOfDefineVarCommands = mapOfDefineVarCommands_;
-  this->mapForInterpeter = m;
-  this->messageSim = ms;
-}
-
-//constructer without message sim
 SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str,
                              unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands_, map<string,double>&m) {
 
@@ -38,6 +26,10 @@ SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str
 
 
 void SetVarCommand::execute(){
+    unordered_map<string, DefineVarCommand*>::iterator it = mapOfDefineVarCommands.begin();
+    for (;it != mapOfDefineVarCommands.end(); it++) {
+        it->second->execute();
+    }
     Interpreter *i2 = new Interpreter();
     i2->setVariables(mapForInterpeter);
     Expression *e1 = i2->interpret(rightSideOfEqualsOpertor);
@@ -46,12 +38,9 @@ void SetVarCommand::execute(){
     GetDefine_var_command_ptr()->SetVarValue(newValue);
     string s = define_var_command_ptr->GetSim();
     messageSim->setMessage(newValue, s);
-    cout<<"in set var command set new var"<<newValue<<s<<endl;
 
 
 
-    // double test1 = set_var_command.GetDefine_var_command_ptr()->GetVarValue(); //testtttttttt1
-   // double test2 = itOverMap->second->GetVarValue();
 
 }
 
@@ -93,4 +82,8 @@ void SetVarCommand::SetExpression(Expression *ex) {
 
 DefineVarCommand* SetVarCommand::GetDefine_var_command_ptr() {
   return this->define_var_command_ptr;
+}
+
+void SetVarCommand::setMessanger(MessageSim * m) {
+    this->messageSim = m;
 }

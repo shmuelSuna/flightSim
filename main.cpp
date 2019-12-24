@@ -41,7 +41,7 @@ int main() {
 
 
 
-  //  parser.operateCommands();
+   parser.operateCommands();
 
 
 

@@ -113,7 +113,6 @@ void OpenDataServer::execute() {
 
     openServer();
 
-    cout<<"Another logic"<<endl;
 
 
 

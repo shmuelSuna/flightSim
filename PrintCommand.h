@@ -6,10 +6,13 @@
 #define FLIGHTSIM__PRINTCOMMAND_H_
 
 #include "Command.h"
+#include "DefineVarCommand.h"
 class PrintCommand: public Command {
  private:
 
   string message;
+  DefineVarCommand* var;
+  bool isVar;
 
  public:
 
@@ -20,6 +23,7 @@ class PrintCommand: public Command {
 
   // Constructer with parameters
   PrintCommand(const string &message_);
+  PrintCommand(DefineVarCommand*);
 
 
 
