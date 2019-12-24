@@ -4,15 +4,17 @@
 
 #include "WhileCommand.h"
 
-
 // defualt constructer
-WhileCommand::WhileCommand(){
+WhileCommand::WhileCommand() {
 
 }
 
 //constructer by parameters
-WhileCommand::WhileCommand(vector<Command*> vectorOfCommands,string leftStringToMakeIntoExpression_,
-    string op,string rightStringToMakeIntoExpression_,unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands1){
+WhileCommand::WhileCommand(vector<Command *> vectorOfCommands,
+                           string leftStringToMakeIntoExpression_,
+                           string op,
+                           string rightStringToMakeIntoExpression_,
+                           unordered_map<string, DefineVarCommand *> mapOfDefineVarCommands1) {
   this->vectorOfCommandsForWhileLoop = vectorOfCommands;
   this->leftStringToMakeIntoExpression = leftStringToMakeIntoExpression_;
   this->operator_ = op;
@@ -21,74 +23,69 @@ WhileCommand::WhileCommand(vector<Command*> vectorOfCommands,string leftStringTo
 
 }
 
-void WhileCommand::execute(){
+void WhileCommand::execute() {
 
-this->SetUpExpressions();
-  if(operator_ == "<") {
-    while (this->GetLeftExpression() < this->GetRightExpression()) {
-      this->SetUpExpressions();
-      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-       Command * command = *it3;
-       command->execute();
-      }
-    }
-  }
+  this->SetUpExpressions();
+  if (operator_ == "<") {
+    while (this->GetLeftExpression()->calculate() < this->GetRightExpression()->calculate()) {
 
-
-  if(operator_ == "<=") {
-      cout<<this->GetLeftExpression()<< " <= "<<this->GetRightExpression()<<endl;
-    while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
-        cout<<"IN while command execute operator <=\n";
-
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
         this->SetUpExpressions();
-      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-        Command * command = *it3;
+        Command *command = *it3;
         command->execute();
       }
     }
   }
 
+  if (operator_ == "<=") {
+    while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
 
-  if(operator_ == ">") {
-    while (this->GetLeftExpression() > this->GetRightExpression()) {
-      this->SetUpExpressions();
-      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-        Command * command = *it3;
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
+        this->SetUpExpressions();
+        Command *command = *it3;
         command->execute();
       }
     }
   }
 
+  if (operator_ == ">") {
+    while (this->GetLeftExpression()->calculate() > this->GetRightExpression()->calculate()) {
 
-
-  if(operator_ == ">=") {
-    while (this->GetLeftExpression() >= this->GetRightExpression()) {
-      this->SetUpExpressions();
-      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-        Command * command = *it3;
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
+        this->SetUpExpressions();
+        Command *command = *it3;
         command->execute();
       }
     }
   }
 
+  if (operator_ == ">=") {
+    while (this->GetLeftExpression()->calculate() >= this->GetRightExpression()->calculate()) {
 
-
-  if(operator_ == "!=") {
-    while (this->GetLeftExpression()!= this->GetRightExpression()) {
-      this->SetUpExpressions();
-      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-        Command * command = *it3;
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
+        this->SetUpExpressions();
+        Command *command = *it3;
         command->execute();
       }
     }
   }
 
+  if (operator_ == "!=") {
+    while (this->GetLeftExpression()->calculate() != this->GetRightExpression()->calculate()) {
 
+      for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
+        this->SetUpExpressions();
+        Command *command = *it3;
+        command->execute();
+      }
+    }
+  }
 
   if(operator_ == "==") {
-    while (this->GetLeftExpression() == this->GetRightExpression()) {
-      this->SetUpExpressions();
+    while (this->GetLeftExpression()->calculate() == this->GetRightExpression()->calculate()) {
+
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
+        this->SetUpExpressions();
         Command * command = *it3;
         command->execute();
       }
@@ -96,24 +93,21 @@ this->SetUpExpressions();
   }
 
 }
-
-
 
 bool WhileCommand::checkIfNameOfADefineVarIsInString(string str) {
 
   //check in map of defineVarcommands if there is a substring in the string to equals
   for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
        ++itOverMap) {
-    if(str.find(itOverMap->first)!= string::npos) {
+    if (str.find(itOverMap->first) != string::npos) {
       return true;
     }
   }
   return false;
 }
 
-map<string, double>  WhileCommand::SetMapUpForInterpeter(string str) {
+map<string, double> WhileCommand::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
-
 
   if (this->checkIfNameOfADefineVarIsInString(str)) {//there is a define var in the string
     for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
@@ -127,15 +121,14 @@ map<string, double>  WhileCommand::SetMapUpForInterpeter(string str) {
 
 }
 
-
-Expression* WhileCommand::createLeftExpression( map<string, double>MapForInterpeter){
+Expression *WhileCommand::createLeftExpression(map<string, double> MapForInterpeter) {
   Interpreter *i2 = new Interpreter();
   i2->setVariables(MapForInterpeter);
   Expression *e1 = i2->interpret(this->leftStringToMakeIntoExpression);
 
 }
 
-Expression* WhileCommand::createRightExpression( map<string, double>MapForInterpeter){
+Expression *WhileCommand::createRightExpression(map<string, double> MapForInterpeter) {
   Interpreter *i3 = new Interpreter();
   i3->setVariables(MapForInterpeter);
   Expression *e2 = i3->interpret(this->rightStringToMakeIntoExpression);
@@ -151,25 +144,24 @@ const string &WhileCommand::GetLeftStringToMakeIntoExpression() const {
 const string &WhileCommand::GetRightStringToMakeIntoExpression() const {
   return rightStringToMakeIntoExpression;
 }
-unordered_map<string, DefineVarCommand*>WhileCommand::GetMapOfDefineVarCommands() {
+unordered_map<string, DefineVarCommand *> WhileCommand::GetMapOfDefineVarCommands() {
   return this->mapOfDefineVarCommands;
 }
 
-void WhileCommand::SetUpExpressions(){
+void WhileCommand::SetUpExpressions() {
   map<string, double> mapForInterpeter_LeftString;
   map<string, double> mapForInterpeter_RightString;
 
   mapForInterpeter_LeftString = this->SetMapUpForInterpeter(this->leftStringToMakeIntoExpression);
-  Expression* expression_left = this->createLeftExpression(mapForInterpeter_LeftString);
+  Expression *expression_left = this->createLeftExpression(mapForInterpeter_LeftString);
 
   mapForInterpeter_RightString = this->SetMapUpForInterpeter(this->rightStringToMakeIntoExpression);
-  Expression* expression_right = this->createRightExpression(mapForInterpeter_RightString);
+  Expression *expression_right = this->createRightExpression(mapForInterpeter_RightString);
 
   this->SetLeftExpression(expression_left);
   this->SetRightExpression(expression_right);
 
 }
-
 
 void WhileCommand::SetRightExpression(Expression *right_expression) {
   Right_expression_ = right_expression;
