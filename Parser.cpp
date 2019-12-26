@@ -124,6 +124,17 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       it+= while_command->GetCounterForHowMuchIteratorShouldJump();
       continue;
     }
+    //IfCommand
+    if (*it == "if") {
+      IfCommand *if_command = createIfCommand_ptr(it, symbolTable, serverValuesMap, messanger);
+
+      mapOfCommands["if" + if_command->GetLeftStringToMakeIntoExpression()
+          + if_command->GetAnOperator() + if_command->GetRightStringToMakeIntoExpression()] = (if_command);
+      vectorOfCommands.push_back(if_command);
+
+      it+= if_command->GetCounterForHowMuchIteratorShouldJump();
+      continue;
+    }
 
   }
   setCommandVec(vectorOfCommands);
@@ -177,7 +188,6 @@ Expression *Parser::GetExpressionFromString(string str) {
 
   mapForInterpeter = this->SetMapUpForInterpeter(str);
   Expression *expression_ = this->createExpression(mapForInterpeter, str);
-
 }
 
 void Parser::operateCommands() {
@@ -392,3 +402,109 @@ while_command->SetCounterForHowMuchIteratorShouldJump(counter);
   }
 
 
+
+IfCommand* Parser::createIfCommand_ptr(vector<string>::iterator it,
+    SymbolTable* symbol_table,ServerValuesMap* server_values_map, MessageSim* ms ){
+
+  string leftStringToMakeIntoExpression;
+  string rightStringToMakeIntoExpression;
+  string operator_;
+  vector<Command *> vectorOfCommandsForIfCommand;
+  unordered_map<string, DefineVarCommand *> mapOfDefineVarCommandsForIfCommand;
+  int counter = 0;
+
+  ++it;
+  counter++;
+  while ((*it != "<") && (*it != "<=") && (*it != ">") && (*it != ">=") && (*it != "!=") && (*it != "==")) {
+    leftStringToMakeIntoExpression += (*it);
+    it++;
+    counter++;
+  }
+  operator_ = *it;
+  ++it;
+  counter++;
+  while (*it != "{") {
+    rightStringToMakeIntoExpression += (*it);
+    it++;
+    counter++;
+  }
+  it++;
+  counter++;
+
+  while (*it != "}") {
+
+
+
+    //DefineVarCommand for IfCommand
+    if (*it == "var") {
+      DefineVarCommand *temp_define_var_command = createDefineVarCommand_ptr(it, symbol_table, server_values_map);
+      //check where to put the defineVarCommandPtr
+      if (temp_define_var_command->IsHasArrow()) {
+        mapOfDefineVarCommandsForIfCommand[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        vectorOfCommandsForIfCommand.push_back(temp_define_var_command);
+        it += 4;
+        counter+=4;
+      } else {
+        mapOfDefineVarCommandsForIfCommand[temp_define_var_command->GetVarName()] = (temp_define_var_command);
+        it += 3;
+        counter+=3;
+      }
+      it++;
+      counter++;
+    }
+    //set var command for IfCommand
+    if (checkIfIteratorIsUpTooSetVarCommand(it)) {
+      SetVarCommand *set_var_command = createSetVarCommand(it, ms);
+
+      vectorOfCommandsForIfCommand.push_back(set_var_command);
+      it += 3;
+      counter+=3;
+    }
+
+    // Print command for while loop
+    if (*it == "Print") {
+      PrintCommand* print_command;
+      ++it;
+      counter++;
+      string message_ = *it;
+      //check if print message is a defineVarVarible for example: Print(rpm)
+      unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
+
+      if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
+        string s = to_string(itOverMap->second->GetVarValue());
+        print_command = new PrintCommand(itOverMap->second);
+        // mapOfCommands["Print" + *it] = (&print_command);
+        vectorOfCommandsForIfCommand.push_back(print_command);
+        ++it;
+        counter++;
+        continue;
+      }
+      //did not find a deifneVarVariable in print message
+      print_command = new PrintCommand(message_);
+      // mapOfCommands["Print" + *it] = (&print_command);
+      vectorOfCommandsForIfCommand.push_back(print_command);
+      ++it;
+      counter++;
+      continue;
+    }
+
+    //Sleep command for while loop
+    if (*it == "Sleep") {
+      ++it;
+      counter++;
+      int timeToSleep_ = stod(*it);
+      SleepCommand *sleep_command = new SleepCommand(timeToSleep_);
+      //  mapOfCommands["Sleep" + *it] = (sleep_command);
+      vectorOfCommandsForIfCommand.push_back(sleep_command);
+      it++;
+      counter++;
+      continue;
+    }
+  }
+  //NOTICE CHANGE I PUT THE MAP OF THE DEFINE VAR OF THE PARSER AND NOT OF THE CREATEWHILE
+  IfCommand* if_command = new IfCommand(vectorOfCommandsForIfCommand, leftStringToMakeIntoExpression,operator_, rightStringToMakeIntoExpression, this->mapOfDefineVarCommands);
+
+  if_command->SetCounterForHowMuchIteratorShouldJump(counter);
+  return if_command;
+
+}

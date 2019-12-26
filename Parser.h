@@ -21,6 +21,7 @@
 #include "SetVarCommand.h"
 #include "WhileCommand.h"
 #include "MessageSim.h"
+#include "IfCommand.h"
 using namespace std;
 
 
@@ -68,6 +69,8 @@ class Parser {
 
   bool checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator);
   SetVarCommand* createSetVarCommand(vector<string>::iterator, MessageSim*);
+
+  IfCommand* createIfCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*,MessageSim*);
 
   WhileCommand* createWhileCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*,MessageSim*);
 };
