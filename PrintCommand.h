@@ -11,8 +11,8 @@ class PrintCommand: public Command {
  private:
 
   string message;
-  DefineVarCommand* var;
-  bool isVar;
+  double expression_calculate;
+  bool isDouble;
 
  public:
 
@@ -23,7 +23,7 @@ class PrintCommand: public Command {
 
   // Constructer with parameters
   PrintCommand(const string &message_);
-  PrintCommand(DefineVarCommand*);
+  PrintCommand(double);
 
 
 

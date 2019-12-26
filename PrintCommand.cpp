@@ -12,19 +12,19 @@ PrintCommand::PrintCommand(){}
 // Constructer with parameters
 PrintCommand::PrintCommand(const string &message_){
   this->message = message_;
-  this->isVar = false;
+  this->isDouble = false;
 }
-PrintCommand::PrintCommand(DefineVarCommand* v){
-    this->var = v;
-    this->isVar = true;
+PrintCommand::PrintCommand(double expression_calculate1){
+    this->expression_calculate = expression_calculate1;
+    this->isDouble = true;
 }
 
 void PrintCommand::execute() {
-    if (!isVar) {
+    if (!isDouble) {
         cout << message << endl;
     } else {
-        var->execute();
-        cout <<"from print command the print: " <<var->GetVarValue() << endl;
+
+        cout << expression_calculate<< endl;
     }
 
 }
