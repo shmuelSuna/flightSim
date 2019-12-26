@@ -96,7 +96,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       // print_command = new PrintCommand(itOverMap->second);
       for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
 {
-        if(itOverMap->first.find(message_)!= string::npos) {
+        if(message_.find(itOverMap->first)!= string::npos) {
           //found one define var command in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
@@ -376,7 +376,7 @@ WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
       // print_command = new PrintCommand(itOverMap->second);
       for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
       {
-        if(itOverMap->first.find(message_)!= string::npos) {
+        if(message_.find(itOverMap->first)!= string::npos) {
           //found one define var command in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
@@ -490,7 +490,7 @@ IfCommand* Parser::createIfCommand_ptr(vector<string>::iterator it,
       // print_command = new PrintCommand(itOverMap->second);
       for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
       {
-        if(itOverMap->first.find(message_)!= string::npos) {
+        if(message_.find(itOverMap->first)!= string::npos) {
           //found one define var command in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
