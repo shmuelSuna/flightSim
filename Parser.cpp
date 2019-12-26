@@ -26,6 +26,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
   MessageSim *messanger = new MessageSim;
   SymbolTable *symbolTable = new SymbolTable;// initialized with 36 values
   ServerValuesMap *serverValuesMap = new ServerValuesMap;
+  this->mapTest = serverValuesMap;
 
 
   //iterate over all vector of strings
@@ -61,20 +62,20 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       if (temp_define_var_command->IsHasArrow()) {
         mapOfCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
         mapOfDefineVarCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
-        vectorOfCommands.push_back(temp_define_var_command);
 
         it += 4;
       } else {
         mapOfDefineVarCommands[temp_define_var_command->GetVarName()] = (temp_define_var_command);
         it += 3;
       }
-      continue;
+        vectorOfCommands.push_back(temp_define_var_command);
+
+        continue;
     }
 
     //set var command
     if (checkIfIteratorIsUpTooSetVarCommand(it)) {
-      SetVarCommand *set_var_command = createSetVarCommand(it);
-      set_var_command->setMessanger(messanger);
+      SetVarCommand *set_var_command = createSetVarCommand(it,messanger);
       mapOfCommands["SetVarCommand" + set_var_command->GetDefine_var_command_ptr()->GetVarName()] = (set_var_command);
       vectorOfCommands.push_back(set_var_command);
       it+=2;
@@ -114,7 +115,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
 
     //While command
     if (*it == "while") {
-      WhileCommand *while_command = createWhileCommand_ptr(it, symbolTable, serverValuesMap);
+      WhileCommand *while_command = createWhileCommand_ptr(it, symbolTable, serverValuesMap, messanger);
 
       mapOfCommands["While" + while_command->GetLeftStringToMakeIntoExpression()
           + while_command->GetAnOperator() + while_command->GetRightStringToMakeIntoExpression()] = (while_command);
@@ -180,25 +181,8 @@ Expression *Parser::GetExpressionFromString(string str) {
 }
 
 void Parser::operateCommands() {
+
   vector<Command *>::iterator it = this->command_vec.begin();
-  Command *temp;
-  temp = *it;
-
-    thread t1(&Command::execute, temp);
-
-
-
-
- cv.wait(ul, [] { return isServerConnect; });
-
-  it++;
-  temp = *it;
-
-
-
-  thread t2(&Command::execute, temp);
-  it++;
-
 
 
 
@@ -209,8 +193,6 @@ void Parser::operateCommands() {
   }
 
 
-  t2.join();
-     t1.join();
 
 }
 
@@ -266,7 +248,9 @@ DefineVarCommand *Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<st
 
 DefineVarCommand *Parser::createDefineVarCommand_ptrThatHas_NO_ArrowAndSim
     (vector<string>::iterator it, string varName_) {
-  DefineVarCommand *define_var_command = new DefineVarCommand(varName_, "", "", 0);
+    ++it;
+    SimulatorObject* temp = mapOfDefineVarCommands[*it]->getSimObj();
+  DefineVarCommand *define_var_command = new DefineVarCommand(varName_, "", "", 0,temp);
   define_var_command->SetHasArrow(false);
 
   // it--;//
@@ -287,7 +271,7 @@ bool Parser::checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator it) {
   return false;
 
 }
-SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it) {
+SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it, MessageSim* ms) {
   string nameOfSetVarCommand = *it;
   unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
   it += 2;
@@ -295,13 +279,14 @@ SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it) {
 
   SetVarCommand*set_var_command =
       new SetVarCommand(itOverMap->second, *it, mapOfDefineVarCommands, mapForInterpeter2);
+  set_var_command->setMessanger(ms);
   return set_var_command;
 
 }
 
 
 WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
-    SymbolTable* symbol_table,ServerValuesMap* server_values_map) {
+    SymbolTable* symbol_table,ServerValuesMap* server_values_map, MessageSim* ms) {
 
   string leftStringToMakeIntoExpression;
   string rightStringToMakeIntoExpression;
@@ -351,7 +336,7 @@ WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
     }
     //set var command for while loop
     if (checkIfIteratorIsUpTooSetVarCommand(it)) {
-      SetVarCommand *set_var_command = createSetVarCommand(it);
+      SetVarCommand *set_var_command = createSetVarCommand(it, ms);
       // mapOfDefineVarCommandsForWhileLoop["SetVarCommand" + set_var_command->GetDefine_var_command_ptr()->GetVarName()] = (set_var_command);
       vectorOfCommandsForWhileLoop.push_back(set_var_command);
       it += 3;

@@ -14,7 +14,7 @@ DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const s
         : varName(var_name), arrow(arrow), sim(sim), VarValue(var_value) {}
 
 void DefineVarCommand:: DefineVarCommand::execute() {
-    if (arrow == "<-") {
+    if (arrow == "<-" || !hasArrow) {
         VarValue = simulator_object->getValue();
     }
 
@@ -39,7 +39,9 @@ void DefineVarCommand::SetSim(string sim) {
   DefineVarCommand::sim = sim;
 }
 double DefineVarCommand::GetVarValue() {
-    VarValue = this->simulator_object->getValue();
+    if (hasArrow) {
+        VarValue = this->simulator_object->getValue();
+    }
     return VarValue;
 }
 void DefineVarCommand::SetVarValue(double var_value) {
@@ -51,5 +53,8 @@ bool DefineVarCommand::IsHasArrow()  {
 }
 void DefineVarCommand::SetHasArrow(bool has_arrow) {
   hasArrow = has_arrow;
+}
+SimulatorObject* DefineVarCommand::getSimObj() {
+    return this->simulator_object;
 }
 

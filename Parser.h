@@ -30,6 +30,7 @@ class Parser {
   unordered_map<string, Command*> mapOfCommands;
   unordered_map<string, DefineVarCommand*> mapOfDefineVarCommands;
   vector<Command*> command_vec;
+  ServerValuesMap* mapTest;
  public:
   // Defualt Constructer
   Parser();
@@ -66,9 +67,9 @@ class Parser {
   DefineVarCommand* createDefineVarCommand_ptrThatHas_NO_ArrowAndSim(vector<string>::iterator,string);
 
   bool checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator);
-  SetVarCommand* createSetVarCommand(vector<string>::iterator);
+  SetVarCommand* createSetVarCommand(vector<string>::iterator, MessageSim*);
 
-  WhileCommand* createWhileCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*);
+  WhileCommand* createWhileCommand_ptr(vector<string>::iterator,SymbolTable*,ServerValuesMap*,MessageSim*);
 };
 
 #endif //FLIGHTSIM_PARSER_H

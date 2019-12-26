@@ -26,18 +26,18 @@ SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str
 
 
 void SetVarCommand::execute(){
+    cout<<"from set var command start executing\n";
     unordered_map<string, DefineVarCommand*>::iterator it = mapOfDefineVarCommands.begin();
-    for (;it != mapOfDefineVarCommands.end(); it++) {
-        it->second->execute();
-    }
+
     Interpreter *i2 = new Interpreter();
+    SetMapUpForInterpeter(this->rightSideOfEqualsOpertor);
     i2->setVariables(mapForInterpeter);
     Expression *e1 = i2->interpret(rightSideOfEqualsOpertor);
 
     float newValue = e1->calculate();
     GetDefine_var_command_ptr()->SetVarValue(newValue);
     string s = define_var_command_ptr->GetSim();
-    messageSim->setMessage(newValue, s);
+    messageSim->addMessage(newValue, s);
 
 
 
@@ -48,9 +48,10 @@ bool SetVarCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfE
   //
   //
  //check in map of defineVarcommands if there is a substring in the string to equals
-  for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-       ++itOverMap) {
-    if(stringThatsRightOfEquals.find(itOverMap->first)!= string::npos) {
+ unordered_map<string,DefineVarCommand*> temp = GetMapOfDefineVarCommands();
+ unordered_map<string,DefineVarCommand*>::iterator it = temp.begin();
+  for (;it != temp.end(); ++it) {
+    if(stringThatsRightOfEquals.find(it->first)!= string::npos) {
       return true;
     }
   }
@@ -61,10 +62,11 @@ bool SetVarCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfE
 void  SetVarCommand::SetMapUpForInterpeter(string stringThatsRightOfEquals) {
 
   if (this->checkIfNameOfADefineVarIsInString(stringThatsRightOfEquals)) {//there is a define var in the string
-    for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-         ++itOverMap) {
-      if (stringThatsRightOfEquals.find(itOverMap->first) != string::npos) {
-        mapForInterpeter[itOverMap->first] = itOverMap->second->GetVarValue();
+      unordered_map<string,DefineVarCommand*> temp = GetMapOfDefineVarCommands();
+      unordered_map<string,DefineVarCommand*>::iterator it = temp.begin();
+    for (; it != temp.end(); ++it) {
+      if (stringThatsRightOfEquals.find(it->first) != string::npos) {
+        mapForInterpeter[it->first] = it->second->GetVarValue();
       }
     }
   }

@@ -34,6 +34,7 @@ private:
 
     int port;
     ServerValuesMap* serverValuesMap;
+    int cliient_socket;
 
 
 
@@ -54,7 +55,7 @@ public:
     //the open data server should have an access to the table to update the variables that come from the Simulator
     void dataServerUpdate(int, SimulatorObject*);
 
-
+    void connectionWhileloop();
 
     void printHello() {
         cout<<"hello"<<endl;

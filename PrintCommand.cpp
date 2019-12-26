@@ -24,7 +24,7 @@ void PrintCommand::execute() {
         cout << message << endl;
     } else {
         var->execute();
-        cout << var->GetVarValue() << endl;
+        cout <<"from print command the print: " <<var->GetVarValue() << endl;
     }
 
 }

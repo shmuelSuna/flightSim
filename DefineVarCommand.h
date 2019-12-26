@@ -35,6 +35,7 @@ class DefineVarCommand : public Command{
   void SetSim( string sim);
   double GetVarValue();
   void SetVarValue(double var_value);
+  SimulatorObject* getSimObj();
 
   //option 1
   void execute() override;

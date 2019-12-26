@@ -20,13 +20,10 @@ ConnectCommand::ConnectCommand(string ip1, int port1, MessageSim * m) {
 void ConnectCommand::execute() {
 
     const char* ip2 = this->ip.c_str();
-    vector<string> vec;
-    vec.push_back("hello test");
     this->client_socket = connectControlClient(this->port, ip2);
-    setNewValSim();
-
+    thread t1([this]{setNewValSim();});
+    t1.detach();
 }
-
 
 
 
@@ -34,30 +31,28 @@ void ConnectCommand::execute() {
 void ConnectCommand::setNewValSim() {
     while (true) {
 
-        cv.wait(ul, [] { return newMessage; });
+        while (!this->message->isMessangerEmpty()) {
+            string c = this->message->getMessage();
+            int n = c.size();
+            char hello2[n + 1];
+            strcpy(hello2, c.c_str());
 
-        //if here we made a connection
-        string c = this->message->getMessage();
-        int n = c.size();
-        char hello2[n + 1];
-        strcpy(hello2, c.c_str());
+            int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
+            if (is_sent2 == -1) {
+                std::cout << "Error sending message" << std::endl;
+            } else {
+                //  std::cout << hello2 << " message sent to server" << std::endl;
+            }
 
-        int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
-        if (is_sent2 == -1) {
-            std::cout << "Error sending message" << std::endl;
-        } else {
-          //  std::cout << hello2 << " message sent to server" << std::endl;
+            char buffer[1024] = {0};
+            int valread = read(client_socket, buffer, 1024);
+            cout << valread << endl;
+            std::cout << "message returned from the simulator: " << buffer << std::endl;
+
         }
 
-        char buffer[1024] = {0};
-        int valread = read(client_socket, buffer, 1024);
-        cout << valread << endl;
-        std::cout <<"message returned from the simulator: " << buffer << std::endl;
-        newMessage = false;
-        cv.notify_all();
 
     }
-
 }
 
 
@@ -92,27 +87,6 @@ int connectControlClient(int port, const char* ip) {
     }
     return client_socket;
 
-    /*
-    //if here we made a connection
-    char hello2[] = "set /controls/engines/current-engine/mixture 0.2\r\n";
-
-    int is_sent2 = send(client_socket , hello2 , strlen(hello2) , 0 );
-    if (is_sent2 == -1) {
-        std::cout<<"Error sending message"<<std::endl;
-    } else {
-        std::cout<<hello2<<" message sent to server" <<std::endl;
-    }
-
-    char buffer[1024] = {0};
-    int valread = read( client_socket , buffer, 1024);
-    cout<<valread<<endl;
-    std::cout<<buffer<<std::endl;
-
-    close(client_socket);
-
-    return 0;
-
-*/
 
 
 

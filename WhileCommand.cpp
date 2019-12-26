@@ -24,9 +24,8 @@ WhileCommand::WhileCommand(vector<Command *> vectorOfCommands,
 }
 
 void WhileCommand::execute() {
-
-  this->SetUpExpressions();
-  if (operator_ == "<") {
+    this->SetUpExpressions();
+    if (operator_ == "<") {
     while (this->GetLeftExpression()->calculate() < this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
@@ -38,7 +37,8 @@ void WhileCommand::execute() {
   }
 
   if (operator_ == "<=") {
-    while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
+      cout<<"in while command"<<endl;
+      while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
         this->SetUpExpressions();
@@ -97,9 +97,10 @@ void WhileCommand::execute() {
 bool WhileCommand::checkIfNameOfADefineVarIsInString(string str) {
 
   //check in map of defineVarcommands if there is a substring in the string to equals
-  for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-       ++itOverMap) {
-    if (str.find(itOverMap->first) != string::npos) {
+  unordered_map<string,DefineVarCommand*> temp_map = this->mapOfDefineVarCommands;
+    unordered_map<string,DefineVarCommand*>::iterator it = temp_map.begin();
+  for (; it != temp_map.end(); ++it) {
+    if (str.find(it->first) != string::npos) {
       return true;
     }
   }
@@ -109,11 +110,14 @@ bool WhileCommand::checkIfNameOfADefineVarIsInString(string str) {
 map<string, double> WhileCommand::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
 
+
+
   if (this->checkIfNameOfADefineVarIsInString(str)) {//there is a define var in the string
-    for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-         ++itOverMap) {
-      if (str.find(itOverMap->first) != string::npos) {
-        mapForInterpeter[itOverMap->first] = itOverMap->second->GetVarValue();
+      unordered_map<string,DefineVarCommand*> temp_map = this->mapOfDefineVarCommands;
+      unordered_map<string,DefineVarCommand*>::iterator it = temp_map.begin();
+    for ( ; it != temp_map.end(); ++it) {
+      if (str.find(it->first) != string::npos) {
+        mapForInterpeter[it->first] = it->second->GetVarValue();
       }
     }
   }

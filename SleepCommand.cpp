@@ -14,12 +14,7 @@ SleepCommand::SleepCommand(int timeToSleep_){
 
 
 
-
-//option 1
 void SleepCommand:: execute(){
     this_thread::sleep_for(chrono::milliseconds(timeToSleep));
 
 }
-
-//option 2
-// void execute()override ;

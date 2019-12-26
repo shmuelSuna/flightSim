@@ -8,10 +8,13 @@
 #include <iostream>
 #include <condition_variable>
 #include <string>
+#include <queue>
+#include <thread>
+#include <cstring>
+#include <sstream>
 
 using namespace std;
 
-extern bool newMessage;
 extern condition_variable cv;
 extern mutex m;
 extern unique_lock<mutex> ul;
@@ -20,10 +23,11 @@ using namespace std;
 
 class MessageSim {
 private:
-    string message;
+    queue<string> message_queue;
 public:
-    void setMessage(float, string);
+    void addMessage(float, string);
     string getMessage();
+    bool isMessangerEmpty();
 
 };
 

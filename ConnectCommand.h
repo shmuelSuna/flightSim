@@ -14,12 +14,12 @@
 #include <arpa/inet.h>
 #include "SymbolTable.h"
 #include <string.h>
+#include <thread>
 #include "MessageSim.h"
 #include <condition_variable>
 #include <mutex>
 
 using namespace std;
-extern bool newMessage;
 extern condition_variable cv;
 extern mutex m;
 extern unique_lock<mutex> ul;

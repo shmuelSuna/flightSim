@@ -10,8 +10,6 @@
 #include <mutex>
 #include "MessageSim.h"
 using namespace std;
-
-bool newMessage = false;
 bool isServerConnect = false;
 condition_variable cv;
 mutex m;
@@ -34,9 +32,7 @@ int main() {
     mapOfCommands = parser.action(vectorOfStrings12);
 
 
-    vector<string>vec;
-    vec.push_back("hello");
-    vector<string>::iterator it2 = vec.begin();
+
 
 
 

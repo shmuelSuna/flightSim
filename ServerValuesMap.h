@@ -18,6 +18,7 @@ private:
 public:
     void insert(int, SimulatorObject*);
     SimulatorObject* getSimObj(int);
+    void printServerValuesTeset();
 };
 
 #endif //FLIGHTSIM_SERVERVALUESMAP_H
