@@ -17,6 +17,7 @@ unique_lock <mutex> ul(m);
 
 
 vector<string> static lexer(const string&);
+string removeSpaces(string);
 
 
 int main() {
@@ -44,47 +45,8 @@ int main() {
 
 
 
-/*
-    thread t1([&]() {
-        return ods.execute(it);});
-*/
-/*
-
-    string s = "10.0.2.2";
-    MessageSim * m = new MessageSim;
-
-    ConnectCommand cc(s, 5402, m);
-    cc.execute(it2);
-    thread t1(&ConnectCommand::setNewValSim,cc);
-    cout<<newMessage<<endl;
-    this_thread::sleep_for(3s);
-    m->setMessage(1.2, "controls/switches/starter");
-    cout<<newMessage<<endl;
-
-    this_thread::sleep_for(2s);
-
-    cout<<newMessage<<endl;
-
-    m->setMessage(0.1, "/controls/engines/current-engine/throttle");
-
-    this_thread::sleep_for(2s);
-
-    m->setMessage(0.1, "/controls/engines/current-engine/mixture");
 
 
-
-
-
-
-
-
-
-
-    t1.join();
-
-
-*/
- //   t1.join();
 
 
 
@@ -122,25 +84,100 @@ std::vector<string> static lexer(const std::string& fileName) {
         std::string token;
         //3 options that the type of the expression in the line might be
         bool isEquation = false;
-        bool isPrint = false;
         bool isCondition = false;
         bool isVarDec = false;
+        int n = line.size();
+        int j = 0;
+        while (line[j] == ' ') {
+            j++;
+        }
+        line = line.substr(j,n-(j+1));
 
         for (char& c : line) {
             if (token == ("while") || token == ("if")) {
-                isCondition = true;
-            }else if (token ==("Print") || token == ("print")) {
-                isPrint = true;
+                if (token == "while") {
+                    lexerVector.push_back(token);
+                    line = line.substr(6,n-5);
+                } else if (token == "if") {
+                    lexerVector.push_back(token);
+                    line = line.substr(3, n-2);
+                }
+                token = "";
+                int i = 0;
+                line = removeSpaces(line);
+                n = line.size();
+                for (i = 0; i < n; i++) {
+                    if (line[i] == '=' || line[i] == '<' || line[i] == '>' || line[i] == '!') {
+                        lexerVector.push_back(token);
+                        token = "";
+                        token = line.substr(i, 2);
+                        lexerVector.push_back(token);
+                        token = "";
+                        i++;
+                        continue;
+                    } else if (line[i] == '{') {
+                        lexerVector.push_back(token);
+                        token = "{";
+                        lexerVector.push_back(token);
+                        token = "";
+                        break;
+                    }
+                    token.push_back(line[i]);
+                }
+                break;
+            } else if (token ==("Print") || token == ("print")) {
+                lexerVector.push_back(token);
+                token = "";
+                if (line[n-2] == '"') {
+                    token = line.substr(7,n-9);
+                } else {
+                    token = line.substr(6, n-7);
+                    token = removeSpaces(token);
+                }
+                lexerVector.push_back(token);
+                token = "";
+                break;
             } else if (token == "var") {
                 isVarDec = true;
+            } else if (token == "openDataServer") {
+                lexerVector.push_back(token);
+                token = "";
+                token = line.substr(15, n-16);
+                token = removeSpaces(token);
+                lexerVector.push_back(token);
+                token = "";
+                break;
+            } else if (token == "connectControlClient") {
+                lexerVector.push_back(token);
+                token = "";
+                int found = line.find('"');
+                line = line.substr(found+1, n-found);
+                found = line.find('"');
+                token = line.substr(0, found);
+                lexerVector.push_back(token);
+                token = "";
+                token = line.substr(found+2, line.size() - (found + 3));
+                token = removeSpaces(token);
+                lexerVector.push_back(token);
+                token = "";
+                break;
+
+            } else if (token == "sleep" || token == "Sleep") {
+                lexerVector.push_back(token);
+                token = "";
+                token = line.substr(6, n-7);
+                token = removeSpaces(token);
+                lexerVector.push_back(token);
+                token = "";
+                break;
             }
-            if (!isEquation && !isPrint && (c == ' ' || c == '\t' || c == '\n' || c == ',')) {
+            if (!isEquation && (c == ' ' || c == '\t' || c == '\n' || c == ',')) {
                 if (!token.empty()) {
                     lexerVector.push_back(token);
                 }
                 token = "";
                 continue;
-            } else if (!isPrint && !isCondition && c == '=') {
+            } else if (!isCondition && c == '=') {
                 if (!token.empty()) {
                     lexerVector.push_back(token);
                     token = "";
@@ -190,6 +227,7 @@ std::vector<string> static lexer(const std::string& fileName) {
             }
             token.push_back(c);
         }
+
         if (!token.empty()) {
             lexerVector.push_back(token);
         }
@@ -201,4 +239,16 @@ std::vector<string> static lexer(const std::string& fileName) {
     return lexerVector;
 
 
+}
+string removeSpaces(string str)
+{
+    int i = 0, j = 0;
+    while (str[i])
+    {
+        if (str[i] != ' ')
+            str[j++] = str[i];
+        i++;
+    }
+    str = str.substr(0, j);
+    return str;
 }

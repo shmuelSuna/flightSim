@@ -35,7 +35,6 @@ void IfCommand::execute() {
   }
 
   if (operator_ == "<=") {
-    cout<<"in while command"<<endl;
     if (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {

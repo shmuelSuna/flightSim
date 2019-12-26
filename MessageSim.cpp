@@ -5,7 +5,9 @@
 #include "MessageSim.h"
 
 
-
+/*
+ * the messanger sends to the connectClient the commands
+ */
 void MessageSim::addMessage(float v, string path) {
     ostringstream oss;
     oss << "set " << path << " " << to_string(v) << "\r\n";
