@@ -156,7 +156,7 @@ std::vector<string> static lexer(const std::string& fileName) {
                 token = line.substr(0, found);
                 lexerVector.push_back(token);
                 token = "";
-                token = line.substr(found+2, line.size() - (found + 3));
+                token = line.substr(found+2, line.size() - (found + 2));
                 token = removeSpaces(token);
                 lexerVector.push_back(token);
                 token = "";
