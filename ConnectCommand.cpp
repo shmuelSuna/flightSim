@@ -40,8 +40,6 @@ void ConnectCommand::setNewValSim() {
             int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
             if (is_sent2 == -1) {
                 std::cout << "Error sending message" << std::endl;
-            } else {
-                //  std::cout << hello2 << " message sent to server" << std::endl;
             }
 
             char buffer[1024] = {0};
@@ -53,6 +51,7 @@ void ConnectCommand::setNewValSim() {
 
 
     }
+
 }
 
 

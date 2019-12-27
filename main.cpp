@@ -73,27 +73,29 @@ std::vector<string> static lexer(const std::string& fileName) {
 
 
     std::string line;
-    /*
-     * reading line by line and check the type of the expression in the line
-     * if line is an equation we will put the whole expression, with the parenthesis,
-     * in one string and will analyze the expression later
-     * if there is a command of print so we copy the string in the (" ... ")
-     * we always check if the token that we are going to insert the lexer is not empty
-     */
+
     while(getline(file, line)) {
         std::string token;
-        //3 options that the type of the expression in the line might be
         bool isEquation = false;
-        bool isCondition = false;
         bool isVarDec = false;
         int n = line.size();
-        int j = 0;
-        while (line[j] == ' ') {
-            j++;
-        }
-        line = line.substr(j,n-(j+1));
+        int found;
+
+
 
         for (char& c : line) {
+            if (token == "var") {
+                if (line.find('=') != string::npos) {
+                    lexerVector.push_back(token);
+                    token = "";
+                    continue;
+                } else {
+                    isVarDec = true;
+                }
+            }
+            if (!isVarDec && c == ' ') {
+                continue;
+            }
             if (token == ("while") || token == ("if")) {
                 if (token == "while") {
                     lexerVector.push_back(token);
@@ -110,10 +112,15 @@ std::vector<string> static lexer(const std::string& fileName) {
                     if (line[i] == '=' || line[i] == '<' || line[i] == '>' || line[i] == '!') {
                         lexerVector.push_back(token);
                         token = "";
-                        token = line.substr(i, 2);
+                        token.push_back(line[i]);
+                        i++;
+                        if (line[i] == '=' || line[i] == '<' || line[i] == '>' || line[i] == '!') {
+                            token.push_back(line[i]);
+                        } else {
+                            i--;
+                        }
                         lexerVector.push_back(token);
                         token = "";
-                        i++;
                         continue;
                     } else if (line[i] == '{') {
                         lexerVector.push_back(token);
@@ -128,17 +135,17 @@ std::vector<string> static lexer(const std::string& fileName) {
             } else if (token ==("Print") || token == ("print")) {
                 lexerVector.push_back(token);
                 token = "";
-                if (line[n-2] == '"') {
-                    token = line.substr(7,n-9);
+                found = line.find('(');
+                line = line.substr(found+1,n-(found+1));
+                if (line[0] == '"') {
+                    token = line.substr(1, line.size()-3);
                 } else {
-                    token = line.substr(6, n-7);
+                    token = line.substr(0,line.size()-1);
                     token = removeSpaces(token);
                 }
                 lexerVector.push_back(token);
                 token = "";
                 break;
-            } else if (token == "var") {
-                isVarDec = true;
             } else if (token == "openDataServer") {
                 lexerVector.push_back(token);
                 token = "";
@@ -150,13 +157,13 @@ std::vector<string> static lexer(const std::string& fileName) {
             } else if (token == "connectControlClient") {
                 lexerVector.push_back(token);
                 token = "";
-                int found = line.find('"');
-                line = line.substr(found+1, n-found);
+                found = line.find('"');
+                line = line.substr(found+1, n-(found+1));
                 found = line.find('"');
                 token = line.substr(0, found);
                 lexerVector.push_back(token);
                 token = "";
-                token = line.substr(found+2, line.size() - (found + 2));
+                token = line.substr(found+2, line.size() - (found + 3));
                 token = removeSpaces(token);
                 lexerVector.push_back(token);
                 token = "";
@@ -165,7 +172,8 @@ std::vector<string> static lexer(const std::string& fileName) {
             } else if (token == "sleep" || token == "Sleep") {
                 lexerVector.push_back(token);
                 token = "";
-                token = line.substr(6, n-7);
+                found = line.find('(');
+                token = line.substr(found+1, n-(found+2));
                 token = removeSpaces(token);
                 lexerVector.push_back(token);
                 token = "";
@@ -177,16 +185,18 @@ std::vector<string> static lexer(const std::string& fileName) {
                 }
                 token = "";
                 continue;
-            } else if (!isCondition && c == '=') {
-                if (!token.empty()) {
-                    lexerVector.push_back(token);
-                    token = "";
-                }
+            } else if (c == '=') {
+                lexerVector.push_back(token);
+                token = "";
                 token.push_back(c);
                 lexerVector.push_back(token);
-                isEquation = true;
                 token = "";
-                continue;
+                found = line.find('=');
+                token = line.substr(found+1, n-(found+1));
+                token = removeSpaces(token);
+                lexerVector.push_back(token);
+                token = "";
+                break;
 
             } else if (isEquation) {
                 if (c == ' ') {

@@ -87,6 +87,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     if (*it == "Print") {
         PrintCommand* print_command;
       Expression* expression_for_print_command;
+      bool isExpression = false;
       ++it;
       string message_ = *it;
       //check if print message is a defineVarVarible for example: Print(rpm)
@@ -94,21 +95,22 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       //  if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
       // string s = to_string(itOverMap->second->GetVarValue());
       // print_command = new PrintCommand(itOverMap->second);
-      for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
-{
+      for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++) {
         if(message_.find(itOverMap->first)!= string::npos) {
+            isExpression = true;
           //found one define var command in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
           mapOfCommands["Print" + message_] = (print_command);
-          vectorOfCommands.push_back(print_command);
-          continue;
-}
 
-}
-      //did not find a deifneVarVariable in print message
-      print_command = new PrintCommand(message_);
-      mapOfCommands["Print" + *it] = (print_command);
+            }
+
+        }
+      if (!isExpression) {
+          //did not find a deifneVarVariable in print message
+          print_command = new PrintCommand(message_);
+          mapOfCommands["Print" + *it] = (print_command);
+      }
       vectorOfCommands.push_back(print_command);
       continue;
     }
@@ -158,8 +160,9 @@ unordered_map<string, Command *> Parser::GetMapOfCommands() {
 bool Parser::checkIfNameOfADefineVarIsInString(string str) {
 
   //check in map of defineVarcommands if there is a substring in the string to equals
-  for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-       ++itOverMap) {
+  unordered_map<string,DefineVarCommand*> temp_map = GetMapOfDefineVarCommands();
+  unordered_map<string,DefineVarCommand*>::iterator itOverMap = temp_map.begin();
+  for (; itOverMap !=temp_map.end(); ++itOverMap) {
     if (str.find(itOverMap->first) != string::npos) {
       return true;
     }
@@ -171,8 +174,9 @@ map<string, double> Parser::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
 
   if (this->checkIfNameOfADefineVarIsInString(str)) {//there is a define var in the string
-    for (auto itOverMap = GetMapOfDefineVarCommands().begin(); itOverMap != GetMapOfDefineVarCommands().end();
-         ++itOverMap) {
+      unordered_map<string,DefineVarCommand*> temp_map = GetMapOfDefineVarCommands();
+      unordered_map<string,DefineVarCommand*>::iterator itOverMap = temp_map.begin();
+      for (; itOverMap != temp_map.end(); ++itOverMap) {
       if (str.find(itOverMap->first) != string::npos) {
         mapForInterpeter[itOverMap->first] = itOverMap->second->GetVarValue();
       }
@@ -369,27 +373,27 @@ WhileCommand* Parser::createWhileCommand_ptr(vector<string>::iterator it,
       Expression* expression_for_print_command;
       ++it;
       string message_ = *it;
+      bool isExpression = false;
       //check if print message is a defineVarVarible for example: Print(rpm)
       //unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
       //  if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
       // string s = to_string(itOverMap->second->GetVarValue());
       // print_command = new PrintCommand(itOverMap->second);
-      for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
-      {
+        unordered_map<string,DefineVarCommand*> temp_map = GetMapOfDefineVarCommands();
+        unordered_map<string,DefineVarCommand*>::iterator itOverMap = temp_map.begin();
+        for (; itOverMap !=temp_map.end(); ++itOverMap) {
         if(message_.find(itOverMap->first)!= string::npos) {
           //found one define var command in string
+          isExpression = true;
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
           //mapOfCommands["Print" + message_] = (print_command);
-          vectorOfCommandsForWhileLoop.push_back(print_command);
-          ++it;
-          counter++;
-          continue;
-
         }
       }
-      //did not find a deifneVarVariable in print message
-      print_command = new PrintCommand(message_);
+        if (!isExpression) {
+            //did not find a deifneVarVariable in print message
+            print_command = new PrintCommand(message_);
+        }
       vectorOfCommandsForWhileLoop.push_back(print_command);
       ++it;
       counter++;
@@ -483,27 +487,30 @@ IfCommand* Parser::createIfCommand_ptr(vector<string>::iterator it,
       Expression* expression_for_print_command;
       ++it;
       string message_ = *it;
+      bool isExpression = false;
       //check if print message is a defineVarVarible for example: Print(rpm)
       //unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
       //  if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
       // string s = to_string(itOverMap->second->GetVarValue());
       // print_command = new PrintCommand(itOverMap->second);
-      for(auto itOverMap = mapOfDefineVarCommands.begin();itOverMap != mapOfDefineVarCommands.end();itOverMap++)
-      {
+        unordered_map<string,DefineVarCommand*> temp_map = GetMapOfDefineVarCommands();
+        unordered_map<string,DefineVarCommand*>::iterator itOverMap = temp_map.begin();
+        for (; itOverMap !=temp_map.end(); ++itOverMap) {
         if(message_.find(itOverMap->first)!= string::npos) {
+            isExpression = true;
           //found one define var command in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command->calculate());
           //mapOfCommands["Print" + message_] = (print_command);
-          vectorOfCommandsForIfCommand.push_back(print_command);
-          ++it;
-          counter++;
-          continue;
+
+
 
         }
       }
       //did not find a deifneVarVariable in print message
-      print_command = new PrintCommand(message_);
+      if (!isExpression) {
+          print_command = new PrintCommand(message_);
+      }
       vectorOfCommandsForIfCommand.push_back(print_command);
       ++it;
       counter++;
