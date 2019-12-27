@@ -7,12 +7,13 @@
 
 #include "Command.h"
 #include "DefineVarCommand.h"
+#include "ex1.h"
 class PrintCommand: public Command {
  private:
 
   string message;
-  double expression_calculate;
-  bool isDouble;
+  Expression* expression_;
+  bool isExpression;
 
  public:
 
@@ -23,7 +24,7 @@ class PrintCommand: public Command {
 
   // Constructer with parameters
   PrintCommand(const string &message_);
-  PrintCommand(double);
+  PrintCommand(Expression*);
 
 
 

@@ -12,19 +12,18 @@ PrintCommand::PrintCommand(){}
 // Constructer with parameters
 PrintCommand::PrintCommand(const string &message_){
   this->message = message_;
-  this->isDouble = false;
+  this->isExpression = false;
 }
-PrintCommand::PrintCommand(double expression_calculate1){
-    this->expression_calculate = expression_calculate1;
-    this->isDouble = true;
+PrintCommand::PrintCommand(Expression* expression1){
+    this->expression_ = expression1;
+    this->isExpression = true;
 }
 
 void PrintCommand::execute() {
-    if (!isDouble) {
+    if (!isExpression) {
         cout << message << endl;
     } else {
-
-        cout << expression_calculate<< endl;
+      cout << expression_->calculate()<< endl;
     }
 
 }
