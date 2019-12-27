@@ -29,7 +29,7 @@ void ConnectCommand::execute() {
 
 
 void ConnectCommand::setNewValSim() {
-    while (true) {
+    while (isClientOn) {
 
         while (!this->message->isMessangerEmpty()) {
             string c = this->message->getMessage();
@@ -40,19 +40,18 @@ void ConnectCommand::setNewValSim() {
             int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
             if (is_sent2 == -1) {
                 std::cout << "Error sending message" << std::endl;
-            } else {
-                //  std::cout << hello2 << " message sent to server" << std::endl;
             }
 
             char buffer[1024] = {0};
             int valread = read(client_socket, buffer, 1024);
-            cout << valread << endl;
             std::cout << "message returned from the simulator: " << buffer << std::endl;
 
         }
 
 
     }
+    close(client_socket);
+
 }
 
 

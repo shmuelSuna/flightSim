@@ -22,6 +22,9 @@ PrintCommand::PrintCommand(Expression* expression1){
 void PrintCommand::execute() {
     if (!isExpression) {
         cout << message << endl;
+        if (message == "done") {
+            isClientOn = false;
+        }
     } else {
       cout << expression_->calculate()<< endl;
     }
