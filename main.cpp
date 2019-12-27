@@ -25,6 +25,7 @@ int main() {
 
     vector<string>vectorOfStrings12;
     vectorOfStrings12 = lexer("fly.txt");
+
     vector<string>::iterator it = vectorOfStrings12.begin();
 
     Parser parser(vectorOfStrings12);
@@ -35,8 +36,7 @@ int main() {
 
 
 
-
-   parser.operateCommands();
+    parser.operateCommands();
 
 
 
@@ -135,10 +135,8 @@ std::vector<string> static lexer(const std::string& fileName) {
                 token = "";
                 found = line.find('(');
                 line = line.substr(found+1,n-(found+1));
-                if (line[0] == '"') {
-                    token = line.substr(1, line.size()-3);
-                } else {
-                    token = line.substr(0,line.size()-1);
+                token = line.substr(0, line.size()-1);
+                if (line[0] != '"') {
                     token = removeSpaces(token);
                 }
                 lexerVector.push_back(token);
