@@ -96,7 +96,9 @@ void OpenDataServer::connectionWhileloop() {
             try {
 
                 tempObj = this->serverValuesMap->getSimObj(i);
+                m.lock();
                 tempObj->setValue(*valuesIter);
+                m.unlock();
                 if (*valuesIter != 0 ){
                 }
             } catch (const char * e) {

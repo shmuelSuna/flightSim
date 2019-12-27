@@ -25,9 +25,7 @@ SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str
 
 
 
-void SetVarCommand::execute(){
-    cout<<"from set var command start executing\n";
-    unordered_map<string, DefineVarCommand*>::iterator it = mapOfDefineVarCommands.begin();
+void SetVarCommand::execute(){unordered_map<string, DefineVarCommand*>::iterator it = mapOfDefineVarCommands.begin();
 
     Interpreter *i2 = new Interpreter();
     SetMapUpForInterpeter(this->rightSideOfEqualsOpertor);

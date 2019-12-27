@@ -91,12 +91,11 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       ++it;
       string message_ = *it;
 
+      if (message_[0] != '"') {
+
       unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
       for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
-        if (message_.find(itOverMap->first) != string::npos ||
-            message_.find("+") != string::npos || message_.find("-") != string::npos
-            || message_.find("/") != string::npos || message_.find("*") != string::npos) {
           //found one define var command \ expression in string
           expression_for_print_command = GetExpressionFromString(message_);
           print_command = new PrintCommand(expression_for_print_command);
@@ -104,12 +103,13 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
           vectorOfCommands.push_back(print_command);
          break;
         }
-        //did not find a deifneVarVariable in print message
-        print_command = new PrintCommand(message_);
-        mapOfCommands["Print" + *it] = (print_command);
-        vectorOfCommands.push_back(print_command);
-        break;
-      }
+
+      } else {
+            //did not find a deifneVarVariable in print message
+            print_command = new PrintCommand(message_);
+            mapOfCommands["Print" + *it] = (print_command);
+            vectorOfCommands.push_back(print_command);
+        }
       continue;
     }
 
@@ -370,32 +370,27 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
       ++it;
       string message_ = *it;
 
-      unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
-        unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
-      for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
-        if (message_.find(itOverMap->first) != string::npos ||
-            message_.find("+") != string::npos || message_.find("-") != string::npos
-            || message_.find("/") != string::npos || message_.find("*") != string::npos) {
-          //found one define var command \ expression in string
-          expression_for_print_command = GetExpressionFromString(message_);
-          print_command = new PrintCommand(expression_for_print_command);
-          vectorOfCommandsForWhileLoop.push_back(print_command);
-          ++it;
-          counter++;
-          break;
+        if (message_[0] != '"') {
 
+            unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
+            unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
+            for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
+                //found one define var command \ expression in string
+                expression_for_print_command = GetExpressionFromString(message_);
+                print_command = new PrintCommand(expression_for_print_command);
+                mapOfCommands["Print" + message_] = (print_command);
+                vectorOfCommandsForWhileLoop.push_back(print_command);
+                break;
+            }
 
+        } else {
+            //did not find a deifneVarVariable in print message
+            print_command = new PrintCommand(message_);
+            mapOfCommands["Print" + *it] = (print_command);
+            vectorOfCommandsForWhileLoop.push_back(print_command);
         }
-        //did not find a deifneVarVariable in print message
-        print_command = new PrintCommand(message_);
-        vectorOfCommandsForWhileLoop.push_back(print_command);
         ++it;
-        counter++;
-        break;
-
-      }
-
-      continue;
+        continue;
     }
 
 
@@ -492,27 +487,27 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
       //  if (itOverMap != mapOfDefineVarCommands.end()) {//found a defneVarVariable in print message
       // string s = to_string(itOverMap->second->GetVarValue());
       // print_command = new PrintCommand(itOverMap->second);
-      for (auto itOverMap = mapOfDefineVarCommands.begin(); itOverMap != mapOfDefineVarCommands.end(); itOverMap++) {
-        if (message_.find(itOverMap->first) != string::npos ||
-            message_.find("+") != string::npos || message_.find("-") != string::npos
-            || message_.find("/") != string::npos || message_.find("*") != string::npos) {
-          //found one define var command \ expression in string
-          expression_for_print_command = GetExpressionFromString(message_);
-          print_command = new PrintCommand(expression_for_print_command);
-          //mapOfCommands["Print" + message_] = (print_command);
-          vectorOfCommandsForIfCommand.push_back(print_command);
-          ++it;
-          counter++;
-          continue;
+        if (message_[0] != '"') {
 
+            unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
+            unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
+            for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
+                //found one define var command \ expression in string
+                expression_for_print_command = GetExpressionFromString(message_);
+                print_command = new PrintCommand(expression_for_print_command);
+                mapOfCommands["Print" + message_] = (print_command);
+                vectorOfCommandsForIfCommand.push_back(print_command);
+                break;
+            }
+
+        } else {
+            //did not find a deifneVarVariable in print message
+            print_command = new PrintCommand(message_);
+            mapOfCommands["Print" + *it] = (print_command);
+            vectorOfCommandsForIfCommand.push_back(print_command);
         }
-      }
-      //did not find a deifneVarVariable/exception in print message
-      print_command = new PrintCommand(message_);
-      vectorOfCommandsForIfCommand.push_back(print_command);
-      ++it;
-      counter++;
-      continue;
+        ++it;
+        continue;
     }
 
     //Sleep command for while loop
