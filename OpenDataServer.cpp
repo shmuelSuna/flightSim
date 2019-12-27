@@ -70,7 +70,6 @@ int OpenDataServer::openServer() {
     close(socketfd); //closing the listening socket
     std::cout << "wating for a messegae" << std::endl;
 
-    isServerConnect = true;
     return client_socket;
 
 

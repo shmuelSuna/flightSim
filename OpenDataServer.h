@@ -24,9 +24,6 @@
 using namespace std;
 
 
-extern bool isServerConnect;
-extern mutex m;
-
 
 class OpenDataServer : public Command {
 

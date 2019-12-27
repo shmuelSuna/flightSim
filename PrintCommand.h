@@ -7,6 +7,7 @@
 
 #include "Command.h"
 #include "DefineVarCommand.h"
+extern bool isClientOn;
 class PrintCommand: public Command {
  private:
 

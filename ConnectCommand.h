@@ -20,9 +20,7 @@
 #include <mutex>
 
 using namespace std;
-extern condition_variable cv;
-extern mutex m;
-extern unique_lock<mutex> ul;
+extern bool isClientOn;
 
 class ConnectCommand : public Command {
   string ip;

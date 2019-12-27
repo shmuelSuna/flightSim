@@ -29,7 +29,7 @@ void ConnectCommand::execute() {
 
 
 void ConnectCommand::setNewValSim() {
-    while (true) {
+    while (isClientOn) {
 
         while (!this->message->isMessangerEmpty()) {
             string c = this->message->getMessage();
@@ -44,13 +44,13 @@ void ConnectCommand::setNewValSim() {
 
             char buffer[1024] = {0};
             int valread = read(client_socket, buffer, 1024);
-            cout << valread << endl;
             std::cout << "message returned from the simulator: " << buffer << std::endl;
 
         }
 
 
     }
+    close(client_socket);
 
 }
 

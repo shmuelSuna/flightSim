@@ -15,6 +15,7 @@ DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const s
 
 void DefineVarCommand:: DefineVarCommand::execute() {
     cout<<"in define var command\n";
+
     if (arrow == "<-" || !hasArrow) {
         VarValue = simulator_object->getValue();
     }

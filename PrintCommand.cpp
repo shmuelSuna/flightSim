@@ -22,6 +22,9 @@ PrintCommand::PrintCommand(double expression_calculate1){
 void PrintCommand::execute() {
     if (!isDouble) {
         cout << message << endl;
+        if (message == "done") {
+            isClientOn = false;
+        }
     } else {
 
         cout << expression_calculate<< endl;

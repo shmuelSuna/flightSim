@@ -10,10 +10,8 @@
 #include <mutex>
 #include "MessageSim.h"
 using namespace std;
-bool isServerConnect = false;
-condition_variable cv;
+bool isClientOn = true;
 mutex m;
-unique_lock <mutex> ul(m);
 
 
 vector<string> static lexer(const string&);
