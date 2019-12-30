@@ -88,11 +88,12 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
+      map<string,double> mapForInterpeter_;
       ++it;
       string message_ = *it;
 
       if (message_[0] != '"') {
-
+/*
       unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
       unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
       for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
@@ -102,7 +103,11 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
           mapOfCommands["Print" + message_] = (print_command);
           vectorOfCommands.push_back(print_command);
          break;
-        }
+*/
+        print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(),mapForInterpeter_);
+        mapOfCommands["Print" + message_] = (print_command);
+        vectorOfCommands.push_back(print_command);
+        break;
 
       } else {
             //did not find a deifneVarVariable in print message
@@ -367,11 +372,12 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
+      map<string,double> mapForInterpeter_;
       ++it;
       string message_ = *it;
 
         if (message_[0] != '"') {
-
+/*
             unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
             unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
             for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
@@ -382,7 +388,11 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
                 vectorOfCommandsForWhileLoop.push_back(print_command);
                 break;
             }
-
+*/
+          print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(),mapForInterpeter_);
+          mapOfCommands["Print" + message_] = (print_command);
+          vectorOfCommandsForWhileLoop.push_back(print_command);
+          break;
         } else {
             //did not find a deifneVarVariable in print message
             print_command = new PrintCommand(message_);
@@ -480,6 +490,7 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
+      map <string, double>mapForInterpeter_;
       ++it;
       string message_ = *it;
       //check if print message is a defineVarVarible for example: Print(rpm)
@@ -488,7 +499,7 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
       // string s = to_string(itOverMap->second->GetVarValue());
       // print_command = new PrintCommand(itOverMap->second);
         if (message_[0] != '"') {
-
+/*
             unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
             unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_definevarcommand.begin();
             for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
@@ -499,7 +510,14 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
                 vectorOfCommandsForIfCommand.push_back(print_command);
                 break;
             }
+*/
 
+
+
+          print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(),mapForInterpeter_);
+          mapOfCommands["Print" + message_] = (print_command);
+          vectorOfCommandsForIfCommand.push_back(print_command);
+          break;
         } else {
             //did not find a deifneVarVariable in print message
             print_command = new PrintCommand(message_);
