@@ -17,7 +17,7 @@ PrintCommand::PrintCommand(const string &message_){
 // Constructer with parameters
 PrintCommand::PrintCommand(const string &message_,unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands1_,map<string,double> mapForInterpeter1){
   this->message = message_;
-  this->isExpression = false;
+  this->isExpression = true;
   this->mapForInterpeter = mapForInterpeter1;
   this->mapOfDefineVarCommands_ = mapOfDefineVarCommands1_;
 }

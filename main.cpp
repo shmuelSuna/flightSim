@@ -6,9 +6,8 @@
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
-#include <condition_variable>
 #include <mutex>
-#include "MessageSim.h"
+
 using namespace std;
 bool isClientOn = true;
 mutex m;

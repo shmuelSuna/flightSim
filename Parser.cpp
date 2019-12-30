@@ -88,6 +88,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
+      map<string,double> mapForInterpreter_;
       ++it;
       string message_ = *it;
 
@@ -99,7 +100,7 @@ unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) 
       for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
           //found one define var command \ expression in string
           expression_for_print_command = GetExpressionFromString(message_);
-          print_command = new PrintCommand(expression_for_print_command);
+          print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(), mapForInterpreter_);
           mapOfCommands["Print" + message_] = (print_command);
           vectorOfCommands.push_back(print_command);
          break;
@@ -369,6 +370,7 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
+        map<string,double> mapForInterpreter_;
       ++it;
       string message_ = *it;
 
@@ -379,7 +381,7 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
             for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
                 //found one define var command \ expression in string
                 expression_for_print_command = GetExpressionFromString(message_);
-                print_command = new PrintCommand(expression_for_print_command);
+                print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(), mapForInterpreter_);
                 mapOfCommands["Print" + message_] = (print_command);
                 vectorOfCommandsForWhileLoop.push_back(print_command);
                 break;
@@ -483,7 +485,9 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
     if (*it == "Print") {
       PrintCommand *print_command;
       Expression *expression_for_print_command;
-      ++it;
+        map<string,double> mapForInterpreter_;
+
+        ++it;
       string message_ = *it;
       //check if print message is a defineVarVarible for example: Print(rpm)
       //unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
@@ -497,7 +501,7 @@ IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
             for (itOverMap;itOverMap!= temp_map_of_definevarcommand.end();itOverMap++) {
                 //found one define var command \ expression in string
                 expression_for_print_command = GetExpressionFromString(message_);
-                print_command = new PrintCommand(expression_for_print_command);
+                print_command = new PrintCommand(message_,GetMapOfDefineVarCommands(), mapForInterpreter_);
                 mapOfCommands["Print" + message_] = (print_command);
                 vectorOfCommandsForIfCommand.push_back(print_command);
                 break;
