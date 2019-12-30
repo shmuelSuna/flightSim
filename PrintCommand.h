@@ -13,7 +13,9 @@ class PrintCommand: public Command {
 
   string message;
   Expression* expression_;
+  map<string,double>mapForInterpeter;
   bool isExpression;
+  unordered_map<string, DefineVarCommand *>mapOfDefineVarCommands_;
 
  public:
 
@@ -24,6 +26,7 @@ class PrintCommand: public Command {
 
   // Constructer with parameters
   PrintCommand(const string &message_);
+  PrintCommand(const string &message_,unordered_map<string, DefineVarCommand *>,map<string,double>);
   PrintCommand(Expression*);
 
 
@@ -34,7 +37,10 @@ class PrintCommand: public Command {
 
   //option 2
   // void execute()override ;
+  bool checkIfNameOfADefineVarIsInString(string);
 
+  void SetMapUpForInterpeter(string );
+  unordered_map<string, DefineVarCommand *> GetMapOfDefineVarCommands();
 
 };
 
