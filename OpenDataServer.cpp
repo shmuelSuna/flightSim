@@ -75,9 +75,14 @@ int OpenDataServer::openServer() {
 
 }
 
+/*
+ * in this method we get the 36 values from the XML  file,
+ * by given an index of the value we check if the index exist in the
+ * serverValuesMap, if it exists we update it value
+ */
 void OpenDataServer::connectionWhileloop() {
     SimulatorObject * tempObj;
-    int cl = this->cliient_socket;
+    int cs = this->cliient_socket;
 
     //reading from client
     char buffer[512] = {0};
@@ -85,7 +90,7 @@ void OpenDataServer::connectionWhileloop() {
     //server is always on
     while (true) {
         bzero(buffer,512);
-        int valread = read(cl, buffer, 1024);
+        int valread = read(cs, buffer, 1024);
 
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
@@ -96,9 +101,7 @@ void OpenDataServer::connectionWhileloop() {
             try {
 
                 tempObj = this->serverValuesMap->getSimObj(i);
-                m.lock();
                 tempObj->setValue(*valuesIter);
-                m.unlock();
                 if (*valuesIter != 0 ){
                 }
             } catch (const char * e) {

@@ -14,7 +14,6 @@
 #include <thread>
 #include <unordered_map>
 #include "Command.h"
-#include "CreateSymbolTable.h"
 #include "SymbolTable.h"
 #include "ServerValuesMap.h"
 #include <vector>

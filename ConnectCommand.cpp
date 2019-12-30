@@ -51,6 +51,7 @@ void ConnectCommand::setNewValSim() {
 
     }
     close(client_socket);
+    cout<<"after isClientOn soket: "<<client_socket<<endl;
 
 }
 
@@ -71,7 +72,7 @@ int connectControlClient(int port, const char* ip) {
     //We need to create a sockaddr obj to hold address of server
     sockaddr_in address; //in means IP4
     address.sin_family = AF_INET;//IP4
-    address.sin_addr.s_addr = inet_addr("10.0.2.2");  //the localhost address meanwhile I see it's working only on this IP!!!!!
+    address.sin_addr.s_addr = inet_addr(ip);
     address.sin_port = htons(port);
     //we need to convert our number (both port & localhost)
     // to a number that the network understands.

@@ -15,9 +15,7 @@ DefineVarCommand::DefineVarCommand(const string &var_name, string arrow, const s
 
 void DefineVarCommand:: DefineVarCommand::execute() {
     if (arrow == "<-" || !hasArrow) {
-        m.lock();
         VarValue = simulator_object->getValue();
-        m.unlock();
     }
 
 
@@ -42,9 +40,7 @@ void DefineVarCommand::SetSim(string sim) {
 }
 double DefineVarCommand::GetVarValue() {
     if (hasArrow) {
-        m.lock();
         VarValue = this->simulator_object->getValue();
-        m.unlock();
     }
     return VarValue;
 }

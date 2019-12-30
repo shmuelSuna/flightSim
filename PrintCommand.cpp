@@ -24,9 +24,11 @@ void PrintCommand::execute() {
         cout << message << endl;
         if (message == "done") {
             isClientOn = false;
+            this_thread::sleep_for(1s);
+            cout<<"after done is printed: is Client on: "<<isClientOn<<endl;
         }
     } else {
-      cout << expression_->calculate()<< endl;
+     // cout << expression_->calculate()<< endl;
     }
 
 }
