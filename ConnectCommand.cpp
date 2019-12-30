@@ -16,7 +16,11 @@ ConnectCommand::ConnectCommand(string ip1, int port1, MessageSim * m) {
   this->message = m;
 }
 
-
+/*
+ * blocking call of connecting as client and then we take the client socket
+ * we got and open a thread with the function that has the responsibility
+ * to get the string of commands from the messanger queue and send to the simulator
+ */
 void ConnectCommand::execute() {
 
     const char* ip2 = this->ip.c_str();
@@ -27,7 +31,12 @@ void ConnectCommand::execute() {
 
 
 
-
+/*
+ * function that is a while loop as long as we want to send commands to the
+ * simulator, pop a message from the messangerSim and send to the simulator.
+ * as long as there are messages in the messangerSim queue we will send
+ * them to the simulator in the inner loop
+ */
 void ConnectCommand::setNewValSim() {
     while (isClientOn) {
 
@@ -51,7 +60,6 @@ void ConnectCommand::setNewValSim() {
 
     }
     close(client_socket);
-    cout<<"after isClientOn soket: "<<client_socket<<endl;
 
 }
 
