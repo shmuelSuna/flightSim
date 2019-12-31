@@ -129,6 +129,7 @@ std::vector<string> static lexer(const std::string& fileName) {
                 }
                 break;
             } else if (token ==("Print") || token == ("print")) {
+                token = "Print";
                 lexerVector.push_back(token);
                 token = "";
                 found = line.find('(');
@@ -164,6 +165,7 @@ std::vector<string> static lexer(const std::string& fileName) {
                 break;
 
             } else if (token == "sleep" || token == "Sleep") {
+                token = "Sleep";
                 lexerVector.push_back(token);
                 token = "";
                 found = line.find('(');

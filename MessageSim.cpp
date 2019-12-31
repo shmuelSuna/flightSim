@@ -6,7 +6,10 @@
 
 
 /*
- * the messanger sends to the connectClient the commands
+ * the messanger sends to the connectClient the commands.
+ * we use a queue to save the new commands and the class
+ * ConnectCommand takes out the first command in the queue
+ * and the setVarCommand add new commands.
  */
 void MessageSim::addMessage(float v, string path) {
     ostringstream oss;

@@ -18,6 +18,8 @@ SimulatorObject * SymbolTable::getSimObj(string objName) {
     }
     return it->second;
 }
+
+//we return the index of the sim in the vector of pathes from the XML file
 int SymbolTable::isPathExist(string str) {
     vector<string>::iterator it  = this->allSimPath.begin();
     int i = 0;
@@ -29,7 +31,8 @@ int SymbolTable::isPathExist(string str) {
     }
     return -1;
 }
-
+//once we call the constructor we wand to set a vector of pathes that we get from the XML
+//in order to match a new var with its index in the vetor
 SymbolTable::SymbolTable() {
     this->allSimPath = allSimPathCreator();
 }
@@ -85,48 +88,3 @@ vector <string> allSimPathCreator() {
     return pathVec;
 }
 
-/*
- *
- *      <node>/instrumentation/airspeed-indicator/indicated-speed-kt</node>
-<node>/sim/time/warp</node>
-<node>/controls/switches/magnetos</node>
-<node>//instrumentation/heading-indicator/offset-deg</node>
-<node>/instrumentation/altimeter/indicated-altitude-ft</node>
-
-<node>/instrumentation/altimeter/pressure-alt-ft</node>
-<node>/instrumentation/attitude-indicator/indicated-pitch-deg</node>
-<node>/instrumentation/attitude-indicator/indicated-roll-deg</node>
-<node>/instrumentation/attitude-indicator/internal-pitch-deg</node>
-<node>/instrumentation/attitude-indicator/internal-roll-deg</node>
-
-<node>/instrumentation/encoder/indicated-altitude-ft</node>
-<node>/instrumentation/encoder/pressure-alt-ft</node>
-<node>/instrumentation/gps/indicated-altitude-ft</node>
-<node>/instrumentation/gps/indicated-ground-speed-kt</node>
-<node>/instrumentation/gps/indicated-vertical-speed</node>
-
-<node>/instrumentation/heading-indicator/indicated-heading-deg</node>
-<node>/instrumentation/magnetic-compass/indicated-heading-deg</node>
-<node>/instrumentation/slip-skid-ball/indicated-slip-skid</node>
-<node>/instrumentation/turn-indicator/indicated-turn-rate</node>
-<node>/instrumentation/vertical-speed-indicator/indicated-speed-fpm</node>
-
-<node>/controls/flight/aileron</node>
-<node>/controls/flight/elevator</node>
-<node>/controls/flight/rudder</node>
-<node>/controls/flight/flaps</node>
-<node>/controls/engines/engine/throttle</node>
-
-<node>/controls/engines/current-engine/throttle</node>
-<node>/controls/switches/master-avionics</node>
-<node>/controls/switches/starter</node>
-<node>/engines/active-engine/auto-start</node>
-<node>/controls/flight/speedbrake</node>
-
-<node>/sim/model/c172p/brake-parking</node>
-<node>/controls/engines/engine/primer</node>
-<node>/controls/engines/current-engine/mixture</node>
-<node>/controls/switches/master-bat</node>
-<node>/controls/switches/master-alt</node>
-<node>/engines/engine/rpm</node>
- */

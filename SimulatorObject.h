@@ -26,7 +26,6 @@ public:
     void setValue(float);
     string getName();
     float getValue();
-    string getSim();
 
 };
 

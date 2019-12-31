@@ -53,7 +53,7 @@ void ConnectCommand::setNewValSim() {
 
             char buffer[1024] = {0};
             int valread = read(client_socket, buffer, 1024);
-            std::cout << "message returned from the simulator: " << buffer << std::endl;
+          //  std::cout << "message returned from the simulator: " << buffer << std::endl;
 
         }
 

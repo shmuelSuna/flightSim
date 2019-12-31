@@ -11,7 +11,6 @@ SimulatorObject::~SimulatorObject() {
 
 }
 void SimulatorObject::setValue(float f) {
-
     this->value = f;
 
 }
@@ -20,7 +19,4 @@ string SimulatorObject::getName() {
 }
 float SimulatorObject::getValue() {
     return this->value;
-}
-string SimulatorObject::getSim() {
-    return this->simPath;
 }

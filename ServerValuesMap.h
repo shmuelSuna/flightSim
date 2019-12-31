@@ -11,7 +11,14 @@
 using namespace std;
 
 
-
+/*
+ * this map holds a name of a simulator and its object
+ * all the simulatorObject in this map are objects that
+ * we need to change their values according to what we
+ * get from the simulator (the 36 values from the XML file)
+ * in the openDataServer class we update their value and
+ * the DefineVarCommand updates its value by the appropriate simulatorObject
+ */
 class ServerValuesMap {
 private:
     unordered_map<int,SimulatorObject*> map;
