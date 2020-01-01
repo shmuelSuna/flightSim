@@ -43,10 +43,10 @@ void ConnectCommand::setNewValSim() {
         while (!this->message->isMessangerEmpty()) {
             string c = this->message->getMessage();
             int n = c.size();
-            char hello2[n + 1];
-            strcpy(hello2, c.c_str());
+            char command[n + 1];
+            strcpy(command, c.c_str());
 
-            int is_sent2 = send(client_socket, hello2, strlen(hello2), 0);
+            int is_sent2 = send(client_socket, command, strlen(command), 0);
             if (is_sent2 == -1) {
                 std::cout << "Error sending message" << std::endl;
             }
