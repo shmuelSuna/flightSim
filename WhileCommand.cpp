@@ -70,7 +70,7 @@ void WhileCommand::execute() {
   }
 
   if (operator_ == "!=") {
-    while (this->GetLeftExpression()->calculate() != this->GetRightExpression()->calculate()) {
+    while ((float)this->GetLeftExpression()->calculate() != (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
         this->SetUpExpressions();
@@ -81,7 +81,7 @@ void WhileCommand::execute() {
   }
 
   if(operator_ == "==") {
-    while (this->GetLeftExpression()->calculate() == this->GetRightExpression()->calculate()) {
+    while ((float)this->GetLeftExpression()->calculate() == (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         this->SetUpExpressions();

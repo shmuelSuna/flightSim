@@ -68,7 +68,7 @@ void IfCommand::execute() {
   }
 
   if (operator_ == "!=") {
-    if (this->GetLeftExpression()->calculate() != this->GetRightExpression()->calculate()) {
+    if ((float)this->GetLeftExpression()->calculate() != (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
         this->SetUpExpressions();
@@ -79,7 +79,7 @@ void IfCommand::execute() {
   }
 
   if(operator_ == "==") {
-    if (this->GetLeftExpression()->calculate() == this->GetRightExpression()->calculate()) {
+    if ((float)this->GetLeftExpression()->calculate() == (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
         this->SetUpExpressions();
