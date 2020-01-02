@@ -39,7 +39,7 @@ void DefineVarCommand::SetSim(string sim) {
   DefineVarCommand::sim = sim;
 }
 double DefineVarCommand::GetVarValue() {
-    if (hasArrow) {
+    if (arrow == "<-") {
         VarValue = this->simulator_object->getValue();
     }
     return VarValue;
