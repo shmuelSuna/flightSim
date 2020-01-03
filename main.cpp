@@ -6,24 +6,26 @@
 #include <unordered_map>
 #include <map>
 #include "Parser.h"
-#include <mutex>
 
 using namespace std;
 bool isClientOn = true;
-mutex m;
 
 
 vector<string> static lexer(const string&);
 string removeSpaces(string);
 
+/*
+ * when the user run the program he puts an argument that it is
+ * the path to the text file.
+ */
+int main(int argc, char* argv[]) {
 
-int main() {
-
+    string input = argv[1];
 
     unordered_map<string, Command *> mapOfCommands;
 
     vector<string>vectorOfStrings12;
-    vectorOfStrings12 = lexer("fly.txt");
+    vectorOfStrings12 = lexer(input);
 
     vector<string>::iterator it = vectorOfStrings12.begin();
 
@@ -35,20 +37,6 @@ int main() {
 
 
     parser.operateCommands();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
