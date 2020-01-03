@@ -25,7 +25,11 @@ int main(int argc, char* argv[]) {
     unordered_map<string, Command *> mapOfCommands;
 
     vector<string>vectorOfStrings12;
-    vectorOfStrings12 = lexer(input);
+    try {
+        vectorOfStrings12 = lexer(input);
+    } catch (const char* e) {
+        cerr<<e<<endl;
+    }
 
     vector<string>::iterator it = vectorOfStrings12.begin();
 
@@ -46,17 +50,16 @@ int main(int argc, char* argv[]) {
 
 
 
-std::vector<string> static lexer(const std::string& fileName) {
-    std::vector<string> lexerVector;
+vector<string> static lexer(const string& fileName) {
+    vector<string> lexerVector;
 
     ifstream file(fileName);
     if (!file.is_open()) {
-        std::cout<<"Error open the file"<<endl;
+        throw("Error open the file");
     }
 
 
-
-    std::string line;
+    string line;
 
     while(getline(file, line)) {
         std::string token;

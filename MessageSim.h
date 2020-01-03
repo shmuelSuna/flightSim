@@ -15,10 +15,6 @@
 
 using namespace std;
 
-extern condition_variable cv;
-extern mutex m;
-extern unique_lock<mutex> ul;
-
 using namespace std;
 
 class MessageSim {

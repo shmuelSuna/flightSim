@@ -38,6 +38,8 @@ void DefineVarCommand::SetArrowFlagRight(string arrow_) {
 void DefineVarCommand::SetSim(string sim) {
   DefineVarCommand::sim = sim;
 }
+
+//only if the value of the variable comes from the server we update its value
 double DefineVarCommand::GetVarValue() {
     if (arrow == "<-") {
         VarValue = this->simulator_object->getValue();
