@@ -32,7 +32,7 @@ void SetVarCommand::execute(){unordered_map<string, DefineVarCommand*>::iterator
     i2->setVariables(mapForInterpeter);
     Expression *e1 = i2->interpret(rightSideOfEqualsOpertor);
 
-    float newValue = e1->calculate();
+    double newValue = e1->calculate();
     GetDefine_var_command_ptr()->SetVarValue(newValue);
     string s = define_var_command_ptr->GetSim();
     messageSim->addMessage(newValue, s);

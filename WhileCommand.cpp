@@ -25,70 +25,87 @@ WhileCommand::WhileCommand(vector<Command *> vectorOfCommands,
 
 void WhileCommand::execute() {
     this->SetUpExpressions();
+    mutex m;
     if (operator_ == "<") {
-    while (this->GetLeftExpression()->calculate() < this->GetRightExpression()->calculate()) {
+        m.lock();
+        while (this->GetLeftExpression()->calculate() < this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
-        this->SetUpExpressions();
         Command *command = *it3;
         command->execute();
       }
+      this->SetUpExpressions();
     }
+        m.unlock();
   }
 
   if (operator_ == "<=") {
+      m.lock();
       while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
-        this->SetUpExpressions();
         Command *command = *it3;
         command->execute();
       }
-    }
+      this->SetUpExpressions();
+      }
+      m.unlock();
   }
 
   if (operator_ == ">") {
-    while (this->GetLeftExpression()->calculate() > this->GetRightExpression()->calculate()) {
+      m.lock();
+      while (this->GetLeftExpression()->calculate() > this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
-        this->SetUpExpressions();
         Command *command = *it3;
         command->execute();
       }
-    }
+      this->SetUpExpressions();
+      }
+      m.unlock();
   }
 
   if (operator_ == ">=") {
-    while (this->GetLeftExpression()->calculate() >= this->GetRightExpression()->calculate()) {
+      m.lock();
+      while (this->GetLeftExpression()->calculate() >= this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
-        this->SetUpExpressions();
         Command *command = *it3;
         command->execute();
       }
-    }
+      this->SetUpExpressions();
+      }
+      m.unlock();
+
   }
 
   if (operator_ == "!=") {
-    while ((float)this->GetLeftExpression()->calculate() != (float)this->GetRightExpression()->calculate()) {
+      m.lock();
+      while ((float)this->GetLeftExpression()->calculate() != (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
-        this->SetUpExpressions();
         Command *command = *it3;
         command->execute();
       }
+      this->SetUpExpressions();
     }
+      m.unlock();
+
   }
 
   if(operator_ == "==") {
-    while ((float)this->GetLeftExpression()->calculate() == (float)this->GetRightExpression()->calculate()) {
+      m.lock();
+      while ((float)this->GetLeftExpression()->calculate() == (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
-        this->SetUpExpressions();
         Command * command = *it3;
         command->execute();
       }
+      this->SetUpExpressions();
+
     }
+      m.unlock();
+
   }
 
 }
