@@ -85,7 +85,6 @@ void OpenDataServer::connectionWhileloop() {
     //server is always on
     while (true) {
         int valread = read(cs, buffer, 1024);
-
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
 

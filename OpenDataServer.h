@@ -55,7 +55,6 @@ public:
 
 };
 
-
 vector<float>fromBufferToFloats(string);
 
 
