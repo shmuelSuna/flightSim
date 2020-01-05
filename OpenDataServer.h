@@ -23,7 +23,6 @@
 using namespace std;
 
 
-
 class OpenDataServer : public Command {
 
 private:
@@ -42,21 +41,14 @@ public:
     //constructer by parameters
     OpenDataServer(ServerValuesMap*, int);
 
-    void setPort(int);
-
 
 
     void execute() override;
 
-    //the open data server should have an access to the table to update the variables that come from the Simulator
-    void dataServerUpdate(int, SimulatorObject*);
+
 
     void connectionWhileloop();
 
-    void printHello() {
-        cout<<"hello"<<endl;
-        return;;
-    }
 
     int openServer();
 

@@ -17,11 +17,6 @@ OpenDataServer::OpenDataServer(ServerValuesMap* valuesMap, int i) {
 
 
 
-void OpenDataServer::dataServerUpdate(int i, SimulatorObject * ob) {
-    this->serverValuesMap->insert(i,ob);
-}
-
-
 int OpenDataServer::openServer() {
 
 
@@ -85,11 +80,10 @@ void OpenDataServer::connectionWhileloop() {
     int cs = this->cliient_socket;
 
     //reading from client
-    char buffer[512] = {0};
+    char buffer[1024] = {0};
 
     //server is always on
     while (true) {
-        bzero(buffer,512);
         int valread = read(cs, buffer, 1024);
 
         vector<float> flightValues = fromBufferToFloats(buffer);

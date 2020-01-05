@@ -26,6 +26,8 @@
 #include "SetVarCommand.h"
 
 #include "MessageSim.h"
+
+
 class WhileCommand: public Command {
   string operator_;
 

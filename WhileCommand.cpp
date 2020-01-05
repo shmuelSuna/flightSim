@@ -30,9 +30,7 @@ WhileCommand::WhileCommand(vector<Command *> vectorOfCommands,
  */
 void WhileCommand::execute() {
     this->SetUpExpressions();
-    mutex m;
     if (operator_ == "<") {
-        m.lock();
         while (this->GetLeftExpression()->calculate() < this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
@@ -41,24 +39,20 @@ void WhileCommand::execute() {
       }
       this->SetUpExpressions();
     }
-        m.unlock();
   }
 
   if (operator_ == "<=") {
-      m.lock();
       while (this->GetLeftExpression()->calculate() <= this->GetRightExpression()->calculate()) {
-
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
         Command *command = *it3;
         command->execute();
       }
       this->SetUpExpressions();
       }
-      m.unlock();
+
   }
 
   if (operator_ == ">") {
-      m.lock();
       while (this->GetLeftExpression()->calculate() > this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
@@ -67,11 +61,9 @@ void WhileCommand::execute() {
       }
       this->SetUpExpressions();
       }
-      m.unlock();
   }
 
   if (operator_ == ">=") {
-      m.lock();
       while (this->GetLeftExpression()->calculate() >= this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
@@ -80,12 +72,10 @@ void WhileCommand::execute() {
       }
       this->SetUpExpressions();
       }
-      m.unlock();
 
   }
 
   if (operator_ == "!=") {
-      m.lock();
       while ((float)this->GetLeftExpression()->calculate() != (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3) {
@@ -94,12 +84,10 @@ void WhileCommand::execute() {
       }
       this->SetUpExpressions();
     }
-      m.unlock();
 
   }
 
   if(operator_ == "==") {
-      m.lock();
       while ((float)this->GetLeftExpression()->calculate() == (float)this->GetRightExpression()->calculate()) {
 
       for (auto it3 = vectorOfCommandsForWhileLoop.begin(); it3 != vectorOfCommandsForWhileLoop.end(); ++it3){
@@ -109,7 +97,6 @@ void WhileCommand::execute() {
       this->SetUpExpressions();
 
     }
-      m.unlock();
 
   }
 

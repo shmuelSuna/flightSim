@@ -24,7 +24,6 @@ public:
     SymbolTable();
     ~SymbolTable();
     void addItem(string, SimulatorObject *);
-    vector<string> getItemsNames();
     SimulatorObject * getSimObj(string);
     int isPathExist(string);
 };

@@ -11,6 +11,7 @@ using namespace std;
 bool isClientOn = true;
 
 
+
 vector<string> static lexer(const string&);
 string removeSpaces(string);
 
