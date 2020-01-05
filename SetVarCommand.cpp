@@ -24,7 +24,10 @@ SetVarCommand::SetVarCommand(DefineVarCommand* ptrToDefineVarCommand, string str
 
 
 
-
+/*
+ * function that executes a set var command- gets expression and calculates it and sets it as value of
+ * correct define var varialbe and adds correct message
+ */
 void SetVarCommand::execute(){unordered_map<string, DefineVarCommand*>::iterator it = mapOfDefineVarCommands.begin();
 
     Interpreter *i2 = new Interpreter();
@@ -41,7 +44,9 @@ void SetVarCommand::execute(){unordered_map<string, DefineVarCommand*>::iterator
 
 
 }
-
+/*
+ * function that checks If Name Of A DefineVarIsInString- so we know if we should handle expressins with varialbes
+ */
 bool SetVarCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfEquals) {
   //
   //
@@ -56,7 +61,9 @@ bool SetVarCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfE
   return false;
 }
 
-
+/*
+ * function that Sets up Map For Interpeter -so we can handle expressions
+ */
 void  SetVarCommand::SetMapUpForInterpeter(string stringThatsRightOfEquals) {
 
   if (this->checkIfNameOfADefineVarIsInString(stringThatsRightOfEquals)) {//there is a define var in the string

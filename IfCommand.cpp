@@ -21,6 +21,13 @@ IfCommand::IfCommand(vector<Command *> vectorOfCommands,
 
 }
 
+
+
+/*
+ * function that iterates over vector of commands that belong to the ifCommand,
+ * and executes each command
+ *
+ */
 void IfCommand::execute() {
   this->SetUpExpressions();
   if (operator_ == "<") {
@@ -91,6 +98,10 @@ void IfCommand::execute() {
 
 }
 
+/*
+ * function that checks If Name Of A DefineVarIsInString is in a string
+ *
+ */
 bool IfCommand::checkIfNameOfADefineVarIsInString(string str) {
 
   //check in map of defineVarcommands if there is a substring in the string to equals
@@ -103,7 +114,9 @@ bool IfCommand::checkIfNameOfADefineVarIsInString(string str) {
   }
   return false;
 }
-
+/*
+ * function that Sets up Map For Interpeter- to know the value of the definevarcommand
+ */
 map<string, double> IfCommand::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
 
@@ -122,6 +135,9 @@ map<string, double> IfCommand::SetMapUpForInterpeter(string str) {
 
 }
 
+/*
+ * function that creates the left expression of while condition, using the map for interpeter
+ */
 Expression *IfCommand::createLeftExpression(map<string, double> MapForInterpeter) {
   Interpreter *i2 = new Interpreter();
   i2->setVariables(MapForInterpeter);
@@ -129,6 +145,9 @@ Expression *IfCommand::createLeftExpression(map<string, double> MapForInterpeter
 
 }
 
+/*
+ * function that creates the right expression of while condition, using the map for interpeter
+ */
 Expression *IfCommand::createRightExpression(map<string, double> MapForInterpeter) {
   Interpreter *i3 = new Interpreter();
   i3->setVariables(MapForInterpeter);
@@ -149,6 +168,9 @@ unordered_map<string, DefineVarCommand *> IfCommand::GetMapOfDefineVarCommands()
   return this->mapOfDefineVarCommands;
 }
 
+/*
+ * function that sets up expressions of the condition for if command
+ */
 void IfCommand::SetUpExpressions() {
   map<string, double> mapForInterpeter_LeftString;
   map<string, double> mapForInterpeter_RightString;

@@ -13,7 +13,9 @@ SleepCommand::SleepCommand(int timeToSleep_){
 }
 
 
-
+/*
+ * function thats executes sleep command- to sleep for correct amount of milisecounds
+ */
 void SleepCommand:: execute(){
     this_thread::sleep_for(chrono::milliseconds(timeToSleep));
 

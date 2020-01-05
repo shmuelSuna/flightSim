@@ -32,7 +32,9 @@ PrintCommand::PrintCommand(Expression* expression1){
 
 
 
-
+/*
+ * function that checks If a Name Of A DefineVar Is In String, to know how to handle print message
+ */
 bool PrintCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfEquals) {
   //
   //
@@ -47,7 +49,9 @@ bool PrintCommand::checkIfNameOfADefineVarIsInString(string stringThatsRightOfEq
   return false;
 }
 
-
+/*
+ * function that sets up the map for interpeter so we can handle expressions inside message of print
+ */
 void  PrintCommand::SetMapUpForInterpeter(string stringThatsRightOfEquals) {
 
   if (this->checkIfNameOfADefineVarIsInString(stringThatsRightOfEquals)) {//there is a define var in the string
@@ -73,7 +77,9 @@ unordered_map<string, DefineVarCommand*>PrintCommand::GetMapOfDefineVarCommands(
 
 
 
-
+/*
+ * function that executes a print command based on what needs to be printed
+ */
 void PrintCommand::execute() {
     if (!isExpression) {
         cout << message << endl;

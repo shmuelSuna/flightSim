@@ -16,7 +16,10 @@ void Parser::setCommandVec(vector<Command *> vec) {
   this->command_vec = vec;
 }
 
-// create map1, and create vector of commands in the right order, so we can iterate over them for execution
+/*
+ * function that iterates over vector of strings from lexer
+ * and creates  each command and adds to map and vector of commands
+ */
 unordered_map<string, Command *> Parser::action(vector<string> vectorOfStrings) {
   //for iteraterating over commands in the right order, so we can iterate over them for execution
   vector<Command *> vectorOfCommands;
@@ -158,6 +161,11 @@ unordered_map<string, Command *> Parser::GetMapOfCommands() {
   return mapOfCommands;
 }
 
+
+/*
+ * function that checks If Name Of A DefineVarIsInString is in a string
+ *
+ */
 bool Parser::checkIfNameOfADefineVarIsInString(string str) {
   unordered_map<string, DefineVarCommand *> temp_map_of_definevarcommand = GetMapOfDefineVarCommands();
 
@@ -171,7 +179,9 @@ bool Parser::checkIfNameOfADefineVarIsInString(string str) {
     }
   return false;
 }
-
+/*
+ * function that Sets up Map For Interpeter- to know the value of the definevarcommand
+ */
 map<string, double> Parser::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
 
@@ -188,7 +198,9 @@ unordered_map<string, DefineVarCommand *>::iterator itOverMap = temp_map_of_defi
   return mapForInterpeter;
 
 }
-
+/*
+ * function that creats a expression from a givin string
+ */
 Expression *Parser::createExpression(map<string, double> MapForInterpeter, string str) {
   Interpreter *i3 = new Interpreter();
   i3->setVariables(MapForInterpeter);
@@ -207,7 +219,9 @@ Expression *Parser::GetExpressionFromString(string str) {
   Expression *expression_ = this->createExpression(mapForInterpeter, str);
   return expression_;
 }
-
+/*
+ * function that executes each command from vector of commands
+ */
 void Parser::operateCommands() {
 
   vector<Command *>::iterator it = this->command_vec.begin();
@@ -218,7 +232,9 @@ void Parser::operateCommands() {
   }
 
 }
-
+/*
+ * function that creates a DefineVarCommand_ptr
+ */
 DefineVarCommand *Parser::createDefineVarCommand_ptr(vector<string>::iterator it,
                                                      SymbolTable *symbolTable,
                                                      ServerValuesMap *serverValuesMap) {
@@ -237,7 +253,9 @@ DefineVarCommand *Parser::createDefineVarCommand_ptr(vector<string>::iterator it
   }
   return temp_define_var_command_ptr;
 }
-
+/*
+ * function that creates a DefineVarCommand_ptr that has arrow and sim
+ */
 DefineVarCommand *Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<string>::iterator it,
                                                                        SymbolTable *symbolTable,
                                                                        ServerValuesMap *serverValuesMap,
@@ -268,7 +286,9 @@ DefineVarCommand *Parser::createDefineVarCommand_ptrThatHasArrowAndSim(vector<st
   }
   return define_var_command;
 }
-
+/*
+ * function that creates a DefineVarCommand_ptr that dosent have arrow and sim
+ */
 DefineVarCommand *Parser::createDefineVarCommand_ptrThatHas_NO_ArrowAndSim
     (vector<string>::iterator it, string varName_) {
   ++it;
@@ -280,7 +300,9 @@ DefineVarCommand *Parser::createDefineVarCommand_ptrThatHas_NO_ArrowAndSim
   return define_var_command;
 
 }
-
+/*
+ * function that is boolean and  checks If Iterator Is up Too SetVarCommand
+ */
 bool Parser::checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator it) {
   //get iterator over map of defineVarcommands and look for define var that needs to be set
   unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
@@ -294,6 +316,11 @@ bool Parser::checkIfIteratorIsUpTooSetVarCommand(vector<string>::iterator it) {
   return false;
 
 }
+
+
+/*
+ * function that creats  SetVarCommand
+ */
 SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it, MessageSim *ms) {
   string nameOfSetVarCommand = *it;
   unordered_map<string, DefineVarCommand *>::iterator itOverMap = mapOfDefineVarCommands.find(*it);
@@ -306,7 +333,9 @@ SetVarCommand *Parser::createSetVarCommand(vector<string>::iterator it, MessageS
   return set_var_command;
 
 }
-
+/*
+ * function that creats  WhileCommand pointer
+ */
 WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
                                              SymbolTable *symbol_table,
                                              ServerValuesMap *server_values_map,
@@ -424,6 +453,9 @@ WhileCommand *Parser::createWhileCommand_ptr(vector<string>::iterator it,
 
 }
 
+/*
+ * function that creats  IfCommand pointer
+ */
 IfCommand *Parser::createIfCommand_ptr(vector<string>::iterator it,
                                        SymbolTable *symbol_table, ServerValuesMap *server_values_map, MessageSim *ms) {
 

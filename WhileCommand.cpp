@@ -23,6 +23,11 @@ WhileCommand::WhileCommand(vector<Command *> vectorOfCommands,
 
 }
 
+/*
+ * function that iterates over vector of commands that belong to the whileCommand,
+ * and executes each command based on the operator
+ *
+ */
 void WhileCommand::execute() {
     this->SetUpExpressions();
     mutex m;
@@ -109,7 +114,9 @@ void WhileCommand::execute() {
   }
 
 }
-
+/*
+ * function that checks If Name Of A DefineVar Is In String- so we know if we should handle expressins with varialbes
+ */
 bool WhileCommand::checkIfNameOfADefineVarIsInString(string str) {
 
   //check in map of defineVarcommands if there is a substring in the string to equals
@@ -123,6 +130,10 @@ bool WhileCommand::checkIfNameOfADefineVarIsInString(string str) {
   return false;
 }
 
+
+/*
+ * function that Sets up Map For Interpeter- to know the value of the definevarcommand
+ */
 map<string, double> WhileCommand::SetMapUpForInterpeter(string str) {
   map<string, double> mapForInterpeter;
 
@@ -141,13 +152,18 @@ map<string, double> WhileCommand::SetMapUpForInterpeter(string str) {
 
 }
 
+/*
+ * function that creates the left expression of while condition, using the map for interpeter
+ */
 Expression *WhileCommand::createLeftExpression(map<string, double> MapForInterpeter) {
   Interpreter *i2 = new Interpreter();
   i2->setVariables(MapForInterpeter);
   Expression *e1 = i2->interpret(this->leftStringToMakeIntoExpression);
 
 }
-
+/*
+ * function that creates the right expression of while condition, using the map for interpeter
+ */
 Expression *WhileCommand::createRightExpression(map<string, double> MapForInterpeter) {
   Interpreter *i3 = new Interpreter();
   i3->setVariables(MapForInterpeter);
@@ -167,7 +183,9 @@ const string &WhileCommand::GetRightStringToMakeIntoExpression() const {
 unordered_map<string, DefineVarCommand *> WhileCommand::GetMapOfDefineVarCommands() {
   return this->mapOfDefineVarCommands;
 }
-
+/*
+ * function that sets up expressions of the condition for while command
+ */
 void WhileCommand::SetUpExpressions() {
   map<string, double> mapForInterpeter_LeftString;
   map<string, double> mapForInterpeter_RightString;
