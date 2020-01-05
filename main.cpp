@@ -30,6 +30,7 @@ int main(int argc, char* argv[]) {
         vectorOfStrings12 = lexer(input);
     } catch (const char* e) {
         cerr<<e<<endl;
+        return 0;
     }
 
     vector<string>::iterator it = vectorOfStrings12.begin();

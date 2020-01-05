@@ -25,8 +25,8 @@ void ConnectCommand::execute() {
 
     const char* ip2 = this->ip.c_str();
     this->client_socket = connectControlClient(this->port, ip2);
-    thread t1([this]{setNewValSim();});
-    t1.detach();
+    thread clientThread([this]{setNewValSim();});
+    clientThread.detach();
 }
 
 

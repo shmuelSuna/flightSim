@@ -124,9 +124,9 @@ void OpenDataServer::execute() {
 
 
     this->cliient_socket = openServer();
-    thread t1([this] {connectionWhileloop();});
+    thread serverThread([this] {connectionWhileloop();});
 
-    t1.detach();
+    serverThread.detach();
 
 
 
