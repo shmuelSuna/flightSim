@@ -42,4 +42,4 @@ In order to end the set of commands you need to print "done".
 - to download Flight gear simulator https://www.flightgear.org/download/
 
 ### Authors
-Ori Poria, Shmuel Suna
+Ori Poria and Shmuel Suna
