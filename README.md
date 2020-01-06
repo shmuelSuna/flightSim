@@ -18,7 +18,7 @@ First you need to set the details of the communication commands, the ip and port
 Then you can see the variables that we handle with.
 After declaring the variables we are ready to write the commands. Pay attention that 
 the variables that we are allowd to change are those with this arrow: <-, and variables 
-that we can take thier values are those with this -> arrow.
+that we can take their values are those with this -> arrow.
 In order to end the set of commands you need to print "done".
 
 
