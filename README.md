@@ -40,3 +40,6 @@ In order to end the set of commands you need to print "done".
 - for github https://github.com/shmuelSuna/flightSim
 - for fly.txt https://github.com/shmuelSuna/flightSim/blob/master/fly.txt
 - to download Flight gear simulator https://www.flightgear.org/download/
+
+### Authors
+Ori Poria and Shmuel Suna
