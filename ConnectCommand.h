@@ -20,7 +20,8 @@
 #include <mutex>
 
 using namespace std;
-extern bool isClientOn;
+extern bool isScript;
+extern mutex mtx;
 
 class ConnectCommand : public Command {
   string ip;

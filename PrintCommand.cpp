@@ -84,7 +84,7 @@ void PrintCommand::execute() {
     if (!isExpression) {
         cout << message << endl;
         if (message == "done") {
-            isClientOn = false;
+            isScript = false;
             this_thread::sleep_for(1s);
         }
     } else {

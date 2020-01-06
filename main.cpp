@@ -8,9 +8,9 @@
 #include "Parser.h"
 
 using namespace std;
-bool isClientOn = true;
+bool isScript = true;
 
-
+mutex mtx;
 
 vector<string> static lexer(const string&);
 string removeSpaces(string);

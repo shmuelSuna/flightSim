@@ -38,9 +38,11 @@ void ConnectCommand::execute() {
  * them to the simulator in the inner loop
  */
 void ConnectCommand::setNewValSim() {
-    while (isClientOn) {
+    while (isScript) {
+
 
         while (!this->message->isMessangerEmpty()) {
+
             string c = this->message->getMessage();
             int n = c.size();
             char command[n + 1];
@@ -53,13 +55,15 @@ void ConnectCommand::setNewValSim() {
 
             char buffer[1024] = {0};
             int valread = read(client_socket, buffer, 1024);
-           // std::cout << "message returned from the simulator: " << buffer << std::endl;
+            cout<<buffer<<endl;
 
         }
 
 
     }
     close(client_socket);
+    return;
+
 
 }
 

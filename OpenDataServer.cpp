@@ -77,13 +77,13 @@ int OpenDataServer::openServer() {
  */
 void OpenDataServer::connectionWhileloop() {
     SimulatorObject * tempObj;
-    int cs = this->cliient_socket;
+    int cs = this->client_socket;
 
     //reading from client
     char buffer[1024] = {0};
 
     //server is always on
-    while (true) {
+    while (isScript) {
         int valread = read(cs, buffer, 1024);
         vector<float> flightValues = fromBufferToFloats(buffer);
         vector<float >::iterator valuesIter = flightValues.begin();
@@ -105,6 +105,8 @@ void OpenDataServer::connectionWhileloop() {
         }
 
     }
+    close(this->client_socket);
+
     return;
 
 
@@ -122,7 +124,7 @@ void OpenDataServer::connectionWhileloop() {
 void OpenDataServer::execute() {
 
 
-    this->cliient_socket = openServer();
+    this->client_socket = openServer();
     thread serverThread([this] {connectionWhileloop();});
 
     serverThread.detach();

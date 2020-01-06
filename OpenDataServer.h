@@ -29,7 +29,7 @@ private:
 
     int port;
     ServerValuesMap* serverValuesMap;
-    int cliient_socket;
+    int client_socket;
 
 
 
